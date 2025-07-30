@@ -6,6 +6,7 @@ import Settings from './Settings';
 import ChatBox from './ChatBox';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
+import { useSettings } from '../context/SettingsContext';
 import { useNavigate } from 'react-router-dom';
 
 // Goal-based topic configurations
@@ -46,13 +47,13 @@ const improveTopics = [
 
 const WheelOfIslam = () => {
   const [selectedName, setSelectedName] = useState(null);
-  const [isPropertiesPanelOpen, setIsPropertiesPanelOpen] = useState(false);
   const [userGoal, setUserGoal] = useState(localStorage.getItem('userGoal'));
   const [userLevel, setUserLevel] = useState(parseInt(localStorage.getItem('userLevel')) || 1);
   const svgRef = useRef(null);
   const [size, setSize] = useState(0);
   const { theme, themeName } = useTheme();
   const { language } = useLanguage();
+  const { openSettings } = useSettings();
   const navigate = useNavigate();
 
   // Shared state for PropertiesPanel
@@ -130,7 +131,7 @@ const WheelOfIslam = () => {
     if (topic === 'The (One and Only) True God' || topic === 'One True God') {
       navigate('/one-true-god');
     } else if (topic === 'Settings') {
-      setIsPropertiesPanelOpen(true);
+      openSettings();
     } else if (topic === 'Purification') {
       navigate('/tazkiyyah');
     } else {
@@ -465,67 +466,46 @@ const WheelOfIslam = () => {
         </div>
 
 
-        <div className="flex justify-center gap-4 mt-4">
-          <button 
-            onClick={() => setIsPropertiesPanelOpen(true)}
-            className="px-3 py-1.5 text-xs rounded border transition-all duration-200 active:scale-95"
-            style={{
-              color: '#00f2fa',
-              borderColor: '#00f2fa',
-              backgroundColor: 'transparent',
-              width: '80px',
-              boxShadow: '0 0 8px #00f2fa, 0 0 16px #00f2fa'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'rgba(0, 242, 250, 0.1)';
-              e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent';
-              e.target.style.boxShadow = '0 0 10px #00f2fa, 0 0 20px #00f2fa';
-            }}
-            onMouseDown={(e) => {
-              e.target.style.transform = 'scale(0.95)';
-              e.target.style.boxShadow = '0 0 5px #00f2fa, 0 0 10px #00f2fa, inset 0 0 15px rgba(0, 242, 250, 0.5)';
-            }}
-            onMouseUp={(e) => {
-              e.target.style.transform = 'scale(1)';
-              e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
-            }}
-          >
-            Settings
-          </button>
-          
-          <button 
-            onClick={handleResetOnboarding}
-            className="px-3 py-1.5 text-xs rounded border transition-all duration-200 active:scale-95"
-            style={{
-              color: '#FF007F',
-              borderColor: '#FF007F',
-              backgroundColor: 'transparent',
-              width: '80px',
-              boxShadow: '0 0 8px #FF007F, 0 0 16px #FF007F'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'rgba(255, 0, 127, 0.1)';
-              e.target.style.boxShadow = '0 0 15px #FF007F, 0 0 30px #FF007F, inset 0 0 10px rgba(255, 0, 127, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent';
-              e.target.style.boxShadow = '0 0 10px #FF007F, 0 0 20px #FF007F';
-            }}
-            onMouseDown={(e) => {
-              e.target.style.transform = 'scale(0.95)';
-              e.target.style.boxShadow = '0 0 5px #FF007F, 0 0 10px #FF007F, inset 0 0 15px rgba(255, 0, 127, 0.5)';
-            }}
-            onMouseUp={(e) => {
-              e.target.style.transform = 'scale(1)';
-              e.target.style.boxShadow = '0 0 15px #FF007F, 0 0 30px #FF007F, inset 0 0 10px rgba(255, 0, 127, 0.3)';
-            }}
-          >
-            Reset
-          </button>
-        </div>
+        {/* Settings Button - Fixed position top right */}
+        <button 
+          onClick={openSettings}
+          className="fixed top-4 right-4 z-[9999] px-4 py-2 rounded-lg border-2 transition-all duration-200 active:scale-95 flex items-center justify-center"
+          style={{
+            color: '#00f2fa',
+            borderColor: '#00f2fa',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            width: '120px',
+            height: '32px',
+            boxShadow: '0 0 10px #00f2fa, 0 0 20px #00f2fa',
+            backdropFilter: 'blur(10px)',
+            fontFamily: themeName === 'story' ? `'Poppins', sans-serif` : 'inherit',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            fontSize: '12px',
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'rgba(0, 242, 250, 0.1)';
+            e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            e.target.style.boxShadow = '0 0 10px #00f2fa, 0 0 20px #00f2fa';
+          }}
+          onMouseDown={(e) => {
+            e.target.style.transform = 'scale(0.95)';
+            e.target.style.boxShadow = '0 0 5px #00f2fa, 0 0 10px #00f2fa, inset 0 0 15px rgba(0, 242, 250, 0.5)';
+          }}
+          onMouseUp={(e) => {
+            e.target.style.transform = 'scale(1)';
+            e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
+          }}
+        >
+          Settings
+        </button>
+
+
+
+
       </div>
 
 
@@ -563,14 +543,7 @@ const WheelOfIslam = () => {
       )} */}
 
             {/* Settings Component */}
-      <Settings 
-        isOpen={isPropertiesPanelOpen}
-        onClose={() => setIsPropertiesPanelOpen(false)}
-        sharedGoal={sharedGoal}
-        setSharedGoal={setSharedGoal}
-        sharedLevel={sharedLevel}
-        setSharedLevel={setSharedLevel}
-      />
+      <Settings />
 
       {/* ChatBox Component */}
       {console.log('WheelOfIslam ChatBox props:', { userGoal, userLevel })}
