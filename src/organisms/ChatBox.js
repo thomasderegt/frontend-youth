@@ -96,9 +96,11 @@ const ChatBox = ({ userGoal, userLevel }) => {
     position: 'fixed',
     bottom: '20px',
     right: '20px',
-    width: '350px',
+    left: '20px', // Full width on mobile
+    width: 'calc(100vw - 40px)', // Viewport width minus margins
+    maxWidth: '350px', // Max width on desktop
     maxHeight: '500px',
-    background: 'transparent',
+    background: 'rgba(0, 0, 0, 0.9)', // Black background
     border: `2px solid ${themeName === 'story' ? theme.border : '#00f2fa'}`, // Blue border
     borderRadius: '12px', // Rounded corners
     overflow: 'hidden',
@@ -111,7 +113,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
   };
 
   const headerStyle = {
-    background: 'transparent',
+    background: 'rgba(0, 0, 0, 0.8)',
     color: themeName === 'story' ? theme.secondary : '#00f2fa',
     padding: '0.5rem', // Minimal padding
     display: isExpanded ? 'flex' : 'none', // Hide when collapsed
@@ -125,7 +127,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
     height: isExpanded ? '150px' : '0px', // Smaller height
     overflowY: 'auto',
     transition: 'height 0.3s ease',
-    background: 'transparent',
+    background: 'rgba(0, 0, 0, 0.8)',
     display: isExpanded ? 'block' : 'none', // Hide when collapsed
   };
 
@@ -164,7 +166,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
     padding: '0.5rem',
     borderRadius: '6px',
     border: isExpanded ? `1px solid ${themeName === 'story' ? theme.border : '#444'}` : 'none',
-    background: 'transparent',
+    background: 'rgba(0, 0, 0, 0.8)',
     color: themeName === 'story' ? theme.text : '#00f2fa',
     fontSize: '0.8rem',
     resize: 'none',
@@ -176,7 +178,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
     padding: '0.5rem 0.75rem',
     borderRadius: '6px',
     border: isExpanded ? 'none' : '1px solid rgba(0, 242, 250, 0.3)', // Subtle blue border when collapsed
-    background: 'transparent',
+    background: 'rgba(0, 0, 0, 0.8)',
     color: themeName === 'story' ? theme.primary : '#00f2fa',
     cursor: 'pointer',
     fontSize: '0.8rem',
@@ -217,9 +219,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
             left: 0,
             right: 0,
             bottom: 0,
-            background: themeName === 'story' 
-              ? 'rgba(196, 164, 132, 0.1)' 
-              : 'rgba(0, 242, 250, 0.1)',
+            background: 'rgba(0, 0, 0, 0.3)',
             zIndex: 999,
           }}
           onClick={() => setIsExpanded(false)}
