@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { useSettings } from '../context/SettingsContext';
 
 const ChatBox = ({ userGoal, userLevel }) => {
   console.log('ChatBox props:', { userGoal, userLevel }); // Debug log
@@ -8,6 +9,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const messagesEndRef = useRef(null);
   const { theme, themeName } = useTheme();
+  const { isSettingsOpen } = useSettings();
 
   // Goal-specific AI personalities
   const aiPersonalities = {
@@ -56,6 +58,11 @@ const ChatBox = ({ userGoal, userLevel }) => {
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
 
+    // Expand the chat box when sending a message
+    if (!isExpanded) {
+      setIsExpanded(true);
+    }
+
     const userMessage = {
       id: Date.now(),
       sender: 'user',
@@ -86,44 +93,50 @@ const ChatBox = ({ userGoal, userLevel }) => {
   };
 
   const chatBoxStyle = {
-    width: '100%',
-    maxWidth: '400px', // Smaller max width
-    margin: '1rem auto 0', // Less margin
-    background: themeName === 'story' ? theme.background : '#111',
-    border: `2px solid ${themeName === 'story' ? theme.border : '#00f2fa'}`, // Normal border
-    borderRadius: '8px', // Smaller border radius
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    width: '350px',
+    maxHeight: '500px',
+    background: 'transparent',
+    border: `2px solid ${themeName === 'story' ? theme.border : '#00f2fa'}`, // Blue border
+    borderRadius: '12px', // Rounded corners
     overflow: 'hidden',
     boxShadow: themeName === 'story' 
       ? '0 2px 12px rgba(196,164,132,0.10)' 
-      : '0 0 10px rgba(0, 242, 250, 0.2)',
+      : '0 0 20px #00f2fa, 0 0 40px #00f2fa, inset 0 0 20px rgba(0, 242, 250, 0.1)', // Same glow as settings
+    height: isExpanded ? 'auto' : '60px', // Slightly taller when collapsed
+    transition: 'all 0.3s ease',
+    zIndex: 1000,
   };
 
   const headerStyle = {
-    background: themeName === 'story' ? theme.primary : '#222',
+    background: 'transparent',
     color: themeName === 'story' ? theme.secondary : '#00f2fa',
-    padding: '0.75rem', // Smaller padding
-    display: 'flex',
+    padding: '0.5rem', // Minimal padding
+    display: isExpanded ? 'flex' : 'none', // Hide when collapsed
     alignItems: 'center',
-    gap: '0.5rem', // Smaller gap
+    gap: '0.25rem', // Minimal gap
     cursor: 'pointer',
     borderBottom: `1px solid ${themeName === 'story' ? theme.border : '#333'}`,
   };
 
   const messagesContainerStyle = {
-    height: isExpanded ? '200px' : '0px', // Smaller height
+    height: isExpanded ? '150px' : '0px', // Smaller height
     overflowY: 'auto',
     transition: 'height 0.3s ease',
-    background: themeName === 'story' ? theme.background : '#111',
+    background: 'transparent',
+    display: isExpanded ? 'block' : 'none', // Hide when collapsed
   };
 
   const messageStyle = (sender) => ({
-    margin: '0.75rem',
-    padding: '0.75rem 1rem',
-    borderRadius: '12px',
-    maxWidth: '80%',
+    margin: '0.5rem',
+    padding: '0.5rem 0.75rem',
+    borderRadius: '8px',
+    maxWidth: '85%',
     wordWrap: 'break-word',
-    fontSize: '0.9rem',
-    lineHeight: '1.4',
+    fontSize: '0.8rem',
+    lineHeight: '1.3',
     ...(sender === 'user' ? {
       background: themeName === 'story' ? theme.secondary : '#00f2fa',
       color: themeName === 'story' ? theme.primary : '#111',
@@ -138,36 +151,43 @@ const ChatBox = ({ userGoal, userLevel }) => {
 
   const inputContainerStyle = {
     display: 'flex',
-    gap: '0.5rem',
-    padding: '0.75rem', // Smaller padding
-    background: themeName === 'story' ? theme.background : '#111',
-    borderTop: `1px solid ${themeName === 'story' ? theme.border : '#333'}`,
+    gap: '0.25rem',
+    padding: isExpanded ? '0.75rem' : '1rem', // More padding when collapsed
+    background: 'transparent', // No background
+    borderTop: 'none', // No border
+    borderBottom: 'none', // No bottom border
+    cursor: 'pointer',
   };
 
   const inputStyle = {
     flex: 1,
-    padding: '0.75rem',
-    borderRadius: '8px',
-    border: `2px solid ${themeName === 'story' ? theme.border : '#444'}`,
-    background: themeName === 'story' ? theme.background : '#222',
-    color: themeName === 'story' ? theme.text : '#fff',
-    fontSize: '0.9rem',
+    padding: '0.5rem',
+    borderRadius: '6px',
+    border: isExpanded ? `1px solid ${themeName === 'story' ? theme.border : '#444'}` : 'none',
+    background: 'transparent',
+    color: themeName === 'story' ? theme.text : '#00f2fa',
+    fontSize: '0.8rem',
     resize: 'none',
     outline: 'none',
     transition: 'border-color 0.2s',
   };
 
   const sendButtonStyle = {
-    padding: '0.75rem 1rem',
-    borderRadius: '8px',
-    border: 'none',
-    background: themeName === 'story' ? theme.secondary : '#00f2fa',
-    color: themeName === 'story' ? theme.primary : '#111',
+    padding: '0.5rem 0.75rem',
+    borderRadius: '6px',
+    border: isExpanded ? 'none' : '1px solid rgba(0, 242, 250, 0.3)', // Subtle blue border when collapsed
+    background: 'transparent',
+    color: themeName === 'story' ? theme.primary : '#00f2fa',
     cursor: 'pointer',
-    fontSize: '0.9rem',
+    fontSize: '0.8rem',
     fontWeight: 'bold',
     transition: 'opacity 0.2s',
   };
+
+  // Hide ChatBox when Settings are open
+  if (isSettingsOpen) {
+    return null;
+  }
 
   // Show placeholder if no goal is set
   if (!userGoal) {
@@ -187,55 +207,123 @@ const ChatBox = ({ userGoal, userLevel }) => {
   }
 
   return (
-    <div style={chatBoxStyle}>
-      {/* Header */}
-      <div 
-        style={headerStyle}
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <span style={{ fontSize: '1.5rem' }}>{currentAI.icon}</span>
-        <div>
-          <div style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{currentAI.name}</div>
-          <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>
-            Level {userLevel} • {userGoal.charAt(0).toUpperCase() + userGoal.slice(1)}
+    <>
+      {/* Backdrop when expanded */}
+      {isExpanded && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: themeName === 'story' 
+              ? 'rgba(196, 164, 132, 0.1)' 
+              : 'rgba(0, 242, 250, 0.1)',
+            zIndex: 999,
+          }}
+          onClick={() => setIsExpanded(false)}
+        />
+      )}
+      
+      <div style={chatBoxStyle}>
+        {/* Header */}
+        <div style={headerStyle}>
+          <span style={{ fontSize: '1.5rem' }}>{currentAI.icon}</span>
+          <div>
+            <div style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{currentAI.name}</div>
+            <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>
+              Level {userLevel} • {userGoal.charAt(0).toUpperCase() + userGoal.slice(1)}
+            </div>
           </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(false);
+            }}
+            style={{
+              marginLeft: 'auto',
+              background: 'none',
+              border: 'none',
+              color: themeName === 'story' ? theme.secondary : '#00f2fa',
+              cursor: 'pointer',
+              fontSize: '1.2rem',
+              padding: '0.25rem',
+              borderRadius: '4px',
+              transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={(e) => e.target.style.opacity = '0.7'}
+            onMouseLeave={(e) => e.target.style.opacity = '1'}
+          >
+            −
+          </button>
+        </div>
+
+        {/* Messages Container */}
+        <div style={messagesContainerStyle}>
+          {messages.map((message) => (
+            <div key={message.id} style={messageStyle(message.sender)}>
+              {message.text.split('\n').map((line, index) => (
+                <div key={index}>{line}</div>
+              ))}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Container */}
+        <div 
+          style={inputContainerStyle}
+          onClick={() => !isExpanded && setIsExpanded(true)}
+        >
+          <textarea
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder={isExpanded ? "Type your question..." : "Click to chat..."}
+            style={inputStyle}
+            rows={1}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleSendMessage();
+            }}
+            disabled={!inputValue.trim()}
+            style={{
+              ...sendButtonStyle,
+              opacity: inputValue.trim() ? 1 : 0.5,
+            }}
+          >
+            Send
+          </button>
+          {!isExpanded && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsExpanded(true);
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: themeName === 'story' ? theme.secondary : '#00f2fa',
+                cursor: 'pointer',
+                fontSize: '1.2rem',
+                padding: '0.25rem',
+                borderRadius: '4px',
+                transition: 'opacity 0.2s',
+                marginLeft: '0.25rem',
+              }}
+              onMouseEnter={(e) => e.target.style.opacity = '0.7'}
+              onMouseLeave={(e) => e.target.style.opacity = '1'}
+            >
+              +
+            </button>
+          )}
         </div>
       </div>
-
-      {/* Messages Container */}
-      <div style={messagesContainerStyle}>
-        {messages.map((message) => (
-          <div key={message.id} style={messageStyle(message.sender)}>
-            {message.text.split('\n').map((line, index) => (
-              <div key={index}>{line}</div>
-            ))}
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Container */}
-      <div style={inputContainerStyle}>
-        <textarea
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Type your question..."
-          style={inputStyle}
-          rows={1}
-        />
-        <button
-          onClick={handleSendMessage}
-          disabled={!inputValue.trim()}
-          style={{
-            ...sendButtonStyle,
-            opacity: inputValue.trim() ? 1 : 0.5,
-          }}
-        >
-          Send
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
