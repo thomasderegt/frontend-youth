@@ -38,23 +38,20 @@ const Settings = () => {
       )}
       
       <div 
-        className="fixed top-0 right-0 h-full w-80 z-50 transform transition-transform duration-300 ease-in-out"
-        style={{
-          transform: isSettingsOpen ? 'translateX(0)' : 'translateX(100%)',
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-96 max-h-[80vh] overflow-y-auto rounded-lg border-2"
+        style={themeName === 'story' ? {
+          backgroundColor: theme.background,
+          borderColor: theme.border,
+          boxShadow: '0 4px 24px rgba(196,164,132,0.10)',
+          color: theme.text,
+        } : {
+          backgroundColor: 'rgba(0, 0, 0, 0.95)',
+          borderColor: '#00f2fa',
+          boxShadow: '0 0 20px #00f2fa, 0 0 40px #00f2fa, inset 0 0 20px rgba(0, 242, 250, 0.1)',
         }}
       >
         <div 
-          className="h-full w-full p-6 overflow-y-auto border-l-2"
-          style={themeName === 'story' ? {
-            backgroundColor: theme.background,
-            borderColor: theme.border,
-            boxShadow: '-4px 0 24px rgba(196,164,132,0.10)',
-            color: theme.text,
-          } : {
-            backgroundColor: 'rgba(0, 0, 0, 0.95)',
-            borderColor: '#00f2fa',
-            boxShadow: '-4px 0 20px #00f2fa, -4px 0 40px #00f2fa, inset 4px 0 20px rgba(0, 242, 250, 0.1)',
-          }}
+          className="p-6"
         >
           <div className="flex justify-between items-center mb-6">
             <h2 

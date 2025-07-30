@@ -166,7 +166,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
     padding: '0.5rem',
     borderRadius: '6px',
     border: isExpanded ? `1px solid ${themeName === 'story' ? theme.border : '#444'}` : 'none',
-    background: 'rgba(0, 0, 0, 0.8)',
+    background: 'rgba(0, 0, 0, 0.9)', // Keep some background for visibility
     color: themeName === 'story' ? theme.text : '#00f2fa',
     fontSize: '0.8rem',
     resize: 'none',
@@ -178,7 +178,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
     padding: '0.5rem 0.75rem',
     borderRadius: '6px',
     border: isExpanded ? 'none' : '1px solid rgba(0, 242, 250, 0.3)', // Subtle blue border when collapsed
-    background: 'rgba(0, 0, 0, 0.8)',
+    background: 'rgba(0, 0, 0, 0.9)', // Keep some background for visibility
     color: themeName === 'story' ? theme.primary : '#00f2fa',
     cursor: 'pointer',
     fontSize: '0.8rem',
