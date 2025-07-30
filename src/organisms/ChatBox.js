@@ -51,7 +51,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
         }
       ]);
     }
-  }, [userGoal, userLevel]);
+  }, [userGoal, userLevel, currentAI.welcomeMessage, messages.length]);
 
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
