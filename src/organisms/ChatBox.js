@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
+import apiService from '../utils/api';
 
-const ChatBox = ({ userGoal, userLevel }) => {
-  console.log('ChatBox props:', { userGoal, userLevel }); // Debug log
+const ChatBox = ({ userLevel }) => {
+  console.log('ChatBox props:', { userLevel }); // Debug log
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
@@ -11,26 +12,12 @@ const ChatBox = ({ userGoal, userLevel }) => {
   const { theme, themeName } = useTheme();
   const { isSettingsOpen } = useSettings();
 
-  // Goal-specific AI personalities
-  const aiPersonalities = {
-    doubts: {
-      icon: '❓',
-      name: 'DoubtlyBot',
-      welcomeMessage: `Hey! How are you? 👋\n\nI'm here to answer your questions about Islam at Level ${userLevel}.\nNo judgment, no pressure - just honest, helpful answers.\n\nWhat's on your mind?`
-    },
-    explore: {
-      icon: '🌟',
-      name: 'ExploreBot',
-      welcomeMessage: `Ready to discover? Let's explore together! 🌟\n\nI'm here to guide your learning journey through Islam at Level ${userLevel}.\nLet's find the perfect topics for you to explore!`
-    },
-    improve: {
-      icon: '🎯',
-      name: 'PracticeBot',
-      welcomeMessage: `Ready to grow? Let's build better habits! 🎯\n\nI'm here to help you set goals, track progress, and improve your practice at Level ${userLevel}.\nWhat area would you like to focus on first?`
-    }
+  // Simplified AI personality
+  const aiPersonality = {
+    icon: '🌟',
+    name: 'IslamBot',
+    welcomeMessage: `Ready to explore? Let's discover together! 🌟\n\nI'm here to guide your learning journey through Islam at Level ${userLevel}.\nWhat would you like to learn about today?`
   };
-
-  const currentAI = aiPersonalities[userGoal] || aiPersonalities.explore;
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -43,19 +30,19 @@ const ChatBox = ({ userGoal, userLevel }) => {
 
   // Initialize with welcome message
   useEffect(() => {
-    if (userGoal && messages.length === 0) {
+    if (messages.length === 0) {
       setMessages([
         {
           id: 1,
           sender: 'ai',
-          text: currentAI.welcomeMessage,
+          text: aiPersonality.welcomeMessage,
           timestamp: new Date()
         }
       ]);
     }
-  }, [userGoal, userLevel, currentAI.welcomeMessage, messages.length]);
+  }, [aiPersonality.welcomeMessage, messages.length]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
     // Expand the chat box when sending a message
@@ -71,18 +58,56 @@ const ChatBox = ({ userGoal, userLevel }) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue('');
 
-    // Simulate AI response (replace with actual API call later)
-    setTimeout(() => {
-      const aiResponse = {
-        id: Date.now() + 1,
-        sender: 'ai',
-        text: `Thanks for your question! I'm working on a response at Level ${userLevel}...\n\n(This is a placeholder - real AI responses will be implemented when the AI backend is ready)`,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, aiResponse]);
-    }, 1000);
+    // Show typing indicator
+    const typingMessage = {
+      id: Date.now() + 1,
+      sender: 'ai',
+      text: '...',
+      timestamp: new Date(),
+      isTyping: true
+    };
+    setMessages(prev => [...prev, typingMessage]);
+
+    try {
+      // Generate unique user ID (in production, this would come from authentication)
+      const userId = `user_${Date.now()}`;
+      
+      // Send message to AI backend
+      const response = await apiService.sendChatMessage(
+        userId,
+        currentInput,
+        'explore', // Default to explore for now
+        userLevel
+      );
+
+      // Remove typing indicator and add AI response
+      setMessages(prev => {
+        const withoutTyping = prev.filter(msg => !msg.isTyping);
+        return [...withoutTyping, {
+          id: Date.now() + 2,
+          sender: 'ai',
+          text: response.response,
+          timestamp: new Date()
+        }];
+      });
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      // Remove typing indicator and show error message
+      setMessages(prev => {
+        const withoutTyping = prev.filter(msg => !msg.isTyping);
+        return [...withoutTyping, {
+          id: Date.now() + 2,
+          sender: 'ai',
+          text: `Sorry, I'm having trouble connecting to my knowledge base right now. Please try again later. (Error: ${error.message})`,
+          timestamp: new Date()
+        }];
+      });
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -94,60 +119,79 @@ const ChatBox = ({ userGoal, userLevel }) => {
 
   const chatBoxStyle = {
     position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    left: '20px', // Full width on mobile
-    width: 'calc(100vw - 40px)', // Viewport width minus margins
-    maxWidth: '350px', // Max width on desktop
-    maxHeight: '500px',
-    background: 'rgba(0, 0, 0, 0.9)', // Black background
-    border: `2px solid ${themeName === 'story' ? theme.border : '#00f2fa'}`, // Blue border
-    borderRadius: '12px', // Rounded corners
-    overflow: 'hidden',
-    boxShadow: themeName === 'story' 
-      ? '0 2px 12px rgba(196,164,132,0.10)' 
-      : '0 0 20px #00f2fa, 0 0 40px #00f2fa, inset 0 0 20px rgba(0, 242, 250, 0.1)', // Same glow as settings
-    height: isExpanded ? 'auto' : '60px', // Slightly taller when collapsed
+    bottom: '1rem',
+    right: '1rem',
+    width: isExpanded ? 'clamp(300px, 25vw, 400px)' : '60px',
+    height: isExpanded ? 'clamp(400px, 50vh, 500px)' : '60px',
+    background: themeName === 'story' ? theme.background : 
+                themeName === 'classicEarth' ? theme.background :
+                themeName === 'zwartWit' ? '#ffffff' : 'rgba(0, 0, 0, 0.9)',
+    border: themeName === 'story' ? `2px solid ${theme.border}` : 
+            themeName === 'classicEarth' ? `2px solid ${theme.border}` :
+            themeName === 'zwartWit' ? '2px solid #000000' : '2px solid #00f2fa',
+    borderRadius: '12px',
+    boxShadow: themeName === 'story' ? '0 4px 24px rgba(196,164,132,0.10)' :
+               themeName === 'classicEarth' ? '0 4px 24px rgba(111,48,0,0.15)' :
+               themeName === 'zwartWit' ? '0 4px 24px rgba(0,0,0,0.15)' : '0 0 20px #00f2fa',
+    display: 'flex',
+    flexDirection: 'column',
     transition: 'all 0.3s ease',
     zIndex: 1000,
+    overflow: 'hidden',
+    backdropFilter: themeName === 'story' || themeName === 'classicEarth' || themeName === 'zwartWit' ? 'none' : 'blur(10px)',
   };
 
   const headerStyle = {
-    background: 'rgba(0, 0, 0, 0.8)',
-    color: themeName === 'story' ? theme.secondary : '#00f2fa',
-    padding: '0.5rem', // Minimal padding
-    display: isExpanded ? 'flex' : 'none', // Hide when collapsed
+    display: 'flex',
     alignItems: 'center',
-    gap: '0.25rem', // Minimal gap
+    padding: '1rem',
+    background: themeName === 'story' ? theme.primary : 
+                themeName === 'classicEarth' ? theme.primary :
+                themeName === 'zwartWit' ? '#ffffff' : 'rgba(0, 0, 0, 0.8)',
+    color: themeName === 'story' ? theme.secondary : 
+           themeName === 'classicEarth' ? theme.secondary :
+           themeName === 'zwartWit' ? '#000000' : '#fff',
+    borderBottom: themeName === 'story' ? `1px solid ${theme.border}` : 
+                  themeName === 'classicEarth' ? `1px solid ${theme.border}` :
+                  themeName === 'zwartWit' ? '1px solid #000000' : '1px solid #333',
     cursor: 'pointer',
-    borderBottom: `1px solid ${themeName === 'story' ? theme.border : '#333'}`,
+    gap: '0.75rem',
   };
 
   const messagesContainerStyle = {
-    height: isExpanded ? '150px' : '0px', // Smaller height
+    height: isExpanded ? 'min(300px, 40vh)' : '0px', // Responsive height for large screens
     overflowY: 'auto',
     transition: 'height 0.3s ease',
     background: 'rgba(0, 0, 0, 0.8)',
     display: isExpanded ? 'block' : 'none', // Hide when collapsed
   };
 
-  const messageStyle = (sender) => ({
+  const messageStyle = (sender, isTyping = false) => ({
+    padding: '0.75rem',
     margin: '0.5rem',
-    padding: '0.5rem 0.75rem',
     borderRadius: '8px',
-    maxWidth: '85%',
+    maxWidth: '80%',
     wordWrap: 'break-word',
-    fontSize: '0.8rem',
-    lineHeight: '1.3',
     ...(sender === 'user' ? {
-      background: themeName === 'story' ? theme.secondary : '#00f2fa',
-      color: themeName === 'story' ? theme.primary : '#111',
       marginLeft: 'auto',
-      textAlign: 'right',
+      background: themeName === 'story' ? theme.primary : 
+                  themeName === 'classicEarth' ? theme.primary :
+                  themeName === 'zwartWit' ? '#000000' : '#00f2fa',
+      color: themeName === 'story' ? theme.secondary : 
+             themeName === 'classicEarth' ? theme.secondary :
+             themeName === 'zwartWit' ? '#ffffff' : '#000',
     } : {
-      background: themeName === 'story' ? theme.primary : '#222',
-      color: themeName === 'story' ? theme.secondary : '#fff',
+      background: themeName === 'story' ? theme.primary : 
+                  themeName === 'classicEarth' ? theme.primary :
+                  themeName === 'zwartWit' ? '#ffffff' : '#222',
+      color: themeName === 'story' ? theme.secondary : 
+             themeName === 'classicEarth' ? theme.secondary :
+             themeName === 'zwartWit' ? '#000000' : '#fff',
       marginRight: 'auto',
+      ...(isTyping && {
+        fontStyle: 'italic',
+        opacity: 0.7,
+      })
     })
   });
 
@@ -165,10 +209,16 @@ const ChatBox = ({ userGoal, userLevel }) => {
     flex: 1,
     padding: '0.5rem',
     borderRadius: '6px',
-    border: isExpanded ? `1px solid ${themeName === 'story' ? theme.border : '#444'}` : 'none',
-    background: 'rgba(0, 0, 0, 0.9)', // Keep some background for visibility
-    color: themeName === 'story' ? theme.text : '#00f2fa',
-    fontSize: '0.8rem',
+    border: isExpanded ? `1px solid ${themeName === 'story' ? theme.border : 
+                          themeName === 'classicEarth' ? theme.border :
+                          themeName === 'zwartWit' ? '#000000' : '#444'}` : 'none',
+    background: themeName === 'story' ? theme.background : 
+                themeName === 'classicEarth' ? theme.background :
+                themeName === 'zwartWit' ? '#ffffff' : 'rgba(0, 0, 0, 0.9)',
+    color: themeName === 'story' ? theme.text : 
+           themeName === 'classicEarth' ? theme.text :
+           themeName === 'zwartWit' ? '#000000' : '#00f2fa',
+    fontSize: 'clamp(0.8rem, 1vw, 1.1rem)', // Responsive font size
     resize: 'none',
     outline: 'none',
     transition: 'border-color 0.2s',
@@ -177,11 +227,17 @@ const ChatBox = ({ userGoal, userLevel }) => {
   const sendButtonStyle = {
     padding: '0.5rem 0.75rem',
     borderRadius: '6px',
-    border: isExpanded ? 'none' : '1px solid rgba(0, 242, 250, 0.3)', // Subtle blue border when collapsed
-    background: 'rgba(0, 0, 0, 0.9)', // Keep some background for visibility
-    color: themeName === 'story' ? theme.primary : '#00f2fa',
+    border: isExpanded ? 'none' : `1px solid ${themeName === 'story' ? theme.border : 
+                                   themeName === 'classicEarth' ? theme.border :
+                                   themeName === 'zwartWit' ? '#000000' : 'rgba(0, 242, 250, 0.3)'}`,
+    background: themeName === 'story' ? theme.background : 
+                themeName === 'classicEarth' ? theme.background :
+                themeName === 'zwartWit' ? '#ffffff' : 'rgba(0, 0, 0, 0.9)',
+    color: themeName === 'story' ? theme.primary : 
+           themeName === 'classicEarth' ? theme.primary :
+           themeName === 'zwartWit' ? '#000000' : '#00f2fa',
     cursor: 'pointer',
-    fontSize: '0.8rem',
+    fontSize: 'clamp(0.8rem, 1vw, 1.1rem)', // Responsive font size
     fontWeight: 'bold',
     transition: 'opacity 0.2s',
   };
@@ -192,7 +248,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
   }
 
   // Show placeholder if no goal is set
-  if (!userGoal) {
+  if (!userLevel) {
     return (
       <div style={chatBoxStyle}>
         <div style={headerStyle}>
@@ -210,30 +266,16 @@ const ChatBox = ({ userGoal, userLevel }) => {
 
   return (
     <>
-      {/* Backdrop when expanded */}
-      {isExpanded && (
-        <div 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.3)',
-            zIndex: 999,
-          }}
-          onClick={() => setIsExpanded(false)}
-        />
-      )}
+      {/* No backdrop needed since ChatBox is now relative positioned */}
       
       <div style={chatBoxStyle}>
         {/* Header */}
         <div style={headerStyle}>
-          <span style={{ fontSize: '1.5rem' }}>{currentAI.icon}</span>
+          <span style={{ fontSize: '1.5rem' }}>{aiPersonality.icon}</span>
           <div>
-            <div style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{currentAI.name}</div>
-            <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>
-              Level {userLevel} • {userGoal.charAt(0).toUpperCase() + userGoal.slice(1)}
+            <div style={{ fontWeight: 'bold', fontSize: 'clamp(0.9rem, 1.2vw, 1.3rem)' }}>{aiPersonality.name}</div>
+            <div style={{ fontSize: 'clamp(0.7rem, 0.9vw, 1rem)', opacity: 0.8 }}>
+              Level {userLevel} • Explore
             </div>
           </div>
           <button
@@ -262,7 +304,7 @@ const ChatBox = ({ userGoal, userLevel }) => {
         {/* Messages Container */}
         <div style={messagesContainerStyle}>
           {messages.map((message) => (
-            <div key={message.id} style={messageStyle(message.sender)}>
+            <div key={message.id} style={messageStyle(message.sender, message.isTyping)}>
               {message.text.split('\n').map((line, index) => (
                 <div key={index}>{line}</div>
               ))}

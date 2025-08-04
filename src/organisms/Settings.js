@@ -6,8 +6,6 @@ const Settings = () => {
   const { 
     isSettingsOpen, 
     closeSettings, 
-    userGoal, 
-    setUserGoal, 
     userLevel, 
     setUserLevel,
     creed,
@@ -21,6 +19,98 @@ const Settings = () => {
   } = useSettings();
   
   const { theme } = useTheme();
+  
+  // Helper function for theme styling
+  const getThemeStyle = (type) => {
+    if (themeName === 'zwartWit') {
+      // Wireframe theme
+      switch (type) {
+        case 'label':
+          return { color: '#000000', textShadow: 'none' };
+        case 'select':
+          return {
+            backgroundColor: '#ffffff',
+            borderColor: '#000000',
+            color: '#000000',
+            boxShadow: 'none',
+          };
+        case 'button':
+          return {
+            color: '#000000',
+            borderColor: '#000000',
+            backgroundColor: '#ffffff',
+            boxShadow: 'none',
+          };
+        case 'buttonSecondary':
+          return {
+            color: '#ffffff',
+            borderColor: '#000000',
+            backgroundColor: '#000000',
+            boxShadow: 'none',
+          };
+        default:
+          return {};
+      }
+    } else if (themeName === 'style') {
+      // Style theme (same as Wireframe)
+      switch (type) {
+        case 'label':
+          return { color: '#000000', textShadow: 'none' };
+        case 'select':
+          return {
+            backgroundColor: '#ffffff',
+            borderColor: '#000000',
+            color: '#000000',
+            boxShadow: 'none',
+          };
+        case 'button':
+          return {
+            color: '#000000',
+            borderColor: '#000000',
+            backgroundColor: '#ffffff',
+            boxShadow: 'none',
+          };
+        case 'buttonSecondary':
+          return {
+            color: '#ffffff',
+            borderColor: '#000000',
+            backgroundColor: '#000000',
+            boxShadow: 'none',
+          };
+        default:
+          return {};
+      }
+    } else {
+      // Neon theme
+      switch (type) {
+        case 'label':
+          return { color: '#00f2fa', textShadow: '0 0 5px #00f2fa' };
+        case 'select':
+          return {
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            borderColor: '#00f2fa',
+            color: '#00f2fa',
+            boxShadow: '0 0 5px #00f2fa'
+          };
+        case 'button':
+          return {
+            color: '#FF007F',
+            borderColor: '#FF007F',
+            backgroundColor: 'transparent',
+            boxShadow: '0 0 10px #FF007F, 0 0 20px #FF007F'
+          };
+        case 'buttonSecondary':
+          return {
+            color: '#00f2fa',
+            borderColor: '#00f2fa',
+            backgroundColor: 'transparent',
+            boxShadow: '0 0 10px #00f2fa, 0 0 20px #00f2fa'
+          };
+        default:
+          return {};
+      }
+    }
+  };
   
   if (!isSettingsOpen) return null;
 
@@ -39,11 +129,11 @@ const Settings = () => {
       
       <div 
         className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-96 max-h-[80vh] overflow-y-auto rounded-lg border-2"
-        style={themeName === 'story' ? {
-          backgroundColor: theme.background,
-          borderColor: theme.border,
-          boxShadow: '0 4px 24px rgba(196,164,132,0.10)',
-          color: theme.text,
+        style={themeName === 'zwartWit' ? {
+          backgroundColor: '#ffffff',
+          borderColor: '#000000',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+          color: '#000000',
         } : {
           backgroundColor: 'rgba(0, 0, 0, 0.95)',
           borderColor: '#00f2fa',
@@ -56,8 +146,8 @@ const Settings = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 
               className="text-xl font-bold"
-              style={themeName === 'story' ? {
-                color: theme.primary,
+              style={themeName === 'zwartWit' ? {
+                color: '#000000',
                 textShadow: 'none',
               } : {
                 color: '#00f2fa',
@@ -69,8 +159,8 @@ const Settings = () => {
             <button 
               onClick={closeSettings}
               className="text-2xl transition-all duration-200 hover:scale-110"
-              style={themeName === 'story' ? {
-                color: theme.secondary,
+              style={themeName === 'zwartWit' ? {
+                color: '#000000',
                 textShadow: 'none',
               } : {
                 color: '#00f2fa',
@@ -82,79 +172,27 @@ const Settings = () => {
           </div>
           
           <div className="space-y-6">
-            {/* Goal Setting */}
-            <div>
-              <label 
-                className="block text-sm font-medium mb-2"
-                style={themeName === 'story' ? {
-                  color: theme.primary,
-                  textShadow: 'none',
-                } : {
-                  color: '#00f2fa',
-                  textShadow: '0 0 5px #00f2fa'
-                }}
-              >
-                Goal
-              </label>
-              <select 
-                value={userGoal || ''}
-                onChange={(e) => {
-                  setUserGoal(e.target.value);
-                }}
-                className="w-full p-3 rounded border-2 transition-all duration-200"
-                style={themeName === 'story' ? {
-                  backgroundColor: theme.background,
-                  borderColor: theme.border,
-                  color: theme.text,
-                  boxShadow: 'none',
-                } : {
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                  borderColor: '#00f2fa',
-                  color: '#00f2fa',
-                  boxShadow: '0 0 5px #00f2fa'
-                }}
-              >
-                <option value="doubts">Doubts - I'm experiencing doubts and looking for answers</option>
-                <option value="explore">Explore - I'm curious and want to have a look around!</option>
-                <option value="improve">Improve - I want to improve my Islam and connection with God</option>
-              </select>
-            </div>
-
             {/* Level Setting */}
             <div>
               <label 
                 className="block text-sm font-medium mb-2"
-                style={themeName === 'story' ? {
-                  color: theme.primary,
-                  textShadow: 'none',
-                } : {
-                  color: '#00f2fa',
-                  textShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('label')}
               >
                 Level
               </label>
               <select 
+                id="userLevel"
+                name="userLevel"
                 value={userLevel || 1}
                 onChange={(e) => {
                   setUserLevel(parseInt(e.target.value));
                 }}
                 className="w-full p-3 rounded border-2 transition-all duration-200"
-                style={themeName === 'story' ? {
-                  backgroundColor: theme.background,
-                  borderColor: theme.border,
-                  color: theme.text,
-                  boxShadow: 'none',
-                } : {
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                  borderColor: '#00f2fa',
-                  color: '#00f2fa',
-                  boxShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('select')}
               >
                 <option value={1}>Level 1 - Beginner</option>
                 <option value={2}>Level 2 - Intermediate</option>
-                <option value={3}>Level 3 - Advanced</option>
+                <option value={3}>Level 3 - Expert</option>
               </select>
             </div>
 
@@ -162,38 +200,24 @@ const Settings = () => {
             <div>
               <label 
                 className="block text-sm font-medium mb-2"
-                style={themeName === 'story' ? {
-                  color: theme.primary,
-                  textShadow: 'none',
-                } : {
-                  color: '#00f2fa',
-                  textShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('label')}
               >
                 Creed
               </label>
               <select 
+                id="userCreed"
+                name="userCreed"
                 value={creed || ''}
                 onChange={(e) => {
                   setCreed(e.target.value);
                 }}
                 className="w-full p-3 rounded border-2 transition-all duration-200"
-                style={themeName === 'story' ? {
-                  backgroundColor: theme.background,
-                  borderColor: theme.border,
-                  color: theme.text,
-                  boxShadow: 'none',
-                } : {
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                  borderColor: '#00f2fa',
-                  color: '#00f2fa',
-                  boxShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('select')}
               >
                 <option value="">Select your creed</option>
-                <option value="sunni">Sunni</option>
-                <option value="shia">Shia</option>
-                <option value="other">Other</option>
+                <option value="maturidi-ashari">Maturidi/Ashari</option>
+                <option value="athari">Athari</option>
+                <option value="any">Doesn't matter</option>
               </select>
             </div>
 
@@ -201,33 +225,19 @@ const Settings = () => {
             <div>
               <label 
                 className="block text-sm font-medium mb-2"
-                style={themeName === 'story' ? {
-                  color: theme.primary,
-                  textShadow: 'none',
-                } : {
-                  color: '#00f2fa',
-                  textShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('label')}
               >
                 Jurisprudence
               </label>
               <select 
+                id="userJurisprudence"
+                name="userJurisprudence"
                 value={jurisprudence || ''}
                 onChange={(e) => {
                   setJurisprudence(e.target.value);
                 }}
                 className="w-full p-3 rounded border-2 transition-all duration-200"
-                style={themeName === 'story' ? {
-                  backgroundColor: theme.background,
-                  borderColor: theme.border,
-                  color: theme.text,
-                  boxShadow: 'none',
-                } : {
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                  borderColor: '#00f2fa',
-                  color: '#00f2fa',
-                  boxShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('select')}
               >
                 <option value="">Select your jurisprudence</option>
                 <option value="hanafi">Hanafi</option>
@@ -242,75 +252,49 @@ const Settings = () => {
             <div>
               <label 
                 className="block text-sm font-medium mb-2"
-                style={themeName === 'story' ? {
-                  color: theme.primary,
-                  textShadow: 'none',
-                } : {
-                  color: '#00f2fa',
-                  textShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('label')}
               >
                 Language
               </label>
               <select 
+                id="userLanguage"
+                name="userLanguage"
                 value={language || 'en'}
                 onChange={(e) => {
                   setLanguage(e.target.value);
                 }}
                 className="w-full p-3 rounded border-2 transition-all duration-200"
-                style={themeName === 'story' ? {
-                  backgroundColor: theme.background,
-                  borderColor: theme.border,
-                  color: theme.text,
-                  boxShadow: 'none',
-                } : {
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                  borderColor: '#00f2fa',
-                  color: '#00f2fa',
-                  boxShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('select')}
               >
                 <option value="en">English</option>
-                <option value="ar">العربية</option>
-                <option value="tr">Türkçe</option>
-                <option value="ur">اردو</option>
+                <option value="nl">Dutch</option>
+                <option value="ar">Arabic</option>
+                <option value="tr">Turkish</option>
+                <option value="ur">Urdu</option>
               </select>
             </div>
 
-            {/* Theme Setting */}
+            {/* Visual Theme Setting */}
             <div>
               <label 
                 className="block text-sm font-medium mb-2"
-                style={themeName === 'story' ? {
-                  color: theme.primary,
-                  textShadow: 'none',
-                } : {
-                  color: '#00f2fa',
-                  textShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('label')}
               >
-                Theme
+                Visual Theme
               </label>
               <select 
+                id="userTheme"
+                name="userTheme"
                 value={themeName || 'neon'}
                 onChange={(e) => {
                   setThemeName(e.target.value);
                 }}
                 className="w-full p-3 rounded border-2 transition-all duration-200"
-                style={themeName === 'story' ? {
-                  backgroundColor: theme.background,
-                  borderColor: theme.border,
-                  color: theme.text,
-                  boxShadow: 'none',
-                } : {
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                  borderColor: '#00f2fa',
-                  color: '#00f2fa',
-                  boxShadow: '0 0 5px #00f2fa'
-                }}
+                style={getThemeStyle('select')}
               >
-                <option value="neon">Neon</option>
-                <option value="story">Story</option>
+                              <option value="neon">Neon (default) - Modern digital</option>
+              <option value="zwartWit">Wireframe - Minimal</option>
+              <option value="style">Style - Wireframe copy</option>
               </select>
             </div>
             
@@ -319,30 +303,20 @@ const Settings = () => {
               <button 
                 onClick={closeSettings}
                 className="flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 active:scale-95"
-                style={themeName === 'story' ? {
-                  color: theme.primary,
-                  borderColor: theme.border,
-                  backgroundColor: 'transparent',
-                  boxShadow: 'none',
-                } : {
-                  color: '#FF007F',
-                  borderColor: '#FF007F',
-                  backgroundColor: 'transparent',
-                  boxShadow: '0 0 10px #FF007F, 0 0 20px #FF007F'
-                }}
+                style={getThemeStyle('button')}
                 onMouseEnter={e => {
-                  if (themeName === 'story') {
-                    e.target.style.backgroundColor = theme.secondary;
-                    e.target.style.color = theme.primary;
+                  if (themeName === 'zwartWit') {
+                    e.target.style.backgroundColor = '#000000';
+                    e.target.style.color = '#ffffff';
                   } else {
                     e.target.style.backgroundColor = 'rgba(255, 0, 127, 0.1)';
                     e.target.style.boxShadow = '0 0 15px #FF007F, 0 0 30px #FF007F, inset 0 0 10px rgba(255, 0, 127, 0.3)';
                   }
                 }}
                 onMouseLeave={e => {
-                  if (themeName === 'story') {
-                    e.target.style.backgroundColor = 'transparent';
-                    e.target.style.color = theme.primary;
+                  if (themeName === 'zwartWit') {
+                    e.target.style.backgroundColor = '#ffffff';
+                    e.target.style.color = '#000000';
                   } else {
                     e.target.style.backgroundColor = 'transparent';
                     e.target.style.boxShadow = '0 0 10px #FF007F, 0 0 20px #FF007F';
@@ -354,40 +328,29 @@ const Settings = () => {
               <button 
                 onClick={() => {
                   closeSettings();
-                  window.location.reload();
                 }}
                 className="flex-1 py-3 px-4 rounded-lg border-2 transition-all duration-200 active:scale-95"
-                style={themeName === 'story' ? {
-                  color: theme.secondary,
-                  borderColor: theme.border,
-                  backgroundColor: theme.primary,
-                  boxShadow: 'none',
-                } : {
-                  color: '#00f2fa',
-                  borderColor: '#00f2fa',
-                  backgroundColor: 'transparent',
-                  boxShadow: '0 0 10px #00f2fa, 0 0 20px #00f2fa'
-                }}
+                style={getThemeStyle('buttonSecondary')}
                 onMouseEnter={e => {
-                  if (themeName === 'story') {
-                    e.target.style.backgroundColor = theme.secondary;
-                    e.target.style.color = theme.primary;
+                  if (themeName === 'zwartWit') {
+                    e.target.style.backgroundColor = '#000000';
+                    e.target.style.color = '#ffffff';
                   } else {
                     e.target.style.backgroundColor = 'rgba(0, 242, 250, 0.1)';
                     e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
                   }
                 }}
                 onMouseLeave={e => {
-                  if (themeName === 'story') {
-                    e.target.style.backgroundColor = theme.primary;
-                    e.target.style.color = theme.secondary;
+                  if (themeName === 'zwartWit') {
+                    e.target.style.backgroundColor = '#000000';
+                    e.target.style.color = '#ffffff';
                   } else {
                     e.target.style.backgroundColor = 'transparent';
                     e.target.style.boxShadow = '0 0 10px #00f2fa, 0 0 20px #00f2fa';
                   }
                 }}
               >
-                Save & Reload
+                Save
               </button>
             </div>
           </div>

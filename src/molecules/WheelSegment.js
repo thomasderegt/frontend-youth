@@ -15,12 +15,24 @@ const WheelSegment = ({
   onMouseDown,
   onMouseUp
 }) => {
-  const fillColor = themeName === 'story' ? topic.color : '#000';
-  const textColor = themeName === 'story' ? '#ffffff' : '#00f2fa';
-  const strokeColor = themeName === 'story' ? topic.color : '#00f2fa';
+  const fillColor = themeName === 'story' || themeName === 'classicEarth' ? topic.color : '#000';
+  const textColor = themeName === 'story' ? '#ffffff' : themeName === 'classicEarth' ? '#0c0800' : '#00f2fa';
+  const strokeColor = themeName === 'story' || themeName === 'classicEarth' ? topic.color : '#00f2fa';
+
+  // Debug log for all themes
+  console.log(`Segment ${topic.segmentNumber || 'N/A'} - "${topic.english}" - Theme: ${themeName}`, {
+    segmentNumber: topic.segmentNumber,
+    fillColor,
+    textColor,
+    strokeColor,
+    topicColor: topic.color
+  });
 
   return (
     <g
+      id={`segment-${topic.segmentNumber || topic.english.toLowerCase().replace(/\s+/g, '-')}`}
+      data-segment-number={topic.segmentNumber || topic.english}
+      data-segment-name={topic.english}
       onClick={() => onClick(topic.english)}
       className={themeName === 'story' ? 'transition-all duration-300 topic-hover' : ''}
       style={{ cursor: 'pointer' }}
@@ -39,8 +51,9 @@ const WheelSegment = ({
         style={themeName === 'neon' ? { filter: `drop-shadow(0 0 6px ${strokeColor})` } : {}}
       />
       
-      {themeName === 'story' && (
+      {(themeName === 'story' || themeName === 'classicEarth') && (
         <WheelText
+          id={`icon-${topic.english.toLowerCase().replace(/\s+/g, '-')}`}
           x={position.x}
           y={position.y - outerRadius * 0.5}
           fontSize={outerRadius * 0.24}
@@ -79,6 +92,7 @@ const WheelSegment = ({
         </>
       ) : (
         <WheelText
+          id={`text-${topic.english.toLowerCase().replace(/\s+/g, '-')}`}
           x={position.x}
           y={position.y}
           fontSize={topicFontSize}

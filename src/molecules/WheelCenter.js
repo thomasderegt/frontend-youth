@@ -14,13 +14,22 @@ const WheelCenter = ({
   onMouseUp,
   getCenterFontSize
 }) => {
-  const centerFill = themeName === 'story' ? 'url(#centerGradient)' : '#000';
-  const centerStroke = themeName === 'story' ? '#a084e8' : '#00f2fa';
-  const centerTextColor = themeName === 'story' ? '#ffffff' : '#00f2fa';
+  const centerFill = themeName === 'story' ? 'url(#centerGradient)' : themeName === 'classicEarth' ? '#cbac81' : '#000';
+  const centerStroke = themeName === 'story' ? '#a084e8' : themeName === 'classicEarth' ? '#6f3000' : '#00f2fa';
+  const centerTextColor = themeName === 'story' ? '#ffffff' : themeName === 'classicEarth' ? '#0c0800' : '#00f2fa';
+
+  // Debug log for all themes
+  console.log(`Center circle - Theme: ${themeName}`, {
+    centerFill,
+    centerStroke,
+    centerTextColor
+  });
 
   return (
     <>
       <WheelCircle
+        id="center-circle"
+        data-theme={themeName}
         cx={center}
         cy={center}
         r={centerRadius}

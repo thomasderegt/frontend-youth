@@ -27,3 +27,30 @@ body {
 .App * {
   transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
+
+/* SVG scaling fixes */
+.wheel-container svg {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.wheel-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 500px !important;
+}
+
+/* HomePage background fixes */
+.homepage-background {
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Force background properties */
+.homepage-background * {
+  background-repeat: no-repeat !important;
+}

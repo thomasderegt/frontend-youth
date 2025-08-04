@@ -14,10 +14,13 @@ const WheelCircle = ({
   onMouseUp,
   className = '',
   style = {},
-  children
+  children,
+  id,
+  ...props
 }) => {
   return (
     <circle
+      id={id}
       cx={cx}
       cy={cy}
       r={r}
@@ -31,6 +34,7 @@ const WheelCircle = ({
       onMouseUp={onMouseUp}
       className={className}
       style={style}
+      {...props}
     >
       {children}
     </circle>

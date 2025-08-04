@@ -11,10 +11,13 @@ const WheelText = ({
   dy = "0",
   style = {},
   className = '',
-  pointerEvents = "none"
+  pointerEvents = "none",
+  id,
+  ...props
 }) => {
   return (
     <text
+      id={id}
       x={x}
       y={y}
       textAnchor={textAnchor}
@@ -25,6 +28,7 @@ const WheelText = ({
       style={style}
       className={className}
       pointerEvents={pointerEvents}
+      {...props}
     >
       {children}
     </text>

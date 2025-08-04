@@ -1,7 +1,4 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
-import NamesOfAllah from './NamesOfAllah';
-import NameDetail from './NameDetail';
-import TazkiyyahLanding from './TazkiyyahLanding';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import Settings from './Settings';
 import ChatBox from './ChatBox';
 import { useTheme } from '../context/ThemeContext';
@@ -9,107 +6,71 @@ import { useLanguage } from '../context/LanguageContext';
 import { useSettings } from '../context/SettingsContext';
 import { useNavigate } from 'react-router-dom';
 
-// Goal-based topic configurations
-const askTopics = [
-  { english: 'Suffering', phonetic: 'Rihlah Shakhsiyyah', color: '#B5838D', icon: '🌟' },
-  { english: 'Natural State', phonetic: 'Fitrah', color: '#E76F51', icon: '🧬' },
-  { english: 'Misconceptions', phonetic: 'Su\' al-Mafahim', color: '#2A9D8F', icon: '💭' },
-  { english: 'Scientific Evidence', phonetic: 'Burhan Ilmi', color: '#F4A261', icon: '🔬' },
-  { english: 'Historical Evidence', phonetic: 'Burhan Tarikhi', color: '#E9C46A', icon: '📚' },
-  { english: 'Rational Evidence', phonetic: 'Hujaj Mantiqiyyah', color: '#A26769', icon: '🧠' },
-  { english: 'Quranic Evidence', phonetic: 'Ta\'awun', color: '#6C91BF', icon: '🤝' },
-  { english: 'Prophetic Evidence', phonetic: 'Adillah', color: '#8E7DBE', icon: '🔍' },
+// Statische wheel segments met unieke GUID's
+const WHEEL_SEGMENTS = [
+  { id: 'SEGMENT_002', position: 1, angle: 0 },
+  { id: 'SEGMENT_003', position: 2, angle: 45 },
+  { id: 'SEGMENT_004', position: 3, angle: 90 },
+  { id: 'SEGMENT_005', position: 4, angle: 135 },
+  { id: 'SEGMENT_006', position: 5, angle: 180 },
+  { id: 'SEGMENT_007', position: 6, angle: 225 },
+  { id: 'SEGMENT_008', position: 7, angle: 270 },
+  { id: 'SEGMENT_009', position: 8, angle: 315 },
 ];
 
-const exploreTopics = [
-  { english: 'Purification', phonetic: 'Tazkiyyah', color: '#8E7DBE', icon: '💖' },
-  { english: 'Prophets', phonetic: 'Anbiya', color: '#F4A261', icon: '📖' },
-  { english: 'History', phonetic: 'Tarikh', color: '#2A9D8F', icon: '🏛️' },
-  { english: 'Art', phonetic: 'Fann', color: '#E76F51', icon: '🎨' },
-  { english: 'Science', phonetic: 'Ulum', color: '#E9C46A', icon: '🔬' },
-  { english: 'Creed', phonetic: 'Aqeedah', color: '#A26769', icon: '🧠' },
-  { english: 'Literature', phonetic: 'Adab', color: '#6C91BF', icon: '📚' },
-  { english: 'Architecture', phonetic: 'Mi\'mar', color: '#B5838D', icon: '🕌' },
-];
+// Theme styling op basis van segment ID's
+const themeStyles = {
+  neon: {
+    'SEGMENT_002': { color: '#FF007F', glow: true, icon: '💔' },
+    'SEGMENT_003': { color: '#00f2fa', glow: true, icon: '🧬' },
+    'SEGMENT_004': { color: '#FF6B35', glow: true, icon: '💭' },
+    'SEGMENT_005': { color: '#FFD700', glow: true, icon: '🧠' },
+    'SEGMENT_006': { color: '#FF007F', glow: true, icon: '🔬' },
+    'SEGMENT_007': { color: '#00f2fa', glow: true, icon: '📚' },
+    'SEGMENT_008': { color: '#FF6B35', glow: true, icon: '📖' },
+    'SEGMENT_009': { color: '#FFD700', glow: true, icon: '🕌' },
+  },
 
-const improveTopics = [
-  { english: 'Prayer', phonetic: 'Salah', color: '#8E7DBE', icon: '🕌' },
-  { english: 'Fasting', phonetic: 'Sawm', color: '#F4A261', icon: '🌙' },
-  { english: 'Charity', phonetic: 'Zakah', color: '#2A9D8F', icon: '🤲' },
-  { english: 'Pilgrimage', phonetic: 'Hajj', color: '#E76F51', icon: '🕋' },
-  { english: 'Good Character', phonetic: 'Akhlaq', color: '#E9C46A', icon: '💎' },
-  { english: 'Family', phonetic: 'Usrah', color: '#A26769', icon: '👨‍👩‍👧‍👦' },
-  { english: 'Quran', phonetic: 'Quran', color: '#6C91BF', icon: '📖' },
-  { english: 'Sunnah', phonetic: 'Dhikr', color: '#B5838D', icon: '📿' },
-];
+};
 
-
+// Eenvoudige content mapping voor segmenten
+const segmentContent = {
+  'SEGMENT_001': { english: 'SEGMENT_001', phonetic: '' },
+  'SEGMENT_002': { english: 'SEGMENT_002', phonetic: '' },
+  'SEGMENT_003': { english: 'SEGMENT_003', phonetic: '' },
+  'SEGMENT_004': { english: 'SEGMENT_004', phonetic: '' },
+  'SEGMENT_005': { english: 'SEGMENT_005', phonetic: '' },
+  'SEGMENT_006': { english: 'SEGMENT_006', phonetic: '' },
+  'SEGMENT_007': { english: 'SEGMENT_007', phonetic: '' },
+  'SEGMENT_008': { english: 'SEGMENT_008', phonetic: '' },
+  'SEGMENT_009': { english: 'SEGMENT_009', phonetic: '' },
+};
 
 const WheelOfIslam = () => {
-  const [selectedName, setSelectedName] = useState(null);
-  const [userGoal, setUserGoal] = useState(localStorage.getItem('userGoal'));
-  const [userLevel, setUserLevel] = useState(parseInt(localStorage.getItem('userLevel')) || 1);
   const svgRef = useRef(null);
   const [size, setSize] = useState(0);
   const { theme, themeName } = useTheme();
   const { language } = useLanguage();
-  const { openSettings } = useSettings();
+  const { openSettings, isSettingsOpen, userLevel } = useSettings();
   const navigate = useNavigate();
 
-  // Shared state for PropertiesPanel
-  const [sharedGoal, setSharedGoal] = useState(userGoal);
-  const [sharedLevel, setSharedLevel] = useState(userLevel);
-
-  // Update shared state when userGoal/userLevel changes
-  useEffect(() => {
-    setSharedGoal(userGoal);
-    setSharedLevel(userLevel);
-  }, [userGoal, userLevel]);
-
-  const handleResetOnboarding = () => {
-    localStorage.removeItem('userGoal');
-    localStorage.removeItem('userLevel');
-    setUserGoal(null);
-    setUserLevel(1);
-    window.location.reload();
+  // Bepaal wheel titel en subtitle
+  const getWheelInfo = () => {
+    return {
+      title: 'Wheel of Islam',
+      subtitle: `Level ${userLevel}`
+    };
   };
-  let topics;
-  let wheelTitle;
-  let wheelSubtitle;
 
-
-  
-  // Use shared state for determining topics
-  const activeGoal = sharedGoal || userGoal;
-  const activeLevel = sharedLevel || userLevel;
-  
-  switch (activeGoal) {
-    case 'doubts':
-      topics = askTopics;
-      wheelTitle = 'Wheel of Islam';
-      wheelSubtitle = `Address Doubts - Level ${activeLevel}`;
-      break;
-    case 'explore':
-      topics = exploreTopics;
-      wheelTitle = 'Wheel of Islam';
-      wheelSubtitle = `Explore & Discover - Level ${activeLevel}`;
-      break;
-    case 'improve':
-      topics = improveTopics;
-      wheelTitle = 'Wheel of Islam';
-      wheelSubtitle = `Grow & Improve - Level ${activeLevel}`;
-      break;
-    default:
-      topics = exploreTopics;
-      wheelTitle = 'Wheel of Islam';
-      wheelSubtitle = `Explore & Discover - Level ${activeLevel}`;
-  }
+  const wheelInfo = getWheelInfo();
 
   useLayoutEffect(() => {
     const updateSize = () => {
       if (svgRef.current) {
         const rect = svgRef.current.getBoundingClientRect();
-        setSize(Math.min(rect.width, rect.height));
+        const containerSize = Math.min(rect.width, rect.height);
+        const newSize = Math.max(containerSize * 0.95, 400);
+        setSize(newSize);
       }
     };
     updateSize();
@@ -119,44 +80,56 @@ const WheelOfIslam = () => {
 
   const center = size / 2;
   const radius = center * 0.7;
-  const outerRadius = center * 0.18;
-  const centerRadius = center * 0.25;
+  const outerRadius = center * 0.12; // Even smaller circle size to prevent overlap
+  const centerRadius = center * 0.18; // Even smaller center circle size
+  
+  // Circle mode only - no donut shape
+  const topicRadius = radius * 0.75; // Moved segments even closer together
+  const centerTextRadius = centerRadius;
+  const centerCircleRadius = centerRadius * 1.2; // Maak de centrale cirkel groter
+
+  console.log('WheelOfIslam Debug:', {
+    topicRadius,
+    centerTextRadius,
+    centerCircleRadius,
+    radius,
+    centerRadius
+  });
 
   const calculatePoint = (angle, distance) => ({
     x: center + distance * Math.cos(angle),
     y: center + distance * Math.sin(angle),
   });
 
-  const handleClick = (topic) => {
+  const handleClick = (segmentId) => {
+    const content = segmentContent[segmentId];
+    
+    // Als er geen content is of lege content, doe niets
+    if (!content || !content.english) {
+      console.log('Empty segment clicked:', segmentId);
+      return;
+    }
+
+    const topic = content.english;
+    
     if (topic === 'The (One and Only) True God' || topic === 'One True God') {
-      navigate('/one-true-god');
+      navigate('/god');
     } else if (topic === 'Settings') {
       openSettings();
-    } else if (topic === 'Purification') {
+    } else if (topic === 'Purification' || topic === 'Tazkiyyah') {
       navigate('/tazkiyyah');
     } else {
-      // Show different messages based on user goal and level
-      const userGoal = localStorage.getItem('userGoal');
-      const userLevel = localStorage.getItem('userLevel') || 1;
-      let message = 'Coming soon!';
-      
-      if (userGoal === 'doubts') {
-        message = `This section will help you find evidence and answers to your questions at Level ${userLevel}. Coming soon!`;
-      } else if (userGoal === 'explore') {
-        message = `This section will help you explore and discover new aspects of Islam at Level ${userLevel}. Coming soon!`;
-      } else if (userGoal === 'improve') {
-        message = `This section will help you improve your practice and build better habits at Level ${userLevel}. Coming soon!`;
-      }
-      
-      alert(message);
+      // Convert topic name to URL-friendly format
+      const topicSlug = topic.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+      navigate(`/topic/${topicSlug}`);
     }
   };
 
-  // Use a fixed font size for all topic titles (outer circles)
-  const topicFontSize = outerRadius * 0.18;
+  // Use a responsive font size for all topic titles (outer circles)
+  const topicFontSize = Math.max(outerRadius * 0.18, 12); // Minimum 12px
   // Calculate font size for center title to fit within the center circle
   const getCenterFontSize = (text) => {
-    const base = centerRadius * 0.22;
+    const base = centerTextRadius * 0.22;
     if (text.length > 18) return base * 0.7;
     if (text.length > 14) return base * 0.8;
     if (text.length > 10) return base * 0.9;
@@ -164,14 +137,12 @@ const WheelOfIslam = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen flex items-center justify-center p-4 transition-all duration-500 ${
-        themeName === 'story' ? 'animate-fade-in' : ''
-      }`}
+          <div
+        className="min-h-screen flex flex-col items-center justify-center p-6 transition-all duration-500"
       style={{
-        // backgroundColor: theme.background, // Removed to allow background image to show
+        backgroundColor: theme.background,
         color: theme.text,
-        fontFamily: themeName === 'story' ? `'Poppins', sans-serif` : 'inherit',
+        fontFamily: 'inherit',
       }}
     >
       <style jsx>{`
@@ -194,362 +165,389 @@ const WheelOfIslam = () => {
         }
       `}</style>
 
-      <div className="flex flex-col items-center">
-                <div className="relative flex items-center justify-center">
+      {/* Wheel Section */}
+      <section className="flex flex-col items-center w-full mb-8">
+        <div className="relative flex items-center justify-center">
           <h1
-            className="text-3xl sm:text-5xl font-bold text-center"
-            style={{ color: theme.secondary, textShadow: '0 0 6px #00f2fa', marginBottom: 0 }}
+            className="font-bold text-center mb-2"
+            style={{ 
+              color: themeName === 'classicEarth' ? theme.primary : 
+                     themeName === 'zwartWit' ? '#000000' : theme.secondary, 
+              textShadow: themeName === 'neon' ? '0 0 6px #00f2fa' : 'none',
+              fontSize: 'clamp(2rem, 4vw, 4rem)'
+            }}
           >
-            {wheelTitle}
+            {wheelInfo.title}
           </h1>
           
           {/* Settings Button - Positioned next to title */}
-          <button 
-            onClick={openSettings}
-            className="absolute -right-32 top-1/2 transform -translate-y-1/2 z-[9999] px-4 py-2 rounded-lg border-2 transition-all duration-200 active:scale-95 flex items-center justify-center"
-            style={{
-              color: '#00f2fa',
-              borderColor: '#00f2fa',
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              width: '120px',
-              height: '32px',
-              boxShadow: '0 0 10px #00f2fa, 0 0 20px #00f2fa',
-              backdropFilter: 'blur(10px)',
-              fontFamily: themeName === 'story' ? `'Poppins', sans-serif` : 'inherit',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              fontSize: '12px',
-              transform: 'rotate(90deg)',
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'rgba(0, 242, 250, 0.1)';
-              e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-              e.target.style.boxShadow = '0 0 10px #00f2fa, 0 0 20px #00f2fa';
-            }}
-            onMouseDown={(e) => {
-              e.target.style.transform = 'scale(0.95) rotate(90deg)';
-              e.target.style.boxShadow = '0 0 5px #00f2fa, 0 0 10px #00f2fa, inset 0 0 15px rgba(0, 242, 250, 0.5)';
-            }}
-            onMouseUp={(e) => {
-              e.target.style.transform = 'scale(1) rotate(90deg)';
-              e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
-            }}
-          >
-            Settings
-          </button>
+          {!isSettingsOpen && (
+            <button 
+              onClick={openSettings}
+              className="absolute -right-32 top-1/2 transform -translate-y-1/2 z-[9999] px-4 py-2 rounded-lg border-2 transition-all duration-200 active:scale-95 flex items-center justify-center"
+              style={{
+                color: themeName === 'classicEarth' ? theme.border : '#00f2fa',
+                borderColor: themeName === 'classicEarth' ? theme.border : '#00f2fa',
+                backgroundColor: themeName === 'classicEarth' ? theme.background : 'rgba(0, 0, 0, 0.8)',
+                width: 'clamp(100px, 8vw, 150px)',
+                height: 'clamp(28px, 2.5vw, 40px)',
+                boxShadow: themeName === 'classicEarth' ? 'none' : '0 0 10px #00f2fa, 0 0 20px #00f2fa',
+                backdropFilter: themeName === 'classicEarth' ? 'none' : 'blur(10px)',
+                fontFamily: 'inherit',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: 'clamp(10px, 1vw, 14px)',
+                transform: 'rotate(90deg)',
+              }}
+              onMouseEnter={(e) => {
+                if (themeName === 'classicEarth') {
+                  e.target.style.backgroundColor = theme.secondary;
+                  e.target.style.color = theme.background;
+                } else {
+                  e.target.style.backgroundColor = 'rgba(0, 242, 250, 0.1)';
+                  e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (themeName === 'classicEarth') {
+                  e.target.style.backgroundColor = theme.background;
+                  e.target.style.color = theme.border;
+                } else {
+                  e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                  e.target.style.boxShadow = '0 0 10px #00f2fa, 0 0 20px #00f2fa';
+                }
+              }}
+              onMouseDown={(e) => {
+                e.target.style.transform = 'scale(0.95) rotate(90deg)';
+                if (themeName !== 'classicEarth') {
+                  e.target.style.boxShadow = '0 0 5px #00f2fa, 0 0 10px #00f2fa, inset 0 0 15px rgba(0, 242, 250, 0.5)';
+                }
+              }}
+              onMouseUp={(e) => {
+                e.target.style.transform = 'scale(1) rotate(90deg)';
+                if (themeName !== 'classicEarth') {
+                  e.target.style.boxShadow = '0 0 15px #00f2fa, 0 0 30px #00f2fa, inset 0 0 10px rgba(0, 242, 250, 0.3)';
+                }
+              }}
+            >
+              Settings
+            </button>
+          )}
         </div>
         
         <div
-          className="text-base sm:text-2xl font-semibold text-center mb-6"
-          style={{ color: theme.secondary, textShadow: '0 0 6px #00f2fa', marginTop: 4 }}
+          className="font-semibold text-center mb-8"
+          style={{ 
+            color: themeName === 'classicEarth' ? theme.primary : 
+                   themeName === 'zwartWit' ? '#000000' : theme.secondary, 
+            textShadow: themeName === 'neon' ? '0 0 6px #00f2fa' : 'none',
+            fontSize: 'clamp(1rem, 2vw, 2rem)'
+          }}
         >
-          {wheelSubtitle}
+          {wheelInfo.subtitle}
         </div>
 
         <div
           ref={svgRef}
-          className="w-full aspect-square mx-auto flex items-center justify-center"
-          style={{ maxWidth: '100vw', width: '100vw', padding: '0 8px' }}
+          className="w-full h-full mx-auto flex items-center justify-center"
+          style={{ 
+            padding: '0 4px',
+            width: '100%',
+            height: '100%',
+            minHeight: '500px'
+          }}
         >
-          <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full">
-            {/* Radial gradient (Story only) */}
-            {themeName === 'story' && (
-              <defs>
-                <radialGradient id="centerGradient" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#b18fff" />
-                  <stop offset="100%" stopColor="#805ad5" />
-                </radialGradient>
-              </defs>
-            )}
+          <svg 
+            viewBox={`0 0 ${size} ${size}`} 
+            className="w-full h-full"
+            preserveAspectRatio="xMidYMid meet"
+          >
 
-            {/* Buitenste ring */}
-            <circle
-              cx={center}
-              cy={center}
-              r={radius * 0.86}
-              fill="none"
-              stroke={theme.border}
-              strokeWidth="2"
-              style={themeName === 'neon' ? { filter: `drop-shadow(0 0 6px ${theme.border})` } : {}}
-            />
 
-            {/* Stralenlijnen */}
-            {topics.map((_, index) => {
-              const angle = (index / topics.length) * 2 * Math.PI;
-              const lineStart = calculatePoint(angle, centerRadius);
-              const lineEnd = calculatePoint(angle, radius * 0.86);
-              return (
-                <line
-                  key={`line-${index}`}
-                  x1={lineStart.x}
-                  y1={lineStart.y}
-                  x2={lineEnd.x}
-                  y2={lineEnd.y}
-                  stroke={theme.border}
-                  strokeWidth="2"
-                  style={themeName === 'neon' ? { filter: `drop-shadow(0 0 6px ${theme.border})` } : {}}
-                />
-              );
-            })}
+            {/* Circle mode: Traditionele cirkels */}
+            <>
+              {/* Stralenlijnen - Verbind de buitenste cirkels */}
+              {WHEEL_SEGMENTS.map((segment, index) => {
+                const angle = (index / WHEEL_SEGMENTS.length) * 2 * Math.PI;
+                const nextAngle = ((index + 1) / WHEEL_SEGMENTS.length) * 2 * Math.PI;
+                
+                const currentPos = calculatePoint(angle, topicRadius);
+                const nextPos = calculatePoint(nextAngle, topicRadius);
+                
+                const lineColor = themeName === 'zwartWit' ? '#000000' : '#ffffff';
+                
+                return (
+                  <line
+                    key={`line-${segment.id}`}
+                    x1={currentPos.x}
+                    y1={currentPos.y}
+                    x2={nextPos.x}
+                    y2={nextPos.y}
+                    stroke={lineColor}
+                    strokeWidth={Math.max(size / 400, 1)}
+                  />
+                );
+              })}
 
-            {/* Centrale cirkel */}
-            {(() => {
-              const centerFill =
-                themeName === 'story' ? 'url(#centerGradient)' : theme.background;
-              const centerStroke =
-                themeName === 'story' ? '#a084e8' : theme.border;
-              const centerTextColor =
-                themeName === 'story' ? '#ffffff' : theme.secondary;
+              {/* Radiale lijnen - Verbind centrale cirkel met buitenste cirkels */}
+              {WHEEL_SEGMENTS.map((segment, index) => {
+                const angle = (index / WHEEL_SEGMENTS.length) * 2 * Math.PI;
+                const outerPos = calculatePoint(angle, topicRadius);
+                
+                const lineColor = themeName === 'zwartWit' ? '#000000' : '#ffffff';
+                
+                return (
+                  <line
+                    key={`radial-${segment.id}`}
+                    x1={center}
+                    y1={center}
+                    x2={outerPos.x}
+                    y2={outerPos.y}
+                    stroke={lineColor}
+                    strokeWidth={Math.max(size / 400, 1)}
+                  />
+                );
+              })}
 
-              return (
-                <>
-                  <circle
-                    cx={center}
-                    cy={center}
-                    r={centerRadius}
-                    fill={centerFill}
-                    stroke={centerStroke}
-                    strokeWidth="3"
-                    onClick={() => handleClick('The (One and Only) True God')}
-                    style={themeName === 'neon' ? { cursor: 'pointer', filter: `drop-shadow(0 0 6px ${theme.border})` } : { cursor: 'pointer' }}
+              {/* Buitenste cirkels + labels */}
+              {WHEEL_SEGMENTS.map((segment, index) => {
+                const angle = (index / WHEEL_SEGMENTS.length) * 2 * Math.PI;
+                const pos = calculatePoint(angle, topicRadius);
+                
+                const segmentStyle = themeStyles[themeName]?.[segment.id] || themeStyles.neon[segment.id];
+                const content = segmentContent[segment.id];
+
+                if (!content) return null;
+
+                const fillColor = themeName === 'zwartWit' ? '#ffffff' : theme.background;
+                const textColor = themeName === 'zwartWit' ? '#000000' : theme.secondary;
+                const strokeColor = themeName === 'zwartWit' ? '#000000' : theme.border;
+
+                return (
+                  <g
+                    key={segment.id}
+                    onClick={() => handleClick(segment.id)}
+                    className="transition-all duration-300 topic-hover"
+                    style={{ cursor: 'pointer' }}
                     onMouseEnter={(e) => {
-                      e.target.style.filter = `drop-shadow(0 0 15px ${centerStroke}) drop-shadow(0 0 30px ${centerStroke})`;
+                      const circle = e.currentTarget.querySelector('circle');
+                      const texts = e.currentTarget.querySelectorAll('text');
+                      if (circle) {
+                        if (themeName === 'zwartWit') {
+                          circle.style.filter = 'none';
+                        } else {
+                          circle.style.filter = `drop-shadow(0 0 15px ${strokeColor}) drop-shadow(0 0 30px ${strokeColor})`;
+                        }
+                      }
+                      texts.forEach(text => {
+                        if (themeName === 'zwartWit') {
+                          text.style.textShadow = 'none';
+                        } else {
+                          text.style.textShadow = `0 0 10px ${textColor} 0 0 20px ${textColor}`;
+                        }
+                      });
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.filter = themeName === 'neon' ? `drop-shadow(0 0 6px ${theme.border})` : 'none';
+                      const circle = e.currentTarget.querySelector('circle');
+                      const texts = e.currentTarget.querySelectorAll('text');
+                      if (circle) {
+                        if (themeName === 'zwartWit') {
+                          circle.style.filter = 'none';
+                        } else {
+                          circle.style.filter = themeName === 'neon' ? `drop-shadow(0 0 6px ${strokeColor})` : 'none';
+                        }
+                      }
+                      texts.forEach(text => {
+                        if (themeName === 'zwartWit') {
+                          text.style.textShadow = 'none';
+                        } else {
+                          text.style.textShadow = '0 0 6px #00f2fa';
+                        }
+                      });
                     }}
                     onMouseDown={(e) => {
-                      e.target.style.filter = `drop-shadow(0 0 5px ${centerStroke}) drop-shadow(0 0 10px ${centerStroke}) inset 0 0 10px rgba(0, 0, 0, 0.3)`;
+                      const circle = e.currentTarget.querySelector('circle');
+                      if (circle) {
+                        if (themeName === 'zwartWit') {
+                          circle.style.filter = 'none';
+                        } else {
+                          circle.style.filter = `drop-shadow(0 0 5px ${strokeColor}) drop-shadow(0 0 10px ${strokeColor}) inset 0 0 10px rgba(0, 242, 250, 0.5)`;
+                        }
+                      }
                     }}
                     onMouseUp={(e) => {
-                      e.target.style.filter = `drop-shadow(0 0 15px ${centerStroke}) drop-shadow(0 0 30px ${centerStroke})`;
+                      const circle = e.currentTarget.querySelector('circle');
+                      if (circle) {
+                        if (themeName === 'zwartWit') {
+                          circle.style.filter = 'none';
+                        } else {
+                          circle.style.filter = `drop-shadow(0 0 15px ${strokeColor}) drop-shadow(0 0 30px ${strokeColor})`;
+                        }
+                      }
                     }}
-                  />
-                  {userGoal === 'improve' ? (
-                    <>
+                  >
+                    <circle
+                      cx={pos.x}
+                      cy={pos.y}
+                      r={outerRadius}
+                      fill={fillColor}
+                      stroke={strokeColor}
+                      strokeWidth={Math.max(size / 400, 1)}
+                      style={themeName === 'neon' ? { filter: `drop-shadow(0 0 6px ${strokeColor})` } : 
+                             themeName === 'zwartWit' ? { filter: 'none' } : {}}
+                    />
+                    {themeName === 'story' && (
                       <text
-                        x={center}
-                        y={center - 25}
+                        x={pos.x}
+                        y={pos.y - outerRadius * 0.5}
                         textAnchor="middle"
-                        fill={centerTextColor}
-                        fontSize={getCenterFontSize('Remembrance of the One True God')}
-                        fontWeight="bold"
-                        dy=".3em"
-                        pointerEvents="none"
-                        style={{ textShadow: '0 0 6px #00f2fa', textTransform: 'uppercase' }}
+                        fill={textColor}
+                        fontSize={outerRadius * 0.24}
+                        dy="0"
                       >
-                        {'Remembrance of'.toUpperCase()}
+                        {segmentStyle.icon}
                       </text>
+                    )}
+                    {content.english && (
+                      content.english.includes('\n') ? (
+                        <>
+                          <text
+                            x={pos.x}
+                            y={pos.y - 15}
+                            textAnchor="middle"
+                            fill={textColor}
+                            fontSize={topicFontSize}
+                            fontWeight="bold"
+                            dy="0"
+                            style={{ 
+                              textShadow: themeName === 'zwartWit' ? 'none' : '0 0 6px #00f2fa', 
+                              textTransform: 'uppercase' 
+                            }}
+                          >
+                            {content.english.split('\n')[0].toUpperCase()}
+                          </text>
+                          <text
+                            x={pos.x}
+                            y={pos.y + 15}
+                            textAnchor="middle"
+                            fill={textColor}
+                            fontSize={topicFontSize}
+                            fontWeight="bold"
+                            dy="0"
+                            style={{ 
+                              textShadow: themeName === 'zwartWit' ? 'none' : '0 0 6px #00f2fa', 
+                              textTransform: 'uppercase' 
+                            }}
+                          >
+                            {content.english.split('\n')[1].toUpperCase()}
+                          </text>
+                        </>
+                      ) : (
+                        <text
+                          x={pos.x}
+                          y={pos.y}
+                          textAnchor="middle"
+                          fill={textColor}
+                          fontSize={topicFontSize}
+                          fontWeight="bold"
+                          dy="0"
+                          style={{ 
+                            textShadow: themeName === 'zwartWit' ? 'none' : '0 0 6px #00f2fa', 
+                            textTransform: 'uppercase' 
+                          }}
+                        >
+                          {content.english.toUpperCase()}
+                        </text>
+                      )
+                    )}
+                    {language === 'phonetic' && content.phonetic && (
                       <text
-                        x={center}
-                        y={center + 25}
+                        x={pos.x}
+                        y={pos.y + outerRadius * 0.25}
                         textAnchor="middle"
-                        fill={centerTextColor}
-                        fontSize={getCenterFontSize('Remembrance of the One True God')}
+                        fill={textColor}
+                        fontSize={outerRadius * 0.15}
                         fontWeight="bold"
-                        dy=".3em"
-                        pointerEvents="none"
-                        style={{ textShadow: '0 0 6px #00f2fa', textTransform: 'uppercase' }}
                       >
-                        {'The One True God'.toUpperCase()}
+                        {content.phonetic}
                       </text>
-                    </>
-                  ) : (
+                    )}
+                  </g>
+                );
+              })}
+
+              {/* Centrale cirkel */}
+              {(() => {
+                const centerFill = themeName === 'zwartWit' ? '#ffffff' : theme.background;
+                const centerStroke = themeName === 'zwartWit' ? '#000000' : centerFill; // Zwarte border voor Wireframe
+                const centerTextColor = themeName === 'zwartWit' ? '#000000' : theme.secondary;
+
+                return (
+                  <>
+                    <circle
+                      cx={center}
+                      cy={center}
+                      r={centerCircleRadius}
+                      fill={centerFill}
+                      stroke={centerStroke}
+                      strokeWidth="2"
+                      onClick={() => handleClick('CENTER')}
+                      style={{ 
+                        cursor: 'pointer',
+                        filter: themeName === 'neon' ? 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))' : 'none'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (themeName === 'neon') {
+                          e.target.style.filter = 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (themeName === 'neon') {
+                          e.target.style.filter = 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))';
+                        }
+                      }}
+                      onMouseDown={(e) => {
+                        if (themeName === 'neon') {
+                          e.target.style.filter = 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.7))';
+                        }
+                      }}
+                      onMouseUp={(e) => {
+                        if (themeName === 'neon') {
+                          e.target.style.filter = 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))';
+                        }
+                      }}
+                    />
                     <text
                       x={center}
                       y={center}
                       textAnchor="middle"
                       fill={centerTextColor}
-                      fontSize={getCenterFontSize('The One True God')}
+                      fontSize={getCenterFontSize('SEGMENT_001')}
                       fontWeight="bold"
                       dy=".3em"
                       pointerEvents="none"
-                      style={{ textShadow: '0 0 6px #00f2fa', textTransform: 'uppercase' }}
+                      style={{ 
+                        textShadow: themeName === 'neon' ? '0 0 10px rgba(255, 255, 255, 0.5)' : 'none',
+                        textTransform: 'uppercase' 
+                      }}
                     >
-                      {'The One True God'.toUpperCase()}
+                      {'SEGMENT_001'.toUpperCase()}
                     </text>
-                  )}
-                </>
-              );
-            })()}
-
-            {/* Buitenste cirkels + labels */}
-            {topics.map((topic, index) => {
-              const angle = (index / topics.length) * 2 * Math.PI;
-              const pos = calculatePoint(angle, radius * 0.86);
-
-              const fillColor =
-                themeName === 'story' ? topic.color : theme.background;
-              const textColor =
-                themeName === 'story' ? '#ffffff' : theme.secondary;
-              const strokeColor =
-                themeName === 'story' ? topic.color : theme.border;
-
-              return (
-                <g
-                  key={`topic-${index}`}
-                  onClick={() => handleClick(topic.english)}
-                  className={themeName === 'story' ? 'transition-all duration-300 topic-hover' : ''}
-                  style={{ cursor: 'pointer' }}
-                  onMouseEnter={(e) => {
-                    const circle = e.currentTarget.querySelector('circle');
-                    const texts = e.currentTarget.querySelectorAll('text');
-                    if (circle) {
-                      circle.style.filter = `drop-shadow(0 0 15px ${strokeColor}) drop-shadow(0 0 30px ${strokeColor})`;
-                    }
-                    texts.forEach(text => {
-                      text.style.textShadow = `0 0 10px ${textColor} 0 0 20px ${textColor}`;
-                    });
-                  }}
-                  onMouseLeave={(e) => {
-                    const circle = e.currentTarget.querySelector('circle');
-                    const texts = e.currentTarget.querySelectorAll('text');
-                    if (circle) {
-                      circle.style.filter = themeName === 'neon' ? `drop-shadow(0 0 6px ${strokeColor})` : 'none';
-                    }
-                    texts.forEach(text => {
-                      text.style.textShadow = '0 0 6px #00f2fa';
-                    });
-                  }}
-                  onMouseDown={(e) => {
-                    const circle = e.currentTarget.querySelector('circle');
-                    if (circle) {
-                      circle.style.filter = `drop-shadow(0 0 5px ${strokeColor}) drop-shadow(0 0 10px ${strokeColor}) inset 0 0 10px rgba(0, 0, 0, 0.3)`;
-                    }
-                  }}
-                  onMouseUp={(e) => {
-                    const circle = e.currentTarget.querySelector('circle');
-                    if (circle) {
-                      circle.style.filter = `drop-shadow(0 0 15px ${strokeColor}) drop-shadow(0 0 30px ${strokeColor})`;
-                    }
-                  }}
-                >
-                  <circle
-                    cx={pos.x}
-                    cy={pos.y}
-                    r={outerRadius}
-                    fill={fillColor}
-                    stroke={strokeColor}
-                    strokeWidth="2"
-                    style={themeName === 'neon' ? { filter: `drop-shadow(0 0 6px ${strokeColor})` } : {}}
-                  />
-                  {themeName === 'story' && (
-                    <text
-                      x={pos.x}
-                      y={pos.y - outerRadius * 0.5}
-                      textAnchor="middle"
-                      fill={textColor}
-                      fontSize={outerRadius * 0.24}
-                      dy="0"
-                    >
-                      {topic.icon}
-                    </text>
-                  )}
-                  {topic.english.includes('\n') ? (
-                    <>
-                      <text
-                        x={pos.x}
-                        y={pos.y - 15}
-                        textAnchor="middle"
-                        fill={textColor}
-                        fontSize={topicFontSize}
-                        fontWeight="bold"
-                        dy="0"
-                        style={{ textShadow: '0 0 6px #00f2fa', textTransform: 'uppercase' }}
-                      >
-                        {topic.english.split('\n')[0].toUpperCase()}
-                      </text>
-                      <text
-                        x={pos.x}
-                        y={pos.y + 15}
-                        textAnchor="middle"
-                        fill={textColor}
-                        fontSize={topicFontSize}
-                        fontWeight="bold"
-                        dy="0"
-                        style={{ textShadow: '0 0 6px #00f2fa', textTransform: 'uppercase' }}
-                      >
-                        {topic.english.split('\n')[1].toUpperCase()}
-                      </text>
-                    </>
-                  ) : (
-                    <text
-                      x={pos.x}
-                      y={pos.y}
-                      textAnchor="middle"
-                      fill={textColor}
-                      fontSize={topicFontSize}
-                      fontWeight="bold"
-                      dy="0"
-                      style={{ textShadow: '0 0 6px #00f2fa', textTransform: 'uppercase' }}
-                    >
-                      {topic.english.toUpperCase()}
-                    </text>
-                  )}
-                  {language === 'english_phonetic' && (
-                    <text
-                      x={pos.x}
-                      y={pos.y + outerRadius * 0.25}
-                      textAnchor="middle"
-                      fill={textColor}
-                      fontSize={outerRadius * 0.13}
-                    >
-                      {topic.phonetic}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
+                  </>
+                );
+              })()}
+            </>
           </svg>
         </div>
+      </section>
 
+      {/* ChatBox Section */}
+      <section className="w-full flex justify-center">
+        <ChatBox userLevel={userLevel} />
+      </section>
 
-
-      </div>
-
-
-
-      {/* Remove all view state and conditional rendering for 'names', 'detail', etc. Only keep the wheel rendering for now. */}
-      {/* {view === 'names' && (
-        <NamesOfAllah
-          onBack={() => setView('wheel')}
-          onNameClick={(name) => {
-            setSelectedName(name);
-            setView('detail');
-          }}
-          language={language}
-        />
-      )} */}
-
-      {/* {view === 'detail' && selectedName && (
-        <NameDetail
-          name={selectedName}
-          onBack={() => setView('names')}
-          onMore={() => alert('More info coming soon')}
-        />
-      )} */}
-
-      {/* {view === 'settings' && (
-        <Settings
-          language={language}
-          setLanguage={setLanguage}
-          onBack={() => setView('wheel')}
-        />
-      )} */}
-
-      {/* {view === 'tazkiyyah' && (
-        <TazkiyyahLanding onBack={() => setView('wheel')} />
-      )} */}
-
-            {/* Settings Component */}
+      {/* Settings Component */}
       <Settings />
-
-      {/* ChatBox Component */}
-      {console.log('WheelOfIslam ChatBox props:', { userGoal, userLevel })}
-      <ChatBox userGoal={userGoal} userLevel={userLevel} />
     </div>
   );
 };

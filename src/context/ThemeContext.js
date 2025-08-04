@@ -1,27 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { themes } from '../themes';
 
 const ThemeContext = createContext();
-
-export const themes = {
-  neon: {
-    name: 'Neon',
-    background: '#000000',
-    primary: '#FF007F',
-    secondary: '#00f2fa',
-    text: '#FFFFFF',
-    border: '#FF007F',
-    glow: true,
-  },
-  story: {
-    name: 'Story',
-    background: '#f6f1eb',
-    primary: '#4a3f78',
-    secondary: '#eea243',
-    text: '#1e1e1e',
-    border: '#c4a484',
-    glow: false,
-  },
-};
 
 export const ThemeProvider = ({ children }) => {
   const [themeName, setThemeName] = useState('neon');
@@ -36,10 +16,12 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   const updateTheme = (newThemeName) => {
+    console.log('Updating theme to:', newThemeName);
     if (themes[newThemeName]) {
       setThemeName(newThemeName);
       setTheme(themes[newThemeName]);
       localStorage.setItem('themeName', newThemeName);
+      console.log('Theme updated successfully to:', newThemeName);
     }
   };
 
