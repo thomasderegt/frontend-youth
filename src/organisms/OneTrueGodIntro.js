@@ -12,13 +12,6 @@ const OneTrueGodIntro = () => {
 
   const navigationButtons = [
     {
-      id: 'names',
-      label: 'Names of The One True God',
-      color: '#8B5CF6',
-      size: 'large',
-      onClick: () => navigate('/names')
-    },
-    {
       id: 'wheel',
       label: 'Back to Wheel',
       color: '#8B5CF6',
