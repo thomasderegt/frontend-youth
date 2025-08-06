@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
+// Progress tracking will be handled by backend
 import Header from '../organisms/Header';
 import Footer from '../organisms/Footer';
-import WheelOrganism from '../organisms/WheelOrganism';
+import WheelOutward from '../organisms/WheelOutward';
 import WheelInward from '../organisms/WheelInward';
-
-import fileSvg from '../assets/file.svg';
-import backgroundNeon from '../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight from '../assets/BackgroundHomePageYouthNightMode.png';
-import backgroundNeonNight3 from '../assets/BackgroundHomePageYouthNightMode3.png';
+import { getBackgroundStyle } from '../utils/backgrounds';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { themeName } = useTheme();
-  const { nightMode, setNightMode } = useSettings();
+  const { nightMode } = useSettings();
   const [expandedCard, setExpandedCard] = useState(null);
   const [currentWheel, setCurrentWheel] = useState('outward'); // 'outward', 'inward', of 'inward2'
+  const [showInstructionsModal, setShowInstructionsModal] = useState(false);
+
+  // Check URL parameters for wheel selection
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const wheelParam = urlParams.get('wheel');
+    if (wheelParam === 'inward') {
+      setCurrentWheel('inward');
+    }
+  }, [location.search]);
 
   // Mapping data from the Mapping file
   const mappingData = [
@@ -38,30 +46,6 @@ const HomePage = () => {
       poeticTitle: 'Whispers Beneath the Surface',
       wheel1Topics: ['Self-Reckoning', 'Sincerity', 'Wakefulness', 'Discipline', 'Hearing'],
       wheel2Topics: ['Jurisprudence (emotional worship)']
-    },
-    {
-      need: 'Purpose & Meaning',
-      poeticTitle: 'You Were Meant for More',
-      wheel1Topics: ['Wakefulness', 'Reflection'],
-      wheel2Topics: ['Belief', 'Life of the Prophet', 'Qur\'an']
-    },
-    {
-      need: 'Struggle & Pressure',
-      poeticTitle: 'The Weight and the Wings',
-      wheel1Topics: ['Self-Reckoning', 'Sincerity', 'Fleeing', 'Taking Shelter', 'Discipline'],
-      wheel2Topics: ['Modern Ideologies']
-    },
-    {
-      need: 'Identity & Belonging',
-      poeticTitle: 'Between Worlds, Still Whole',
-      wheel1Topics: ['Islamic History', 'Family & Society', 'Modern Ideologies', 'Reflection'],
-      wheel2Topics: ['Belief', 'Qur\'an']
-    },
-    {
-      need: 'Worship & Connection',
-      poeticTitle: 'When Silence Speaks to Allah',
-      wheel1Topics: ['Remembrance', 'Hearing', 'Wakefulness'],
-      wheel2Topics: ['Jurisprudence (Salah)', 'Qur\'an', 'Divine Watchfulness']
     }
   ];
 
@@ -69,11 +53,7 @@ const HomePage = () => {
   const flowToMapping = {
     'guilt-return': 0, // Guilt & Redemption
     'love-return': 1,  // Love & Safety
-    'inner-self': 2,   // Inner Self
-    'purpose': 3,      // Purpose & Meaning
-    'struggle': 4,     // Struggle & Pressure
-    'identity-belonging': 5, // Identity & Belonging
-    'worship-connection': 6  // Worship & Connection
+    'inner-self': 2    // Inner Self
   };
 
   const pageStyle = {
@@ -81,12 +61,8 @@ const HomePage = () => {
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getBackgroundStyle(themeName),
+    backgroundAttachment: 'fixed',
     transition: 'background 0.3s ease',
   };
 
@@ -107,23 +83,15 @@ const HomePage = () => {
     marginBottom: '3rem',
   };
 
-  const titleStyle = {
-    fontSize: 'clamp(2rem, 4vw, 3rem)',
-    fontWeight: 'bold',
-    marginBottom: '2rem',
-    textAlign: 'left',
-    color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000', // White text for neon nightmode
-  };
+  // const titleStyle = {
+  //   fontSize: 'clamp(2rem, 4vw, 3rem)',
+  //   fontWeight: 'bold',
+  //   marginBottom: '2rem',
+  //   textAlign: 'left',
+  //   color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000', // White text for neon nightmode
+  // };
 
-  const wheelContainerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: 'clamp(300px, 50vh, 400px)', // Responsive height for mobile
-    width: '100%',
-    marginBottom: 'clamp(1rem, 3vw, 2rem)',
-    padding: '0 0.5rem', // Add padding for mobile
-  };
+
 
   const flowsContainerStyle = {
     display: 'flex',
@@ -166,17 +134,11 @@ const HomePage = () => {
   const flowTitleStyle = {
     fontSize: 'clamp(1.1rem, 3vw, 1.3rem)',
     fontWeight: 'bold',
-    marginBottom: '0.5rem',
     marginBottom: '0.25rem',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000', // White text for neon nightmode
   };
 
-  const flowDescriptionStyle = {
-    fontSize: '0.9rem',
-    opacity: 0.8,
-    lineHeight: '1.3',
-    color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000', // White text for neon nightmode
-  };
+
 
 
 
@@ -190,24 +152,207 @@ const HomePage = () => {
   };
 
   const handleFlowStart = (flowId) => {
-    // Navigate to specific flow pages
-    if (flowId === 'guilt-return') {
-      navigate('/flow/return-to-mercy');
-    } else if (flowId === 'love-return') {
-      navigate('/flow/return-to-mercy');
-    } else if (flowId === 'inner-self') {
-      navigate('/flow/quiet-heart');
-    } else if (flowId === 'purpose') {
-      navigate('/flow/created-for-more');
-    } else if (flowId === 'struggle') {
-      navigate('/flow/return-to-mercy');
-    } else if (flowId === 'identity-belonging') {
-      navigate('/flow/created-for-more');
-    } else if (flowId === 'worship-connection') {
-      navigate('/flow/quiet-heart');
-    } else {
-      navigate(`/flow/${flowId}`);
-    }
+    // All guided flows lead to testflow 3
+    console.log('Starting flow:', flowId, 'navigating to /flow/test3');
+    navigate('/flow/test3');
+  };
+
+  // Helper function to create Start Journey button
+  const createStartJourneyButton = (flowId) => (
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        handleFlowStart(flowId);
+      }}
+      style={{
+        padding: '0.4rem 0.8rem',
+        borderRadius: '6px',
+        border: 'none',
+        background: 'rgba(139, 92, 246, 0.9)',
+        color: 'white',
+        cursor: 'pointer',
+        fontSize: '0.8rem',
+        fontWeight: 'bold',
+        transition: 'all 0.3s ease',
+        marginRight: '0.5rem',
+        opacity: 1
+      }}
+      onMouseEnter={(e) => {
+        e.target.style.background = 'rgba(139, 92, 246, 1)';
+        e.target.style.transform = 'translateY(-1px)';
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.background = 'rgba(139, 92, 246, 0.9)';
+        e.target.style.transform = 'translateY(0)';
+      }}
+    >
+      Start Journey
+    </button>
+  );
+
+  // Modal component for instructions
+  const InstructionsModal = () => {
+    const hasProgress = false; // Progress tracking will be handled by backend
+    
+    const modalOverlayStyle = {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      padding: '1rem'
+    };
+
+    const modalContentStyle = {
+      background: 'rgba(255, 255, 255, 0.95)',
+      borderRadius: '16px',
+      padding: '2rem',
+      maxWidth: '500px',
+      width: '100%',
+      maxHeight: '80vh',
+      overflow: 'auto',
+      position: 'relative',
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+      backdropFilter: 'blur(10px)'
+    };
+
+    const closeButtonStyle = {
+      position: 'absolute',
+      top: '1rem',
+      right: '1rem',
+      background: 'none',
+      border: 'none',
+      fontSize: '1.5rem',
+      cursor: 'pointer',
+      color: '#666',
+      padding: '0.5rem',
+      borderRadius: '50%',
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'all 0.2s ease'
+    };
+
+    const stepStyle = {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.75rem',
+      marginBottom: '1rem',
+      padding: '0.75rem',
+      borderRadius: '8px',
+      background: 'rgba(139, 92, 246, 0.1)'
+    };
+
+    const stepNumberStyle = {
+      background: '#8B5CF6',
+      color: 'white',
+      borderRadius: '50%',
+      width: '28px',
+      height: '28px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '0.9rem',
+      fontWeight: 'bold',
+      flexShrink: 0
+    };
+
+    const stepTextStyle = {
+      fontSize: '1rem',
+      color: '#333',
+      lineHeight: '1.4'
+    };
+
+    return (
+      <div style={modalOverlayStyle} onClick={() => setShowInstructionsModal(false)}>
+        <div style={modalContentStyle} onClick={(e) => e.stopPropagation()}>
+          <button 
+            style={closeButtonStyle}
+            onClick={() => setShowInstructionsModal(false)}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(0, 0, 0, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'none';
+            }}
+          >
+            ×
+          </button>
+          
+          <h2 style={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            marginBottom: '1.5rem',
+            textAlign: 'center',
+            color: '#333'
+          }}>
+                            {hasProgress ? '👋 Welcome back!' : '! Start your spiritual journey'}
+          </h2>
+          
+          <p style={{
+            fontSize: '1.1rem',
+            color: '#666',
+            marginBottom: '2rem',
+            textAlign: 'center',
+            lineHeight: '1.5'
+          }}>
+            {hasProgress 
+              ? 'Follow these steps to continue your journey:'
+              : 'Follow these steps to begin your journey:'
+            }
+          </p>
+          
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={stepStyle}>
+              <span style={stepNumberStyle}>1</span>
+              <span style={stepTextStyle}>
+                Click on a topic in the wheel to learn
+              </span>
+            </div>
+            
+            <div style={stepStyle}>
+              <span style={stepNumberStyle}>2</span>
+              <span style={stepTextStyle}>
+                Use the arrows to switch between <strong>Knowledge</strong> (←) and <strong>Spiritual Growth</strong> (→)
+              </span>
+            </div>
+            
+            <div style={stepStyle}>
+              <span style={stepNumberStyle}>3</span>
+              <span style={stepTextStyle}>
+                Scroll down for <strong>Guided Flows</strong> to apply new insights and spirituality
+              </span>
+            </div>
+          </div>
+          
+          <div style={{
+            textAlign: 'center',
+            padding: '1rem',
+            background: 'rgba(139, 92, 246, 0.1)',
+            borderRadius: '8px',
+            border: '1px solid rgba(139, 92, 246, 0.2)'
+          }}>
+            <p style={{
+              fontSize: '0.9rem',
+              color: '#666',
+              margin: 0,
+              lineHeight: '1.4'
+            }}>
+              The app uses a "Wheels" model - a visual, interactive way to organize and present Islamic subjects. 
+              God stands at the center of every wheel. There are two main wheels: Knowledge & Insight (outward focus) 
+              for traditional Islamic subjects, and Purification of the heart (inward focus) for spiritual development.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -220,24 +365,55 @@ const HomePage = () => {
       
       <Header />
       
-
-      
       <main style={mainStyle}>
         <div style={contentStyle}>
-                      {/* Main Title */}
-            <section style={sectionStyle}>
-              <h1 style={{
-                ...titleStyle,
-                textAlign: 'center',
-                marginBottom: '3rem',
-                fontSize: 'clamp(1.5rem, 3vw, 2rem)'
-              }}>
-                {currentWheel === 'outward' ? 'Knowledge & Insight' : 'Purification of the Heart - Tazkiyah Al-Nafs'}
-              </h1>
-            </section>
+          
+          {/* Instructions Button */}
+          <section style={sectionStyle}>
+            <div style={{
+              textAlign: 'center',
+              marginBottom: '2rem',
+              padding: '0 1rem'
+            }}>
+              <button
+                onClick={() => setShowInstructionsModal(true)}
+                style={{
+                  background: 'rgba(139, 92, 246, 0.9)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '1rem 2rem',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
+                  backdropFilter: 'blur(10px)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(139, 92, 246, 1)';
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(139, 92, 246, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(139, 92, 246, 0.9)';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 15px rgba(139, 92, 246, 0.3)';
+                }}
+              >
+                {(() => {
+                  const hasProgress = false; // Progress tracking will be handled by backend
+                  return hasProgress ? '📖 Show Instructions' : '! How to Use This App';
+                })()}
+              </button>
+            </div>
+          </section>
+          
+
 
           {/* Wheel Section */}
           <section style={sectionStyle}>
+            
 
             
             <div style={{
@@ -250,7 +426,7 @@ const HomePage = () => {
               marginBottom: 'clamp(1rem, 3vw, 2rem)',
               padding: '0 0.5rem', // Add padding for mobile
             }}>
-              {currentWheel === 'outward' ? <WheelOrganism /> : <WheelInward />}
+              {currentWheel === 'outward' ? <WheelOutward /> : <WheelInward />}
               
               {/* Navigation arrows - responsive positioning */}
               <div style={{
@@ -316,11 +492,6 @@ const HomePage = () => {
 
           {/* Guided Flows Section */}
           <section style={sectionStyle}>
-            <h2 style={{
-              ...titleStyle,
-              fontSize: 'clamp(1.5rem, 4vw, 2rem)', // Responsive font size
-              marginBottom: 'clamp(1rem, 3vw, 2rem)', // Responsive margin
-            }}>Guided Flows</h2>
             <div style={{
               ...flowsContainerStyle,
               padding: '0 0.5rem', // Add padding for mobile
@@ -422,26 +593,28 @@ const HomePage = () => {
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleFlowStart('guilt-return');
+                        // Disabled - does nothing
                       }}
                       style={{
                         marginTop: '1rem',
                         padding: '0.5rem 1rem',
                         borderRadius: '8px',
                         border: 'none',
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        color: '#ffffff',
-                        cursor: 'pointer',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        cursor: 'not-allowed',
                         fontSize: '0.9rem',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        opacity: 0.5
                       }}
+                      disabled
                     >
                       Start Journey
                     </button>
                   </div>
                 ) : (
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1 }}>
                       <h3 style={{ ...flowTitleStyle, margin: 0 }}>The Door That Never Closes</h3>
                       <p style={{ 
                         fontSize: '0.8rem', 
@@ -450,7 +623,11 @@ const HomePage = () => {
                         color: nightMode ? '#ffffff' : '#000000'
                       }}>About Allah's eternal welcome, even after mistakes</p>
                     </div>
-                    <span style={{ fontSize: '1.2rem', opacity: 0.6 }}>▼</span>
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      {createStartJourneyButton('guilt-return')}
+                      <span style={{ fontSize: '1.2rem', opacity: 0.6 }}>▼</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -568,7 +745,7 @@ const HomePage = () => {
                   </div>
                 ) : (
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1 }}>
                       <h3 style={{ ...flowTitleStyle, margin: 0 }}>Held in His Mercy</h3>
                       <p style={{ 
                         fontSize: '0.8rem', 
@@ -577,7 +754,11 @@ const HomePage = () => {
                         color: nightMode ? '#ffffff' : '#000000'
                       }}>About wondering whether Allah still loves them</p>
                     </div>
-                    <span style={{ fontSize: '1.2rem', opacity: 0.6 }}>▼</span>
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      {createStartJourneyButton('love-return')}
+                      <span style={{ fontSize: '1.2rem', opacity: 0.6 }}>▼</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -695,7 +876,7 @@ const HomePage = () => {
                   </div>
                 ) : (
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1 }}>
                       <h3 style={{ ...flowTitleStyle, margin: 0 }}>Whispers Beneath the Surface</h3>
                       <p style={{ 
                         fontSize: '0.8rem', 
@@ -704,7 +885,11 @@ const HomePage = () => {
                         color: nightMode ? '#ffffff' : '#000000'
                       }}>About emotions, inner storms, and what lives beneath the surface</p>
                     </div>
-                    <span style={{ fontSize: '1.2rem', opacity: 0.6 }}>▼</span>
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      {createStartJourneyButton('inner-self')}
+                      <span style={{ fontSize: '1.2rem', opacity: 0.6 }}>▼</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -1222,6 +1407,9 @@ const HomePage = () => {
       </main>
 
       <Footer />
+      
+      {/* Instructions Modal */}
+      {showInstructionsModal && <InstructionsModal />}
     </div>
   );
 };
