@@ -200,26 +200,7 @@ const Header = () => {
               Settings
             </span>
           </li>
-          <li style={{ display: 'flex', alignItems: 'center', height: '3rem', minHeight: '3rem' }}>
-            <span 
-              style={menuItemStyle}
-              onClick={() => handleMenuClick('/about')}
-              onMouseEnter={(e) => e.target.style.opacity = '0.7'}
-              onMouseLeave={(e) => e.target.style.opacity = '1'}
-            >
-              About
-            </span>
-          </li>
-          <li style={{ display: 'flex', alignItems: 'center', height: '3rem', minHeight: '3rem' }}>
-            <span 
-              style={menuItemStyle}
-              onClick={() => handleMenuClick('/test')}
-              onMouseEnter={(e) => e.target.style.opacity = '0.7'}
-              onMouseLeave={(e) => e.target.style.opacity = '1'}
-            >
-              Test
-            </span>
-          </li>
+
         </ul>
 
         {/* Mobile Hamburger Button */}
@@ -268,22 +249,7 @@ const Header = () => {
               Settings
             </span>
           </li>
-          <li>
-            <span 
-              style={mobileMenuItemStyle}
-              onClick={() => handleMenuClick('/about')}
-            >
-              About
-            </span>
-          </li>
-          <li>
-            <span 
-              style={mobileMenuItemStyle}
-              onClick={() => handleMenuClick('/test')}
-            >
-              Test
-            </span>
-          </li>
+
         </ul>
       </nav>
     </header>
