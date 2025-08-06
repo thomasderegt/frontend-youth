@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
@@ -13,10 +13,8 @@ const WHEEL_SEGMENTS = [
   { id: 'Fleeing', phonetic: 'Firār', position: 6, angle: 150 },
   { id: 'Training', phonetic: 'Riyāḍah', position: 7, angle: 180 },
   { id: 'Hearing', phonetic: 'Samāʿ', position: 8, angle: 210 },
-  { id: 'Soul', phonetic: 'Nafs', position: 9, angle: 240 },
-  { id: 'Remembrance', phonetic: 'Dhikr', position: 10, angle: 270 },
-  { id: 'Repentance', phonetic: 'Tawbah', position: 11, angle: 300 },
-  { id: 'Sincerity', phonetic: 'Ikhlas', position: 12, angle: 330 },
+  { id: 'Remembrance', phonetic: 'Dhikr', position: 9, angle: 240 },
+  { id: 'Repentance', phonetic: 'Tawbah', position: 10, angle: 270 },
 ];
 
 // Neon theme styling voor Youth Inward segmenten - Combined Wheel 2 & 3
@@ -29,10 +27,8 @@ const neonSegmentStyles = {
   'Fleeing': { color: '#8B5CF6', glow: true, icon: '🏃' }, // Paars - Vluchten
   'Training': { color: '#3B82F6', glow: true, icon: '💪' }, // Blauw - Training
   'Hearing': { color: '#7C3AED', glow: true, icon: '👂' }, // Violet - Luisteren
-  'Soul': { color: '#8B5CF6', glow: true, icon: '💭' }, // Paars - Ziel
   'Remembrance': { color: '#3B82F6', glow: true, icon: '🕊️' }, // Blauw - Herinnering
   'Repentance': { color: '#7C3AED', glow: true, icon: '🔄' }, // Violet - Berouw
-  'Sincerity': { color: '#1D4ED8', glow: true, icon: '💎' }, // Donkerblauw - Oprechtheid
 };
 
 const WheelInward = () => {
@@ -66,11 +62,11 @@ const WheelInward = () => {
   const center = size / 2;
   const radius = center * 0.8; // Increased radius to spread out more
   const outerRadius = center * 0.18; // Slightly larger circles
-  const centerRadius = center * 0.28; // Larger center circle
+  // const centerRadius = center * 0.28; // Larger center circle - unused
   
   // Circle mode only
   const topicRadius = radius * 0.95; // Spread segments out more
-  const centerTextRadius = centerRadius;
+  // const centerTextRadius = centerRadius; // Unused variable
   const centerCircleRadius = outerRadius; // Same size as other circles
 
   const calculatePoint = (angle, distance) => ({
@@ -79,48 +75,48 @@ const WheelInward = () => {
   });
 
   const handleClick = (segmentId) => {
+    console.log('=== CLICK DEBUG ===');
     console.log('Clicked segment:', segmentId);
+    console.log('Segment type:', typeof segmentId);
     
     // Navigate to intro pages based on segment
-    if (segmentId === 'Wakefulness' || segmentId === 'CENTER') {
+    if (segmentId === 'Wakefulness') {
       console.log('Navigating to /intro-wakefulness');
-      window.location.href = '/intro-wakefulness';
+      navigate('/intro-wakefulness');
+    } else if (segmentId === 'CENTER') {
+      console.log('Navigating to /god');
+      navigate('/god');
     } else if (segmentId === 'Self-Reckoning') {
       console.log('Navigating to /intro-self-reckoning');
-      window.location.href = '/intro-self-reckoning';
+      navigate('/intro-self-reckoning');
     } else if (segmentId === 'Returning') {
       console.log('Navigating to /intro-returning');
-      window.location.href = '/intro-returning';
+      navigate('/intro-returning');
     } else if (segmentId === 'Reflection') {
       console.log('Navigating to /intro-reflection');
-      window.location.href = '/intro-reflection';
+      navigate('/intro-reflection');
     } else if (segmentId === 'Taking Shelter') {
       console.log('Navigating to /intro-taking-shelter');
-      window.location.href = '/intro-taking-shelter';
+      navigate('/intro-taking-shelter');
     } else if (segmentId === 'Fleeing') {
       console.log('Navigating to /intro-fleeing');
-      window.location.href = '/intro-fleeing';
+      navigate('/intro-fleeing');
     } else if (segmentId === 'Training') {
       console.log('Navigating to /intro-training');
-      window.location.href = '/intro-training';
+      navigate('/intro-training');
     } else if (segmentId === 'Hearing') {
       console.log('Navigating to /intro-hearing');
-      window.location.href = '/intro-hearing';
-    } else if (segmentId === 'Soul') {
-      console.log('Navigating to /intro-soul');
-      window.location.href = '/intro-soul';
+      navigate('/intro-hearing');
     } else if (segmentId === 'Remembrance') {
       console.log('Navigating to /intro-remembrance');
-      window.location.href = '/intro-remembrance';
+      navigate('/intro-remembrance');
     } else if (segmentId === 'Repentance') {
       console.log('Navigating to /intro-repentance');
-      window.location.href = '/intro-repentance';
-    } else if (segmentId === 'Sincerity') {
-      console.log('Navigating to /intro-sincerity');
-      window.location.href = '/intro-sincerity';
+      navigate('/intro-repentance');
     } else {
       console.log('No navigation found for segment:', segmentId);
     }
+    console.log('=== END DEBUG ===');
   };
 
   const getCenterFontSize = (text) => {
@@ -267,7 +263,6 @@ const WheelInward = () => {
             return (
               <g
                 key={segment.id}
-                onClick={() => handleClick(segment.id)}
                 style={{ cursor: 'pointer' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.opacity = '0.8';
@@ -284,7 +279,12 @@ const WheelInward = () => {
                   fill={fillColor}
                   stroke={strokeColor}
                   strokeWidth={Math.max(size / 400, 1)}
-                  style={{ pointerEvents: 'none' }}
+                  style={{ 
+                    cursor: 'pointer',
+                    filter: themeName === 'neon' && segmentStyle?.glow ? 'url(#neonGlow)' : 'none',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onClick={() => handleClick(segment.id)}
                 />
                 
                 {/* Title in circle */}
@@ -333,7 +333,7 @@ const WheelInward = () => {
 
           {/* Centrale cirkel */}
           {(() => {
-            const centerFill = themeName === 'neon' ? (nightMode ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)') : 'rgba(255, 255, 255, 0.3)'; // Dynamic background for neon
+            const fillColor = themeName === 'neon' ? (nightMode ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)') : 'rgba(255, 255, 255, 0.3)'; // Dynamic background for neon
             const centerStroke = themeName === 'zwartWit' ? '#000000' : 
                                 themeName === 'neon' ? '#8B5CF6' : theme.border;
             const centerTextColor = themeName === 'neon' && nightMode ? '#ffffff' : '#000000'; // White text for neon nightmode
@@ -344,7 +344,7 @@ const WheelInward = () => {
                   cx={center}
                   cy={center}
                   r={centerCircleRadius}
-                  fill={centerFill}
+                  fill={fillColor}
                   stroke={centerStroke}
                   strokeWidth={Math.max(size / 400, 1)}
                   onClick={() => handleClick('CENTER')}

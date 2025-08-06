@@ -2,37 +2,26 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
-
 const IntroFamilySocietyPage = () => {
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
-
   const pageStyle = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getTopicBackgroundStyle(),
     transition: 'background 0.3s ease',
   };
-
   const mainStyle = {
     flex: 1,
     paddingTop: '80px',
     padding: '1rem',
   };
-
   const contentStyle = {
     maxWidth: '800px',
     margin: '0 auto',
@@ -42,7 +31,6 @@ const IntroFamilySocietyPage = () => {
     padding: '2rem',
     backdropFilter: 'none',
   };
-
   const titleStyle = {
     fontSize: 'clamp(2rem, 4vw, 3rem)',
     fontWeight: 'bold',
@@ -50,7 +38,6 @@ const IntroFamilySocietyPage = () => {
     textAlign: 'center',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const subtitleStyle = {
     fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
     fontWeight: 'normal',
@@ -59,14 +46,12 @@ const IntroFamilySocietyPage = () => {
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
     opacity: 0.8,
   };
-
   const descriptionStyle = {
     fontSize: '1.1rem',
     lineHeight: '1.6',
     marginBottom: '2rem',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const buttonStyle = {
     padding: '1rem 2rem',
     fontSize: '1.1rem',
@@ -79,25 +64,24 @@ const IntroFamilySocietyPage = () => {
     color: '#ffffff',
     margin: '0.5rem',
   };
-
   return (
     <div style={pageStyle}>
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
           <h1 style={titleStyle}>Family & Society (Usrah wa Mujtamaʿ)</h1>
-          <h2 style={subtitleStyle}>Building Strong Communities</h2>
+          <h2 style={subtitleStyle}>Your Place in the World</h2>
           
           <p style={descriptionStyle}>
-            This topic explores the fundamental aspects of family & society, 
-            providing deep insights into its significance in Islamic tradition and contemporary life.
+            Family and society aren't just abstract concepts - they're about your relationships, your community, 
+            and your role in making the world better. Whether it's dealing with family dynamics, building 
+            friendships, or contributing to your community, you have the power to create positive change.
           </p>
-
           <p style={descriptionStyle}>
-            Through this journey, you'll discover the rich history, practical applications, and spiritual 
-            dimensions of this important aspect of Islamic knowledge and practice.
+            We'll explore how to navigate family relationships, build healthy friendships, and develop the 
+            skills to be a positive force in your community. You'll learn how Islamic values guide us in 
+            creating strong, supportive relationships and contributing to a better society.
           </p>
-
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
               style={buttonStyle}
@@ -109,11 +93,11 @@ const IntroFamilySocietyPage = () => {
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=outward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>
@@ -122,5 +106,4 @@ const IntroFamilySocietyPage = () => {
     </div>
   );
 };
-
 export default IntroFamilySocietyPage;

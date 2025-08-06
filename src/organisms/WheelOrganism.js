@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
@@ -57,12 +57,10 @@ const WheelOrganism = () => {
 
   const center = size / 2;
   const radius = center * 0.7;
-  const outerRadius = center * 0.20; // Much smaller circle size to prevent overlap
-  const centerRadius = center * 0.30; // Larger center circle
+  const outerRadius = center * 0.30; // Increased circle size for better clickability
   
   // Circle mode only
   const topicRadius = radius * 0.90; // Moved segments closer together
-  const centerTextRadius = centerRadius;
   const centerCircleRadius = outerRadius; // Same size as other circles
 
   const calculatePoint = (angle, distance) => ({
@@ -72,32 +70,34 @@ const WheelOrganism = () => {
 
   const handleClick = (segmentId) => {
     console.log('Clicked segment:', segmentId);
+    console.log('Segment type:', typeof segmentId);
     
     // Navigate to intro pages based on segment
     if (segmentId === 'Belief' || segmentId === 'CENTER') {
       console.log('Navigating to /intro-belief');
-      window.location.href = '/intro-belief';
+      navigate('/intro-belief');
     } else if (segmentId === 'Jurisprudence') {
       console.log('Navigating to /intro-jurisprudence');
-      window.location.href = '/intro-jurisprudence';
+      console.log('About to navigate to /intro-jurisprudence');
+      navigate('/intro-jurisprudence');
     } else if (segmentId === 'Qur\'an') {
       console.log('Navigating to /intro-quran');
-      window.location.href = '/intro-quran';
+      navigate('/intro-quran');
     } else if (segmentId === 'Life of the Prophet') {
       console.log('Navigating to /intro-life-of-prophet');
-      window.location.href = '/intro-life-of-prophet';
+      navigate('/intro-life-of-prophet');
     } else if (segmentId === 'Islamic History') {
       console.log('Navigating to /intro-islamic-history');
-      window.location.href = '/intro-islamic-history';
+      navigate('/intro-islamic-history');
     } else if (segmentId === 'Modern Ideologies') {
       console.log('Navigating to /intro-modern-ideologies');
-      window.location.href = '/intro-modern-ideologies';
+      navigate('/intro-modern-ideologies');
     } else if (segmentId === 'Family & Society') {
       console.log('Navigating to /intro-family-society');
-      window.location.href = '/intro-family-society';
+      navigate('/intro-family-society');
     } else if (segmentId === 'DIVINE LAW') {
-      console.log('Navigating to /intro-divine-law');
-      window.location.href = '/intro-divine-law';
+      console.log('Navigating to /intro-jurisprudence');
+      navigate('/intro-jurisprudence');
     } else {
       console.log('No navigation found for segment:', segmentId);
     }
@@ -154,10 +154,10 @@ const WheelOrganism = () => {
           )}
         </defs>
 
-        {/* Circle mode: Traditionele cirkels */}
-        <>
-          {/* Verbindingslijnen tussen buitenste cirkels - Op de randen */}
-          {WHEEL_SEGMENTS.map((segment, index) => {
+                  {/* Circle mode: Traditionele cirkels */}
+          <>
+            {/* Verbindingslijnen tussen buitenste cirkels - Op de randen */}
+            {WHEEL_SEGMENTS.map((segment, index) => {
             const currentAngle = (index / WHEEL_SEGMENTS.length) * 2 * Math.PI;
             const currentPos = calculatePoint(currentAngle, topicRadius);
             
@@ -259,6 +259,15 @@ const WheelOrganism = () => {
                   e.currentTarget.style.opacity = '1';
                 }}
               >
+                {/* Invisible larger click area */}
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r={outerRadius * 1.5}
+                  fill="transparent"
+                  stroke="none"
+                  style={{ pointerEvents: 'auto' }}
+                />
                 <circle
                   cx={pos.x}
                   cy={pos.y}

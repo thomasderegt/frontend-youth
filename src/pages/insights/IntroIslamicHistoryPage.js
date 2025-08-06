@@ -2,37 +2,26 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
-
 const IntroIslamicHistoryPage = () => {
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
-
   const pageStyle = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getTopicBackgroundStyle(),
     transition: 'background 0.3s ease',
   };
-
   const mainStyle = {
     flex: 1,
     paddingTop: '80px',
     padding: '1rem',
   };
-
   const contentStyle = {
     maxWidth: '800px',
     margin: '0 auto',
@@ -42,7 +31,6 @@ const IntroIslamicHistoryPage = () => {
     padding: '2rem',
     backdropFilter: 'none',
   };
-
   const titleStyle = {
     fontSize: 'clamp(2rem, 4vw, 3rem)',
     fontWeight: 'bold',
@@ -50,7 +38,6 @@ const IntroIslamicHistoryPage = () => {
     textAlign: 'center',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const subtitleStyle = {
     fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
     fontWeight: 'normal',
@@ -59,14 +46,12 @@ const IntroIslamicHistoryPage = () => {
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
     opacity: 0.8,
   };
-
   const descriptionStyle = {
     fontSize: '1.1rem',
     lineHeight: '1.6',
     marginBottom: '2rem',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const buttonStyle = {
     padding: '1rem 2rem',
     fontSize: '1.1rem',
@@ -79,25 +64,24 @@ const IntroIslamicHistoryPage = () => {
     color: '#ffffff',
     margin: '0.5rem',
   };
-
   return (
     <div style={pageStyle}>
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
           <h1 style={titleStyle}>Islamic History (Tārīkh)</h1>
-          <h2 style={subtitleStyle}>Our Rich Heritage</h2>
+          <h2 style={subtitleStyle}>Your Story, Your Legacy</h2>
           
           <p style={descriptionStyle}>
-            This topic explores the fundamental aspects of islamic history, 
-            providing deep insights into its significance in Islamic tradition and contemporary life.
+            Islamic history isn't just dates and names - it's the epic story of how Muslims changed the world 
+            and how you're part of that legacy. From scientific discoveries to social justice movements, 
+            Muslims have been at the forefront of human progress.
           </p>
-
           <p style={descriptionStyle}>
-            Through this journey, you'll discover the rich history, practical applications, and spiritual 
-            dimensions of this important aspect of Islamic knowledge and practice.
+            We'll explore the amazing achievements of Muslim scholars, leaders, and everyday people who made 
+            a difference. You'll discover how their stories connect to your own potential and how you can 
+            continue this tradition of excellence in your own life and community.
           </p>
-
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
               style={buttonStyle}
@@ -109,11 +93,11 @@ const IntroIslamicHistoryPage = () => {
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=outward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>
@@ -122,5 +106,4 @@ const IntroIslamicHistoryPage = () => {
     </div>
   );
 };
-
 export default IntroIslamicHistoryPage;

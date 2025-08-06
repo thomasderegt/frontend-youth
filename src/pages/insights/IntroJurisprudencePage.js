@@ -2,37 +2,27 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
-
 const IntroJurisprudencePage = () => {
+  console.log('IntroJurisprudencePage rendered');
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
-
   const pageStyle = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getTopicBackgroundStyle(),
     transition: 'background 0.3s ease',
   };
-
   const mainStyle = {
     flex: 1,
     paddingTop: '80px',
     padding: '1rem',
   };
-
   const contentStyle = {
     maxWidth: '800px',
     margin: '0 auto',
@@ -42,7 +32,6 @@ const IntroJurisprudencePage = () => {
     padding: '2rem',
     backdropFilter: 'none',
   };
-
   const titleStyle = {
     fontSize: 'clamp(2rem, 4vw, 3rem)',
     fontWeight: 'bold',
@@ -50,7 +39,6 @@ const IntroJurisprudencePage = () => {
     textAlign: 'center',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const subtitleStyle = {
     fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
     fontWeight: 'normal',
@@ -59,14 +47,12 @@ const IntroJurisprudencePage = () => {
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
     opacity: 0.8,
   };
-
   const descriptionStyle = {
     fontSize: '1.1rem',
     lineHeight: '1.6',
     marginBottom: '2rem',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const buttonStyle = {
     padding: '1rem 2rem',
     fontSize: '1.1rem',
@@ -79,27 +65,24 @@ const IntroJurisprudencePage = () => {
     color: '#ffffff',
     margin: '0.5rem',
   };
-
   return (
     <div style={pageStyle}>
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
-          <h1 style={titleStyle}>Jurisprudence (Fiqh)</h1>
-          <h2 style={subtitleStyle}>Understanding Islamic Law and Practice</h2>
+          <h1 style={titleStyle}>Live Your Best Life! 📚</h1>
+          <h2 style={subtitleStyle}>How to Be Muslim in the Real World</h2>
           
           <p style={descriptionStyle}>
-            Jurisprudence, or Fiqh in Arabic, is the understanding and application of Islamic law. It guides Muslims 
-            in how to live their daily lives according to Islamic principles, covering everything from prayer and 
-            fasting to business transactions and family matters.
+            Think of Fiqh as your personal life coach for being Muslim. It's not about following rules blindly - 
+            it's about understanding the wisdom behind Islamic practices and how they help you become the best 
+            version of yourself.
           </p>
-
           <p style={descriptionStyle}>
-            This topic explores the different schools of Islamic thought, the process of deriving legal rulings, 
-            and how Islamic law adapts to modern challenges while maintaining its core principles. You'll learn 
-            about the sources of Islamic law and how scholars interpret them for contemporary life.
+            From prayer and fasting to dealing with social media and school life, we'll explore how Islamic 
+            guidance applies to your daily challenges. You'll learn how different scholars approach modern 
+            questions and how to make smart decisions that align with your faith while navigating today's world.
           </p>
-
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
               style={buttonStyle}
@@ -107,15 +90,15 @@ const IntroJurisprudencePage = () => {
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Start Learning
+              Let's Live Better! 📚
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=outward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>
@@ -124,5 +107,4 @@ const IntroJurisprudencePage = () => {
     </div>
   );
 };
-
 export default IntroJurisprudencePage; 

@@ -2,37 +2,29 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
-
 const IntroQuranPage = () => {
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
-
   const pageStyle = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
+    ...getTopicBackgroundStyle(),
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     transition: 'background 0.3s ease',
   };
-
   const mainStyle = {
     flex: 1,
     paddingTop: '80px',
     padding: '1rem',
   };
-
   const contentStyle = {
     maxWidth: '800px',
     margin: '0 auto',
@@ -42,7 +34,6 @@ const IntroQuranPage = () => {
     padding: '2rem',
     backdropFilter: 'none',
   };
-
   const titleStyle = {
     fontSize: 'clamp(2rem, 4vw, 3rem)',
     fontWeight: 'bold',
@@ -50,7 +41,6 @@ const IntroQuranPage = () => {
     textAlign: 'center',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const subtitleStyle = {
     fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
     fontWeight: 'normal',
@@ -59,14 +49,12 @@ const IntroQuranPage = () => {
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
     opacity: 0.8,
   };
-
   const descriptionStyle = {
     fontSize: '1.1rem',
     lineHeight: '1.6',
     marginBottom: '2rem',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const buttonStyle = {
     padding: '1rem 2rem',
     fontSize: '1.1rem',
@@ -79,25 +67,24 @@ const IntroQuranPage = () => {
     color: '#ffffff',
     margin: '0.5rem',
   };
-
   return (
     <div style={pageStyle}>
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
           <h1 style={titleStyle}>Qur'an (Qurʾān)</h1>
-          <h2 style={subtitleStyle}>The Divine Revelation</h2>
+          <h2 style={subtitleStyle}>God's Message to You</h2>
           
           <p style={descriptionStyle}>
-            This topic explores the fundamental aspects of qur'an, 
-            providing deep insights into its significance in Islamic tradition and contemporary life.
+            The Qur'an isn't just a book - it's God's personal message to you. Think of it as the ultimate 
+            life guide that speaks directly to your heart and mind. It's not about memorizing verses without 
+            understanding; it's about connecting with God's words in a way that transforms your life.
           </p>
-
           <p style={descriptionStyle}>
-            Through this journey, you'll discover the rich history, practical applications, and spiritual 
-            dimensions of this important aspect of Islamic knowledge and practice.
+            We'll explore how the Qur'an relates to your daily struggles, relationships, and dreams. From dealing 
+            with peer pressure to finding your purpose, you'll discover how God's guidance is relevant to every 
+            aspect of your life as a young Muslim in today's world.
           </p>
-
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
               style={buttonStyle}
@@ -109,11 +96,11 @@ const IntroQuranPage = () => {
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=outward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>
@@ -122,5 +109,4 @@ const IntroQuranPage = () => {
     </div>
   );
 };
-
 export default IntroQuranPage;

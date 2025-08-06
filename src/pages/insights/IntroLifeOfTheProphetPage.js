@@ -2,37 +2,26 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
-
 const IntroLifeOfTheProphetPage = () => {
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
-
   const pageStyle = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getTopicBackgroundStyle(),
     transition: 'background 0.3s ease',
   };
-
   const mainStyle = {
     flex: 1,
     paddingTop: '80px',
     padding: '1rem',
   };
-
   const contentStyle = {
     maxWidth: '800px',
     margin: '0 auto',
@@ -42,7 +31,6 @@ const IntroLifeOfTheProphetPage = () => {
     padding: '2rem',
     backdropFilter: 'none',
   };
-
   const titleStyle = {
     fontSize: 'clamp(2rem, 4vw, 3rem)',
     fontWeight: 'bold',
@@ -50,7 +38,6 @@ const IntroLifeOfTheProphetPage = () => {
     textAlign: 'center',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const subtitleStyle = {
     fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
     fontWeight: 'normal',
@@ -59,14 +46,12 @@ const IntroLifeOfTheProphetPage = () => {
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
     opacity: 0.8,
   };
-
   const descriptionStyle = {
     fontSize: '1.1rem',
     lineHeight: '1.6',
     marginBottom: '2rem',
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
-
   const buttonStyle = {
     padding: '1rem 2rem',
     fontSize: '1.1rem',
@@ -79,25 +64,24 @@ const IntroLifeOfTheProphetPage = () => {
     color: '#ffffff',
     margin: '0.5rem',
   };
-
   return (
     <div style={pageStyle}>
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
           <h1 style={titleStyle}>Life of the Prophet (Sīrah)</h1>
-          <h2 style={subtitleStyle}>The Perfect Example</h2>
+          <h2 style={subtitleStyle}>Your Ultimate Role Model</h2>
           
           <p style={descriptionStyle}>
-            This topic explores the fundamental aspects of life of the prophet, 
-            providing deep insights into its significance in Islamic tradition and contemporary life.
+            Prophet Muhammad ﷺ wasn't just a historical figure - he's your ultimate role model for navigating 
+            life's challenges. His story is packed with real-life lessons about dealing with bullies, standing 
+            up for what's right, and staying true to yourself when everyone else is going the wrong way.
           </p>
-
           <p style={descriptionStyle}>
-            Through this journey, you'll discover the rich history, practical applications, and spiritual 
-            dimensions of this important aspect of Islamic knowledge and practice.
+            We'll explore how the Prophet's life relates to your struggles with identity, peer pressure, and 
+            finding your place in the world. From his teenage years to his leadership, you'll discover practical 
+            ways to apply his wisdom to your own life as a young Muslim today.
           </p>
-
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
               style={buttonStyle}
@@ -109,11 +93,11 @@ const IntroLifeOfTheProphetPage = () => {
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=outward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>
@@ -122,5 +106,4 @@ const IntroLifeOfTheProphetPage = () => {
     </div>
   );
 };
-
 export default IntroLifeOfTheProphetPage;

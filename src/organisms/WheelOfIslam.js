@@ -118,6 +118,8 @@ const WheelOfIslam = () => {
       openSettings();
     } else if (topic === 'Purification' || topic === 'Tazkiyyah') {
       navigate('/tazkiyyah');
+    } else if (topic === 'Repentance') {
+      navigate('/intro-repentance');
     } else {
       // Convert topic name to URL-friendly format
       const topicSlug = topic.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');

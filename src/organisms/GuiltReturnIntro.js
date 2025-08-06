@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../context/LanguageContext';
+
 import { useTheme } from '../context/ThemeContext';
 import MenuContainer from '../atoms/MenuContainer';
 import MenuText from '../atoms/MenuText';
@@ -9,17 +9,10 @@ import ProgressBar from '../atoms/ProgressBar';
 
 const GuiltReturnIntro = () => {
   const navigate = useNavigate();
-  const { language } = useLanguage();
+
   const { theme, themeName } = useTheme();
 
   const navigationButtons = [
-    {
-      id: 'start',
-      label: 'Start Journey',
-      color: '#00f2fa',
-      size: 'large',
-      onClick: () => navigate('/guilt-return/flow')
-    },
     {
       id: 'back',
       label: 'Back to Home',
@@ -38,9 +31,9 @@ const GuiltReturnIntro = () => {
     <MenuContainer variant="default" className="min-h-screen text-white flex flex-col items-center justify-center p-6">
       <div className="max-w-4xl mx-auto text-center">
         {/* Header */}
-        <MenuText variant="title" className="mb-8">
+        {/* <MenuText variant="title" className="mb-8">
           💔 Guilt & Return
-        </MenuText>
+        </MenuText> */}
         
         {/* Subtitle */}
         <MenuText variant="subtitle" className="mb-8">

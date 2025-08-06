@@ -2,15 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
 
 const IntroBeliefPage = () => {
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
 
   const pageStyle = {
@@ -18,12 +16,7 @@ const IntroBeliefPage = () => {
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getTopicBackgroundStyle(),
     transition: 'background 0.3s ease',
   };
 
@@ -85,20 +78,20 @@ const IntroBeliefPage = () => {
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
-          <h1 style={titleStyle}>Belief (ʿAqīdah)</h1>
-          <h2 style={subtitleStyle}>Understanding the Foundations of Islamic Faith</h2>
+          <h1 style={titleStyle}>What Do You Believe? 🤔</h1>
+          <h2 style={subtitleStyle}>Time to Figure Out What You Really Think</h2>
           
           <p style={descriptionStyle}>
-            Belief, or ʿAqīdah in Arabic, forms the foundation of Islamic faith. It encompasses the core principles 
-            and convictions that every Muslim holds dear. This topic explores the fundamental beliefs that shape our 
-            understanding of Allah, the universe, and our purpose in life.
+            Ever wondered what makes your faith tick? Belief, or ʿAqīdah, is like the operating system of your 
+            spiritual life. It's not just about saying you believe - it's about understanding why you believe 
+            and how that shapes everything you do.
           </p>
 
           <p style={descriptionStyle}>
-            Through this journey, you'll discover the six pillars of faith, understand the nature of Allah's 
-            attributes, and explore how belief influences every aspect of a Muslim's life. From the concept of 
-            Tawḥīd (monotheism) to the belief in the unseen, each aspect of Islamic belief is carefully 
-            designed to bring us closer to our Creator.
+            We'll explore the six pillars of faith in a way that makes sense for your life right now. From 
+            understanding who God really is to figuring out your purpose in this world, you'll discover how 
+            your beliefs affect your choices, relationships, and future. This isn't just theory - it's about 
+            building a strong foundation for your life as a young Muslim.
           </p>
 
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
@@ -108,15 +101,15 @@ const IntroBeliefPage = () => {
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Start Learning
+              Let's Figure It Out! 🤔
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=outward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>

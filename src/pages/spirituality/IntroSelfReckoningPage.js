@@ -2,15 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
 
 const IntroSelfReckoningPage = () => {
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
 
   const pageStyle = {
@@ -18,12 +16,7 @@ const IntroSelfReckoningPage = () => {
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getTopicBackgroundStyle(),
     transition: 'background 0.3s ease',
   };
 
@@ -85,17 +78,17 @@ const IntroSelfReckoningPage = () => {
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
-          <h1 style={titleStyle}>Self-Reckoning (Muḥāsabah)</h1>
-          <h2 style={subtitleStyle}>Examining Our Hearts</h2>
+          <h1 style={titleStyle}>Check Yourself! 🔍</h1>
+          <h2 style={subtitleStyle}>Time for Some Real Talk with Yourself</h2>
           
           <p style={descriptionStyle}>
-            This topic explores the fundamental aspects of self-reckoning, 
-            providing deep insights into its significance in Islamic tradition and contemporary life.
+            Ever catch yourself doing something and think "wait, why am I doing this?" 
+            Self-reckoning is about being honest with yourself and taking a real look at your actions.
           </p>
 
           <p style={descriptionStyle}>
-            Through this journey, you'll discover the rich history, practical applications, and spiritual 
-            dimensions of this important aspect of Islamic knowledge and practice.
+            We'll explore how to check in with yourself regularly, be honest about your mistakes, 
+            and figure out what's really driving your choices.
           </p>
 
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
@@ -105,15 +98,15 @@ const IntroSelfReckoningPage = () => {
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Start Learning
+              Let's Check In! 🔍
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=inward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>

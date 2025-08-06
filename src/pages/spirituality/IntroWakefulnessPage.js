@@ -2,15 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getTopicBackgroundStyle } from '../../utils/backgrounds';
 import Header from '../../organisms/Header';
 import Footer from '../../organisms/Footer';
-import fileSvg from '../../assets/file.svg';
-import backgroundNeon from '../../assets/BackgroundHomePageYouth4.png';
-import backgroundNeonNight3 from '../../assets/BackgroundHomePageYouthNightMode3.png';
 
 const IntroWakefulnessPage = () => {
   const navigate = useNavigate();
-  const { theme, themeName } = useTheme();
+  const { themeName } = useTheme();
   const { nightMode } = useSettings();
 
   const pageStyle = {
@@ -18,12 +16,7 @@ const IntroWakefulnessPage = () => {
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    background: themeName === 'style' ? `url(${fileSvg})` : 
-               themeName === 'neon' && nightMode ? `url(${backgroundNeonNight3})` :
-               themeName === 'neon' ? `url(${backgroundNeon})` : '#ffffff',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
+    ...getTopicBackgroundStyle(),
     transition: 'background 0.3s ease',
   };
 
@@ -85,17 +78,17 @@ const IntroWakefulnessPage = () => {
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
-          <h1 style={titleStyle}>Wakefulness (Yaqzah)</h1>
-          <h2 style={subtitleStyle}>Awakening to Divine Reality</h2>
+          <h1 style={titleStyle}>Wake Up! 🌅</h1>
+          <h2 style={subtitleStyle}>Time to Open Your Eyes to What Really Matters</h2>
           
           <p style={descriptionStyle}>
-            This topic explores the fundamental aspects of wakefulness, 
-            providing deep insights into its significance in Islamic tradition and contemporary life.
+            Ever feel like you're just going through the motions? Like you're on autopilot? 
+            Wakefulness is about snapping out of that and really seeing what's happening around you.
           </p>
 
           <p style={descriptionStyle}>
-            Through this journey, you'll discover the rich history, practical applications, and spiritual 
-            dimensions of this important aspect of Islamic knowledge and practice.
+            We'll explore how to stay alert to the signs around you, recognize the truth when you see it, 
+            and wake up to the bigger picture of your life and purpose.
           </p>
 
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
@@ -105,15 +98,15 @@ const IntroWakefulnessPage = () => {
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Start Learning
+              Let's Wake Up! ⚡
             </button>
             <button 
               style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/home?wheel=inward')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Back to Home
+              Back to Wheel
             </button>
           </div>
         </div>

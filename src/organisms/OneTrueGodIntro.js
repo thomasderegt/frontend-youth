@@ -1,30 +1,28 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import MenuContainer from '../atoms/MenuContainer';
+import { getBackgroundStyle } from '../utils/backgrounds';
 import MenuText from '../atoms/MenuText';
 import MenuButton from '../atoms/MenuButton';
 import ProgressBar from '../atoms/ProgressBar';
 
 const OneTrueGodIntro = () => {
   const navigate = useNavigate();
-  const { language } = useLanguage();
   const { theme, themeName } = useTheme();
 
   const navigationButtons = [
     {
       id: 'names',
       label: 'Names of The One True God',
-      color: '#00f2fa',
+      color: '#8B5CF6',
       size: 'large',
       onClick: () => navigate('/names')
     },
     {
-      id: 'back',
+      id: 'wheel',
       label: 'Back to Wheel',
-      color: '#FF007F',
-      onClick: () => navigate('/')
+      color: '#8B5CF6',
+      onClick: () => navigate('/home')
     }
   ];
 
@@ -35,15 +33,22 @@ const OneTrueGodIntro = () => {
   };
 
   return (
-    <MenuContainer variant="default" className="min-h-screen text-white flex flex-col items-center justify-center p-6">
+    <div 
+      className="min-h-screen text-white flex flex-col items-center justify-center p-6"
+      style={{
+        ...getBackgroundStyle(themeName),
+        minHeight: '100vh',
+        position: 'relative'
+      }}
+    >
       <div className="max-w-4xl mx-auto text-center">
         {/* Header */}
-        <MenuText variant="title" className="mb-8">
+        <MenuText variant="title" className="mb-8" color="#ffffff">
           The One True God
         </MenuText>
         
         {/* Subtitle */}
-        <MenuText variant="subtitle" className="mb-8">
+        <MenuText variant="subtitle" className="mb-8" color="#ffffff">
           The God of Adam
         </MenuText>
 
@@ -88,7 +93,7 @@ const OneTrueGodIntro = () => {
         {/* Progress Bar */}
         <ProgressBar {...progressBar} />
       </div>
-    </MenuContainer>
+    </div>
   );
 };
 

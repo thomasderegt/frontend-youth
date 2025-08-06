@@ -1,8 +1,8 @@
 import storylineBg from '../assets/background_storyline.png';
-import youthBg from '../assets/BackgroundLandingPageYouth.png';
+import youthBg4 from '../assets/BackgroundHomePageYouth4.png';
 
 export const backgroundImages = {
-  neon: youthBg, // Use youth background for neon theme
+  neon: youthBg4, // Use youth background 4 for neon theme
   story: storylineBg,
   classicEarth: null, // No background image for Classic Earth - pure earthy look
   zwartWit: null, // No background image for Wireframe - pure white background
@@ -20,6 +20,7 @@ export const getBackgroundStyle = (themeName) => {
       backgroundSize: 'cover !important',
       backgroundPosition: 'center !important',
       backgroundRepeat: 'no-repeat !important',
+      // Removed glow effects
     };
     console.log('Neon style:', style);
     return style;
@@ -50,4 +51,13 @@ export const getBackgroundStyle = (themeName) => {
   }
   
   return {};
+};
+
+export const getTopicBackgroundStyle = () => {
+  return {
+    backgroundImage: `url(${youthBg4})`,
+    backgroundSize: 'cover !important',
+    backgroundPosition: 'center !important',
+    backgroundRepeat: 'no-repeat !important',
+  };
 }; 

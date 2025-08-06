@@ -4,6 +4,7 @@ import { useSettings } from '../context/SettingsContext';
 import Header from '../organisms/Header';
 import Footer from '../organisms/Footer';
 import backgroundNeon from '../assets/BackgroundHomePageYouth4.png';
+import backgroundNeonNight3 from '../assets/BackgroundHomePageYouthNightMode3.png';
 
 const SettingsPage = () => {
   const { themeName, setThemeName: setThemeContext } = useTheme();
@@ -58,7 +59,7 @@ const SettingsPage = () => {
     display: 'flex',
     flexDirection: 'column',
     background: themeName === 'neon' 
-      ? `url(${backgroundNeon})`
+      ? (nightMode ? `url(${backgroundNeonNight3})` : `url(${backgroundNeon})`)
       : themeName === 'zwartWit'
       ? '#ffffff'
       : 'rgba(0, 0, 0, 0.95)',
@@ -66,9 +67,7 @@ const SettingsPage = () => {
     backgroundPosition: 'center center',
     backgroundRepeat: 'no-repeat',
     backgroundAttachment: 'fixed',
-    color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    paddingTop: '80px',
-    paddingBottom: '2rem'
+    color: themeName === 'zwartWit' ? '#000000' : '#ffffff'
   };
 
   const mainStyle = {

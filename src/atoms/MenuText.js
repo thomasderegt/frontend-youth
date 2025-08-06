@@ -4,7 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 const MenuText = ({ 
   children, 
   variant = 'body',
-  color = '#00f2fa',
+  color = '#ffffff',
   className = '',
   style = {}
 }) => {
