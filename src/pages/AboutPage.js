@@ -871,13 +871,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('story4', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>My Vision for Change</h3>
@@ -907,13 +911,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('story5', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>The Core Realization</h3>
@@ -943,13 +951,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('story6', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>My Boundaries and Responsibility</h3>
@@ -981,13 +993,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('story7', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>The Long-term Vision</h3>
@@ -1082,36 +1098,40 @@ const AboutPage = () => {
                   userSelect: 'text'
                 }}>
                   <p style={paragraphStyle}>
-                    Wheel of Islam is an Islamic spiritual health app aimed at young Muslims (ages 13–18) and their personal development. It is grounded in scientific psychological insights that help to understand what youth experience during this stage of life.
+                    <strong>Wheel of Islam. Insight. Spirituality. Growth.</strong>
                   </p>
                   <p style={paragraphStyle}>
-                    The app responds from within an Islamic framework, combining both the inward and outward dimensions of faith in a holistic way. It presents these dimensions using innovative software technology, with a mobile-first approach, in a format and language that young people are familiar with.
+                    Wheel of Islam is an Islamic spiritual health app that guides Muslim youth aged 13 to 18 in their spiritual and personal development.
+                    It is rooted in Islamic tradition, informed by developmental psychology, and built to fit the digital world young people live in today.
                   </p>
                   <p style={paragraphStyle}>
-                    The app uses a "Wheels" model—a visual and interactive method to organize and present Islamic subjects. God (Allah) is placed at the center of every wheel. There are two main wheels:
+                    The app is structured around three core pillars:
                   </p>
                   <ul style={{ marginLeft: '1rem', marginBottom: '1rem' }}>
-                    <li style={{ marginBottom: '0.5rem' }}><strong>Insight</strong> – the outward focus, covering traditional Islamic subjects</li>
-                    <li style={{ marginBottom: '0.5rem' }}><strong>Spirituality</strong> – the inward focus, referring to Tazkiyyah and spiritual development</li>
+                    <li style={{ marginBottom: '0.5rem' }}><strong>Insight</strong> — offering clear and structured Islamic knowledge that connects with daily challenges and real-life situations.</li>
+                    <li style={{ marginBottom: '0.5rem' }}><strong>Spirituality</strong> — strengthening the inner connection with Allah through prayer, dhikr, and personal reflection.</li>
+                    <li style={{ marginBottom: '0.5rem' }}><strong>Growth</strong> — fostering positive behaviour, emotional balance, and character development grounded in faith.</li>
                   </ul>
                   <p style={paragraphStyle}>
-                    Users are guided through Guided Flows that address specific needs, using a cyclical developmental approach.
-                  </p>
-                  <p style={paragraphStyle}>
-                    Muslim youth can recognize themselves in Wheel of Islam and grow with it—Insight. Spirituality. Growth.
+                    Using a mobile-first design and an interactive Wheels Model — with God (Allah) at the center of every wheel — the app combines visual clarity with spiritual depth.
+                    Users are guided through Guided Flows: step-by-step journeys that respond to their emotional and spiritual needs using a cyclical, growth-oriented approach.
                   </p>
                 </div>
               </div>
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('twoWheels', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>The Two Wheels</h3>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import youthBackgroundImage from '../assets/BackgroundLandingPageYouth.png';
+import introVideo from '../assets/Intro_video_Wheel_of_Islam_App.mp4';
 
 const LandingPage = () => {
   const { language } = useLanguage();
@@ -113,7 +114,7 @@ const LandingPage = () => {
           </div>
 
           {/* Branding */}
-          <div className="mb-24 md:mb-48">
+          <div className="mb-8 md:mb-12">
             <h1 
               className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold mb-2 md:mb-4 tracking-tight"
               style={{ 
@@ -142,7 +143,7 @@ const LandingPage = () => {
             </p>
             
             <p 
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-80 tracking-wide mb-12 md:mb-24"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl opacity-80 tracking-wide mb-8 md:mb-12"
               style={{ 
                 color: '#ffffff',
                 fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -152,6 +153,34 @@ const LandingPage = () => {
               }}
             >
               {currentContent.description}
+            </p>
+          </div>
+
+          {/* Intro Video */}
+          <div className="mb-8 md:mb-12 w-full max-w-2xl mx-auto">
+            <div className="relative rounded-lg overflow-hidden shadow-2xl">
+              <video 
+                className="w-full h-auto"
+                controls
+                preload="metadata"
+                style={{
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                  borderRadius: '12px'
+                }}
+              >
+                <source src={introVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div 
+                className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"
+                style={{ borderRadius: '12px' }}
+              ></div>
+            </div>
+            <p 
+              className="text-sm md:text-base text-center mt-3 opacity-80"
+              style={{ color: '#ffffff' }}
+            >
+              {language === 'dutch' ? 'Bekijk onze introductie video' : 'Watch our introduction video'}
             </p>
           </div>
 
