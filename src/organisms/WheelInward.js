@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useSettings } from '../context/SettingsContext';
@@ -36,15 +36,36 @@ const WheelInward = () => {
   const { theme, themeName } = useTheme();
   const { nightMode } = useSettings();
   const [size, setSize] = useState(400);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen size and calculate responsive stroke width
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      console.log('Mobile detection:', mobile, 'Window width:', window.innerWidth);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Calculate stroke width based on screen size
+  const getStrokeWidth = () => {
+    const isSmallScreen = window.innerWidth <= 768;
+    return isSmallScreen ? Math.max(size / 800, 0.3) : Math.max(size / 400, 1);
+  };
 
   // Calculate responsive size based on container
-  React.useEffect(() => {
+  useEffect(() => {
     const updateSize = () => {
       const container = document.querySelector('.wheel-container');
       if (container) {
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
-        const newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.9, 600);
+        // More responsive sizing for mobile
+        const newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.85, 500);
         console.log('Container width:', containerWidth, 'Container height:', containerHeight, 'New size:', newSize);
         setSize(newSize);
       }
@@ -131,23 +152,25 @@ const WheelInward = () => {
     <div className="wheel-container" style={{ 
       width: '100%', 
       height: '100%',
-      minHeight: '400px',
+      minHeight: '350px',
       display: 'flex', 
       justifyContent: 'center', 
       alignItems: 'center',
-      padding: '1rem 0'
+      padding: '0.5rem 0'
     }}>
-      <svg
-        width="100%"
-        height="100%"
-        viewBox={`0 0 ${size} ${size}`}
-        preserveAspectRatio="xMidYMid meet"
-        style={{ 
-          width: '100%', 
-          height: '100%',
-          minHeight: '400px'
-        }}
-      >
+              <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${size} ${size}`}
+          preserveAspectRatio="xMidYMid meet"
+          style={{ 
+            width: '100%', 
+            height: '100%',
+            minHeight: '350px',
+            maxWidth: '100vw',
+            maxHeight: '100vh'
+          }}
+        >
         <defs>
           {/* Neon glow filters */}
           {themeName === 'neon' && (
@@ -200,6 +223,8 @@ const WheelInward = () => {
             const lineColor = themeName === 'zwartWit' ? '#000000' : 
                              themeName === 'neon' ? '#8B5CF6' : '#ffffff';
             
+            const strokeWidth = getStrokeWidth();
+            console.log('Line strokeWidth:', strokeWidth, 'Window width:', window.innerWidth, 'size:', size);
             return (
               <line
                 key={`connection-${segment.id}`}
@@ -208,7 +233,7 @@ const WheelInward = () => {
                 x2={endX}
                 y2={endY}
                 stroke={lineColor}
-                strokeWidth={Math.max(size / 400, 1)}
+                strokeWidth={strokeWidth}
                 style={{}}
               />
             );
@@ -243,7 +268,7 @@ const WheelInward = () => {
                 x2={endX}
                 y2={endY}
                 stroke={lineColor}
-                strokeWidth={Math.max(size / 400, 1)}
+                strokeWidth={getStrokeWidth()}
                 style={{}}
               />
             );
@@ -278,7 +303,7 @@ const WheelInward = () => {
                   r={outerRadius}
                   fill={fillColor}
                   stroke={strokeColor}
-                  strokeWidth={Math.max(size / 400, 1)}
+                  strokeWidth={getStrokeWidth()}
                   style={{ 
                     cursor: 'pointer',
                     filter: themeName === 'neon' && segmentStyle?.glow ? 'url(#neonGlow)' : 'none',
@@ -287,13 +312,13 @@ const WheelInward = () => {
                   onClick={() => handleClick(segment.id)}
                 />
                 
-                {/* Title in circle */}
+                {/* Title in circle - Responsive font size */}
                 <text
                   x={pos.x}
                   y={pos.y - 8}
                   textAnchor="middle"
                   fill={textColor}
-                  fontSize={Math.max(outerRadius * 0.22, 11)} // Main title
+                  fontSize={Math.max(Math.min(outerRadius * 0.18, 14), 8)} // Responsive font size with max 14px
                   fontWeight="bold"
                   dy=".3em"
                   style={{ 
@@ -303,16 +328,16 @@ const WheelInward = () => {
                     pointerEvents: 'none'
                   }}
                 >
-                  {segment.id.toUpperCase()}
+                  {segment.id.length > 12 ? segment.id.substring(0, 12).toUpperCase() : segment.id.toUpperCase()}
                 </text>
                 
-                {/* Phonetic text */}
+                {/* Phonetic text - Responsive font size */}
                 <text
                   x={pos.x}
                   y={pos.y + 8}
                   textAnchor="middle"
                   fill={textColor}
-                  fontSize={Math.max(outerRadius * 0.18, 9)} // Phonetic text
+                  fontSize={Math.max(Math.min(outerRadius * 0.15, 12), 7)} // Responsive font size with max 12px
                   fontWeight="normal"
                   dy=".3em"
                   style={{ 
@@ -323,7 +348,7 @@ const WheelInward = () => {
                     opacity: 0.8
                   }}
                 >
-                  {segment.phonetic}
+                  {segment.phonetic.length > 15 ? segment.phonetic.substring(0, 15) : segment.phonetic}
                 </text>
                 
 
@@ -346,7 +371,7 @@ const WheelInward = () => {
                   r={centerCircleRadius}
                   fill={fillColor}
                   stroke={centerStroke}
-                  strokeWidth={Math.max(size / 400, 1)}
+                  strokeWidth={getStrokeWidth()}
                   onClick={() => handleClick('CENTER')}
                   style={{ 
                     cursor: 'pointer'

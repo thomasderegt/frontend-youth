@@ -83,7 +83,7 @@ const IntroTakingShelterPage = () => {
           <div style={{ textAlign: 'center', marginTop: '2rem' }}>
             <button 
               style={buttonStyle}
-              onClick={() => navigate('/takingshelter')}
+              onClick={() => alert('🚧 Under Construction 🚧\n\nThis learning module is currently being developed. Check back soon!')}
               onMouseEnter={(e) => e.target.style.opacity = '0.8'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >

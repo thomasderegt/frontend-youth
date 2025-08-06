@@ -161,7 +161,7 @@ const Header = () => {
               fontWeight: 'normal',
               marginTop: '0.2rem'
             }}>
-              Insight. Spirituality. Direction
+              Insight. Spirituality. Growth
             </div>
           </div>
         </div>
