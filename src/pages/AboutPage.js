@@ -831,13 +831,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('story2', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>My Educational Journey</h3>
@@ -1078,13 +1082,23 @@ const AboutPage = () => {
                   userSelect: 'text'
                 }}>
                   <p style={paragraphStyle}>
-                    Wheel of Islam is an educational and spiritual health app aimed at young Muslims (13-18 years) and their Islamic development. It is an innovative platform that combines traditional Islamic knowledge and spirituality with scientific psychological insights and innovative software technology.
+                    Wheel of Islam is an Islamic spiritual health app aimed at young Muslims (ages 13–18) and their personal development. It is grounded in scientific psychological insights that help to understand what youth experience during this stage of life.
                   </p>
                   <p style={paragraphStyle}>
-                    The app uses a "Wheels" model - a visual, interactive way to organize and present Islamic subjects. God stands at the center of every wheel. There are two main wheels: Knowledge & Insight (outward focus) for traditional Islamic subjects, and Purification of the heart (inward focus) for spiritual development.
+                    The app responds from within an Islamic framework, combining both the inward and outward dimensions of faith in a holistic way. It presents these dimensions using innovative software technology, with a mobile-first approach, in a format and language that young people are familiar with.
                   </p>
                   <p style={paragraphStyle}>
-                    Paired with Guided Flows that address specific needs, it's a unique platform for Muslim youth where they can recognize themselves and grow.
+                    The app uses a "Wheels" model—a visual and interactive method to organize and present Islamic subjects. God (Allah) is placed at the center of every wheel. There are two main wheels:
+                  </p>
+                  <ul style={{ marginLeft: '1rem', marginBottom: '1rem' }}>
+                    <li style={{ marginBottom: '0.5rem' }}><strong>Insight</strong> – the outward focus, covering traditional Islamic subjects</li>
+                    <li style={{ marginBottom: '0.5rem' }}><strong>Spirituality</strong> – the inward focus, referring to Tazkiyyah and spiritual development</li>
+                  </ul>
+                  <p style={paragraphStyle}>
+                    Users are guided through Guided Flows that address specific needs, using a cyclical developmental approach.
+                  </p>
+                  <p style={paragraphStyle}>
+                    Muslim youth can recognize themselves in Wheel of Islam and grow with it—Insight. Spirituality. Growth.
                   </p>
                 </div>
               </div>
@@ -1183,13 +1197,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('guidedFlows', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>Guided Flows</h3>
@@ -1228,13 +1246,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('approach', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>Approach and Foundation</h3>
@@ -1270,13 +1292,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('features', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>Unique Features</h3>
@@ -1310,13 +1336,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('mission', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>Mission</h3>
@@ -1381,13 +1411,17 @@ const AboutPage = () => {
               <div 
                 style={{
                   ...sectionStyle,
-                  marginTop: '1rem'
+                  marginTop: '1rem',
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('structure', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>Structure</h3>
@@ -1423,13 +1457,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('opening', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>1. Opening (5–7 min)</h3>
@@ -1464,13 +1502,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('personalMotivation', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>2. Personal Motivation (5–7 min)</h3>
@@ -1508,13 +1550,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('problem', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>3. Introduction to the Problem (5 min)</h3>
@@ -1562,13 +1608,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('demonstration', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>4. App Demonstration (20–25 min)</h3>
@@ -1623,13 +1673,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('audience', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>5. Audience Size & Global Opportunity (5 min)</h3>
@@ -1660,13 +1714,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('invitation', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>6. Invitation to Join (10–12 min)</h3>
@@ -1704,13 +1762,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('closing', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>7. Closing (3–5 min)</h3>
