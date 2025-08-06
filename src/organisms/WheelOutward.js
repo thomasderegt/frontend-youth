@@ -32,25 +32,24 @@ const WheelOutward = () => {
   const { theme, themeName } = useTheme();
   const { nightMode } = useSettings();
   const [size, setSize] = useState(400);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile screen size
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      console.log('Mobile detection:', mobile, 'Window width:', window.innerWidth);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Calculate stroke width based on screen size and wheel size
 
-  // Calculate stroke width based on screen size
+  // Calculate stroke width based on screen size and wheel size
   const getStrokeWidth = () => {
-    const isSmallScreen = window.innerWidth <= 768;
-    return isSmallScreen ? Math.max(size / 800, 0.3) : Math.max(size / 400, 1);
+    const screenWidth = window.innerWidth;
+    const baseStrokeWidth = size / 400; // Base stroke width relative to wheel size
+    
+    // Scale stroke width based on screen size
+    if (screenWidth >= 2560) { // 34 inch and above
+      return Math.max(baseStrokeWidth * 1.2, 1.5);
+    } else if (screenWidth >= 1920) { // Large screens
+      return Math.max(baseStrokeWidth * 1.1, 1.2);
+    } else if (screenWidth >= 1366) { // Medium screens
+      return Math.max(baseStrokeWidth, 1);
+    } else { // Mobile and small screens
+      return Math.max(baseStrokeWidth * 0.8, 0.8);
+    }
   };
 
   // Calculate responsive size based on container
@@ -60,8 +59,28 @@ const WheelOutward = () => {
       if (container) {
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
-        // More responsive sizing for mobile
-        const newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.85, 500);
+        const screenWidth = window.innerWidth;
+        
+        // Calculate optimal size based on screen dimensions
+        let newSize;
+        
+        // For very large screens (34 inch and above), center and limit maximum size
+        if (screenWidth >= 2560) { // 34 inch 2560x1440
+          newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.6, 600);
+        } 
+        // For large screens (24-27 inch)
+        else if (screenWidth >= 1920) {
+          newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.75, 500);
+        }
+        // For medium screens (laptop)
+        else if (screenWidth >= 1366) {
+          newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.85, 450);
+        }
+        // For mobile and small screens
+        else {
+          newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.85, 400);
+        }
+        
         setSize(newSize);
       }
     };
@@ -140,7 +159,9 @@ const WheelOutward = () => {
       display: 'flex', 
       justifyContent: 'center', 
       alignItems: 'center',
-      padding: '0.5rem 0'
+      padding: '0.5rem 0',
+      maxWidth: window.innerWidth >= 2560 ? '1200px' : '100%',
+      margin: '0 auto'
     }}>
               <svg
           width="100%"
@@ -151,7 +172,7 @@ const WheelOutward = () => {
             width: '100%', 
             height: '100%',
             minHeight: '350px',
-            maxWidth: '100vw',
+            maxWidth: window.innerWidth >= 2560 ? '800px' : '100vw',
             maxHeight: '100vh'
           }}
         >

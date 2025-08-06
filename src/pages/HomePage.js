@@ -101,6 +101,17 @@ const HomePage = () => {
     maxWidth: '100%',
   };
 
+  // Mobile responsive flows container style
+  const flowsContainerMobileStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '1rem',
+    width: '100%',
+    maxWidth: '100%',
+    overflowX: 'auto',
+    paddingBottom: '0.5rem',
+  };
+
   const getFlowRowStyle = (isExpanded) => ({
     display: 'flex',
     flexDirection: isExpanded ? 'column' : 'row',
@@ -118,6 +129,12 @@ const HomePage = () => {
     width: '100%',
     boxShadow: themeName === 'neon' ? '0 4px 20px rgba(139, 92, 246, 0.3)' : 
                themeName === 'zwartWit' ? '0 2px 8px rgba(0, 0, 0, 0.1)' : '0 4px 12px rgba(0, 0, 0, 0.1)',
+    // Mobile responsive: adjust for horizontal layout
+    '@media (max-width: 768px)': {
+      minWidth: '280px',
+      flexShrink: 0,
+      minHeight: isExpanded ? 'clamp(120px, 15vw, 160px)' : 'clamp(60px, 8vw, 80px)',
+    },
   });
 
 
