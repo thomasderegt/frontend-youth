@@ -33,6 +33,9 @@ import IntroIslamicHistoryPage from './pages/insights/IntroIslamicHistoryPage';
 import IntroModernIdeologiesPage from './pages/insights/IntroModernIdeologiesPage';
 import IntroFamilySocietyPage from './pages/insights/IntroFamilySocietyPage';
 import IntroDivineLawPage from './pages/insights/IntroDivineLawPage';
+import NamesPage from './pages/NamesPage';
+import NameDetailPage from './pages/NameDetailPage';
+import OneTrueGodIntro from './organisms/OneTrueGodIntro';
 
 function App() {
   return (
@@ -72,6 +75,9 @@ function App() {
                 <Route path="/intro-modern-ideologies" element={<IntroModernIdeologiesPage />} />
                 <Route path="/intro-family-society" element={<IntroFamilySocietyPage />} />
                 <Route path="/intro-divine-law" element={<IntroDivineLawPage />} />
+                <Route path="/names" element={<NamesPage />} />
+                <Route path="/names/:nameId" element={<NameDetailPage />} />
+                <Route path="/one-true-god" element={<OneTrueGodIntro />} />
               </Routes>
             </Router>
           </SettingsProvider>
