@@ -745,13 +745,17 @@ const AboutPage = () => {
               <div 
                 style={{
                   ...sectionStyle,
-                  marginTop: '1rem'
+                  marginTop: '1rem',
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('story6', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>Finding Answers Through Faith</h3>
@@ -787,13 +791,17 @@ const AboutPage = () => {
 
               <div 
                 style={{
-                  ...sectionStyle
+                  ...sectionStyle,
+                  cursor: 'pointer',
+                  userSelect: 'none'
                 }}
+                onClick={(e) => handleSubsectionClick('story1', e)}
               >
                 <div style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  userSelect: 'none'
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ ...sectionTitleStyle, margin: 0, fontSize: '1.2rem' }}>My Reversion to Islam</h3>

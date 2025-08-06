@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useSettings } from '../../context/SettingsContext';
@@ -10,6 +10,18 @@ const IntroRepentancePage = () => {
   const navigate = useNavigate();
   const { themeName } = useTheme();
   const { nightMode } = useSettings();
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (sectionId, event) => {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
 
   const pageStyle = {
     minHeight: '100vh',
@@ -92,6 +104,17 @@ const IntroRepentancePage = () => {
     marginBottom: '0.5rem',
   };
 
+  const expandIconStyle = {
+    fontSize: '1.5rem',
+    transition: 'transform 0.3s ease',
+    color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000'
+  };
+
+  const expandableContentStyle = {
+    transition: 'all 0.3s ease',
+    overflow: 'hidden'
+  };
+
   const buttonStyle = {
     padding: '1rem 2rem',
     fontSize: '1.1rem',
@@ -128,34 +151,127 @@ const IntroRepentancePage = () => {
             </ul>
           </div>
 
-          <div style={sectionStyle}>
-            <h3 style={sectionTitleStyle}>How to Really Say Sorry</h3>
-            <p style={descriptionStyle}>Real repentance has three parts:</p>
-            <ul style={listStyle}>
-              <li style={listItemStyle}><strong>Regretting</strong> - Feeling genuine remorse for the sin</li>
-              <li style={listItemStyle}><strong>Apologizing</strong> - Seeking forgiveness from God</li>
-              <li style={listItemStyle}><strong>Desisting</strong> - Stopping the sinful behavior</li>
-            </ul>
+          <div 
+            style={{
+              ...sectionStyle,
+              cursor: 'pointer',
+              userSelect: 'none'
+            }}
+            onClick={(e) => toggleSection('howToSaySorry', e)}
+          >
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              width: '100%',
+              userSelect: 'none'
+            }}>
+              <div style={{ flex: 1 }}>
+                <h3 style={sectionTitleStyle}>How to Really Say Sorry</h3>
+              </div>
+              <span style={{
+                ...expandIconStyle,
+                marginLeft: '1rem'
+              }}>
+                {expandedSections['howToSaySorry'] ? '-' : '+'}
+              </span>
+            </div>
+            <div style={{
+              ...expandableContentStyle,
+              maxHeight: expandedSections['howToSaySorry'] ? 'none' : '0px',
+              opacity: expandedSections['howToSaySorry'] ? 1 : 0,
+              marginTop: '1rem',
+              userSelect: 'text'
+            }}>
+              <p style={descriptionStyle}>Real repentance has three parts:</p>
+              <ul style={listStyle}>
+                <li style={listItemStyle}><strong>Regretting</strong> - Feeling genuine remorse for the sin</li>
+                <li style={listItemStyle}><strong>Apologizing</strong> - Seeking forgiveness from God</li>
+                <li style={listItemStyle}><strong>Desisting</strong> - Stopping the sinful behavior</li>
+              </ul>
+            </div>
           </div>
 
-          <div style={sectionStyle}>
-            <h3 style={sectionTitleStyle}>The Real Deal</h3>
-            <p style={descriptionStyle}>Here's what repentance really means:</p>
-            <ul style={listStyle}>
-              <li style={listItemStyle}><strong>Recognizing the enormity of the offense</strong> - Understanding the gravity of one's sin</li>
-              <li style={listItemStyle}><strong>Questioning the tawbah</strong> - Doubting the sincerity of one's repentance</li>
-              <li style={listItemStyle}><strong>Finding excuses for the creation</strong> - Understanding God's mercy and forgiveness</li>
-            </ul>
+          <div 
+            style={{
+              ...sectionStyle,
+              cursor: 'pointer',
+              userSelect: 'none'
+            }}
+            onClick={(e) => toggleSection('realDeal', e)}
+          >
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              width: '100%',
+              userSelect: 'none'
+            }}>
+              <div style={{ flex: 1 }}>
+                <h3 style={sectionTitleStyle}>The Real Deal</h3>
+              </div>
+              <span style={{
+                ...expandIconStyle,
+                marginLeft: '1rem'
+              }}>
+                {expandedSections['realDeal'] ? '-' : '+'}
+              </span>
+            </div>
+            <div style={{
+              ...expandableContentStyle,
+              maxHeight: expandedSections['realDeal'] ? 'none' : '0px',
+              opacity: expandedSections['realDeal'] ? 1 : 0,
+              marginTop: '1rem',
+              userSelect: 'text'
+            }}>
+              <p style={descriptionStyle}>Here's what repentance really means:</p>
+              <ul style={listStyle}>
+                <li style={listItemStyle}><strong>Recognizing the enormity of the offense</strong> - Understanding the gravity of one's sin</li>
+                <li style={listItemStyle}><strong>Questioning the tawbah</strong> - Doubting the sincerity of one's repentance</li>
+                <li style={listItemStyle}><strong>Finding excuses for the creation</strong> - Understanding God's mercy and forgiveness</li>
+              </ul>
+            </div>
           </div>
 
-          <div style={sectionStyle}>
-            <h3 style={sectionTitleStyle}>The Deep Stuff</h3>
-            <p style={descriptionStyle}>The real secrets of repentance:</p>
-            <ul style={listStyle}>
-              <li style={listItemStyle}><strong>Sorting out fear of God from one's pride</strong> - Distinguishing between genuine fear and ego</li>
-              <li style={listItemStyle}><strong>Forgetting the offense</strong> - Moving beyond the sin</li>
-                              <li style={listItemStyle}><strong>Repenting from the repentance</strong> - Because the repentant is included among the generality of addressees in the saying of God: "And turn to God in repentance, all of you." [an-Noor 24:31]</li>
-            </ul>
+          <div 
+            style={{
+              ...sectionStyle,
+              cursor: 'pointer',
+              userSelect: 'none'
+            }}
+            onClick={(e) => toggleSection('deepStuff', e)}
+          >
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              width: '100%',
+              userSelect: 'none'
+            }}>
+              <div style={{ flex: 1 }}>
+                <h3 style={sectionTitleStyle}>The Deep Stuff</h3>
+              </div>
+              <span style={{
+                ...expandIconStyle,
+                marginLeft: '1rem'
+              }}>
+                {expandedSections['deepStuff'] ? '-' : '+'}
+              </span>
+            </div>
+            <div style={{
+              ...expandableContentStyle,
+              maxHeight: expandedSections['deepStuff'] ? 'none' : '0px',
+              opacity: expandedSections['deepStuff'] ? 1 : 0,
+              marginTop: '1rem',
+              userSelect: 'text'
+            }}>
+              <p style={descriptionStyle}>The real secrets of repentance:</p>
+              <ul style={listStyle}>
+                <li style={listItemStyle}><strong>Sorting out fear of God from one's pride</strong> - Distinguishing between genuine fear and ego</li>
+                <li style={listItemStyle}><strong>Forgetting the offense</strong> - Moving beyond the sin</li>
+                <li style={listItemStyle}><strong>Repenting from the repentance</strong> - Because the repentant is included among the generality of addressees in the saying of God: "And turn to God in repentance, all of you." [an-Noor 24:31]</li>
+              </ul>
+            </div>
           </div>
 
           <div style={sectionStyle}>
