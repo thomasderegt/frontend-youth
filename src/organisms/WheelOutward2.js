@@ -254,12 +254,7 @@ const WheelOutward2 = () => {
         <defs>
           {/* No glow filters */}
           
-          {/* Curved text path for "Stage 1: The Beginning" */}
-          <path
-            id="curvedTextPathOutward"
-            d={`M ${center - radius * 0.7} ${center - radius * 0.7} A ${radius * 0.7} ${radius * 0.7} 0 0 1 ${center + radius * 0.7} ${center - radius * 0.7}`}
-            fill="none"
-          />
+
         </defs>
 
         {/* Roterende groep voor alle segmenten */}
@@ -421,8 +416,11 @@ const WheelOutward2 = () => {
           );
         })()}
         
-        {/* Curved text "Stage 1: The Beginning" - rendered on top */}
+        {/* Straight text "Stage 1: The Beginning" - rendered on top */}
         <text
+          x={center}
+          y={center - radius * 0.7}
+          textAnchor="middle"
           style={{
             fontSize: Math.max(Math.min(radius * 0.08, 24), 16),
             fontWeight: 'bold',
@@ -431,14 +429,7 @@ const WheelOutward2 = () => {
             pointerEvents: 'none'
           }}
         >
-          <textPath
-            href="#curvedTextPathOutward"
-            startOffset="45%"
-            textAnchor="middle"
-            dominantBaseline="middle"
-          >
-            Stage 1: The Beginning
-          </textPath>
+          Stage 1: The Beginning
         </text>
       </svg>
     </div>
