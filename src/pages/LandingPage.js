@@ -10,7 +10,12 @@ const LandingPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleContinue = (method) => {
-    navigate('/home');
+    setIsLoading(true);
+    // Simulate loading time
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate('/home');
+    }, 500);
   };
 
   const content = {

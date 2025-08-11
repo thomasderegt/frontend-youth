@@ -1,5 +1,6 @@
 import storylineBg from '../assets/background_storyline.png';
 import youthBg4 from '../assets/BackgroundHomePageYouth4.png';
+import youthBgNight from '../assets/BackgroundHomePageYouthNightMode3.png';
 
 export const backgroundImages = {
   neon: youthBg4, // Use youth background 4 for neon theme
@@ -8,21 +9,25 @@ export const backgroundImages = {
   zwartWit: null, // No background image for Wireframe - pure white background
 };
 
-export const getBackgroundStyle = (themeName) => {
+export const getBackgroundStyle = (themeName, nightMode = false) => {
   const backgroundImage = backgroundImages[themeName];
   
-  console.log('Theme:', themeName);
+  console.log('Theme:', themeName, 'NightMode:', nightMode);
   console.log('Background image:', backgroundImage);
   
   if (themeName === 'neon') {
+    const selectedImage = nightMode ? youthBgNight : backgroundImage;
     const style = {
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: 'cover !important',
-      backgroundPosition: 'center !important',
-      backgroundRepeat: 'no-repeat !important',
+      backgroundImage: `url(${selectedImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      backgroundRepeat: 'no-repeat',
+      backgroundAttachment: 'fixed',
+      minHeight: '100vh',
+      width: '100%',
       // Removed glow effects
     };
-    console.log('Neon style:', style);
+    console.log('Neon style - NightMode:', nightMode, 'Selected image:', selectedImage);
     return style;
   } else if (themeName === 'story') {
     const style = {

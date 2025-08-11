@@ -186,7 +186,7 @@ const Header = () => {
               onMouseEnter={(e) => e.target.style.opacity = '0.7'}
               onMouseLeave={(e) => e.target.style.opacity = '1'}
             >
-              Progress
+              Growth Tracker
             </span>
           </li>
 
@@ -248,7 +248,7 @@ const Header = () => {
               style={mobileMenuItemStyle}
               onClick={() => handleMenuClick('/progress')}
             >
-              Progress
+              Growth Tracker
             </span>
           </li>
                     <li>

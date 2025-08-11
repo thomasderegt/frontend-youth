@@ -1543,13 +1543,17 @@ const AboutPage = () => {
                       marginTop: '1rem'
                     }}>
                       <p style={paragraphStyle}>
-                        Share your personal reason for starting this project:
+                        <strong>My Journey:</strong> I am a knowledge seeker, software architect, and true believer in God Most High. My personal journey is shaped by my grandfather's legacy as a Jewish survivor of the Second World War, which confronted me early with the realities of injustice and trauma.
                       </p>
-                      <ul style={{ marginLeft: '1rem', marginBottom: '1rem' }}>
-                        <li style={{ marginBottom: '0.5rem' }}>A sense of emptiness among Muslim youth</li>
-                        <li style={{ marginBottom: '0.5rem' }}>A lack of trustworthy, spiritual, and accessible content</li>
-                        <li style={{ marginBottom: '0.5rem' }}>Aware of your <em>amānah</em> as a technologist and designer</li>
-                      </ul>
+                      <p style={paragraphStyle}>
+                        <strong>My Reversion:</strong> My return to Islam in my mid-twenties gave me not just comfort, but real spiritual answers to generational wounds. It provided a framework to understand history, justice, and human dignity grounded in divine purpose.
+                      </p>
+                      <p style={paragraphStyle}>
+                        <strong>The Core Realization:</strong> I realized that today's generation's core issues won't be solved through politics or economics, but through returning to God—inwardly and outwardly. But that return must be accessible, speak today's language, and address their doubts and emotions.
+                      </p>
+                      <p style={paragraphStyle}>
+                        <strong>My Vision:</strong> From a young age, I've been driven to change the world through Islam. Now I want to build something that can help not just one person, but millions.
+                      </p>
                       <p style={paragraphStyle}>
                         <em>"Young Muslims are hungry for connection with Allah — but all they're offered is rules or vague mysticism."</em>
                       </p>
@@ -1594,6 +1598,7 @@ const AboutPage = () => {
                         There's a flood of Islamic content — but very little that is:
                       </p>
                       <ol style={{ marginLeft: '1rem', marginBottom: '1rem' }}>
+                        <li style={{ marginBottom: '0.5rem' }}>holistic - outwarly and inwardly</li>
                         <li style={{ marginBottom: '0.5rem' }}>Pedagogically adapted to youth</li>
                         <li style={{ marginBottom: '0.5rem' }}>Visually and digitally engaging</li>
                       </ol>

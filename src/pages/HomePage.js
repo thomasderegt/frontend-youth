@@ -5,8 +5,8 @@ import { useSettings } from '../context/SettingsContext';
 // Progress tracking will be handled by backend
 import Header from '../organisms/Header';
 import Footer from '../organisms/Footer';
-import WheelOutward from '../organisms/WheelOutward';
-import WheelInward from '../organisms/WheelInward';
+import WheelOutward from '../organisms/WheelOutward2';
+import WheelInward from '../organisms/WheelInward2';
 import { getBackgroundStyle } from '../utils/backgrounds';
 
 const HomePage = () => {
@@ -61,15 +61,21 @@ const HomePage = () => {
     display: 'flex',
     flexDirection: 'column',
     color: themeName === 'zwartWit' ? '#000000' : '#ffffff',
-    ...getBackgroundStyle(themeName),
-    backgroundAttachment: 'fixed',
+    ...getBackgroundStyle(themeName, nightMode),
     transition: 'background 0.3s ease',
+    position: 'relative',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
   };
 
   const mainStyle = {
     flex: 1,
     paddingTop: '80px', // Space for fixed header
     padding: '0.5rem', // Reduced padding for mobile
+    position: 'relative',
+    zIndex: 1,
+    background: 'transparent',
   };
 
   const contentStyle = {
@@ -101,16 +107,7 @@ const HomePage = () => {
     maxWidth: '100%',
   };
 
-  // Mobile responsive flows container style
-  const flowsContainerMobileStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '1rem',
-    width: '100%',
-    maxWidth: '100%',
-    overflowX: 'auto',
-    paddingBottom: '0.5rem',
-  };
+  // Mobile responsive flows container style - removed unused variable
 
   const getFlowRowStyle = (isExpanded) => ({
     display: 'flex',
@@ -129,12 +126,7 @@ const HomePage = () => {
     width: '100%',
     boxShadow: themeName === 'neon' ? '0 4px 20px rgba(139, 92, 246, 0.3)' : 
                themeName === 'zwartWit' ? '0 2px 8px rgba(0, 0, 0, 0.1)' : '0 4px 12px rgba(0, 0, 0, 0.1)',
-    // Mobile responsive: adjust for horizontal layout
-    '@media (max-width: 768px)': {
-      minWidth: '280px',
-      flexShrink: 0,
-      minHeight: isExpanded ? 'clamp(120px, 15vw, 160px)' : 'clamp(60px, 8vw, 80px)',
-    },
+    // Mobile responsive styles removed - use CSS classes instead
   });
 
 

@@ -258,7 +258,7 @@ const ProgressPage = () => {
               Your Spiritual Journey
             </h1>
             <p style={{ color: '#6b7280' }}>
-              Track your progress and see where you are in your journey
+              Track your growth and see where you are in your spiritual journey
             </p>
           </div>
 
