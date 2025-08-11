@@ -212,6 +212,13 @@ const WheelInward = () => {
               </filter>
             </>
           )}
+          
+          {/* Curved text path for "The Beginning" */}
+          <path
+            id="curvedTextPath"
+            d={`M ${center - radius * 0.6} ${center - radius * 0.6} A ${radius * 0.6} ${radius * 0.6} 0 0 1 ${center + radius * 0.6} ${center - radius * 0.6}`}
+            fill="none"
+          />
         </defs>
 
         {/* Circle mode: Traditionele cirkels */}
@@ -419,6 +426,26 @@ const WheelInward = () => {
             );
           })()}
         </>
+        
+        {/* Curved text "The Beginning" - rendered on top */}
+        <text
+          style={{
+            fontSize: Math.max(Math.min(radius * 0.08, 24), 16),
+            fontWeight: 'bold',
+            fill: themeName === 'neon' ? '#8B5CF6' : themeName === 'zwartWit' ? '#000000' : '#ffffff',
+            textShadow: themeName === 'neon' ? '0 0 8px rgba(139, 92, 246, 0.6)' : 'none',
+            pointerEvents: 'none'
+          }}
+        >
+          <textPath
+            href="#curvedTextPath"
+            startOffset="50%"
+            textAnchor="middle"
+            dominantBaseline="middle"
+          >
+            The Beginning
+          </textPath>
+        </text>
       </svg>
     </div>
   );
