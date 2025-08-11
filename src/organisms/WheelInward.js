@@ -427,7 +427,7 @@ const WheelInward = () => {
           })()}
         </>
         
-        {/* Curved text "The Beginning" - rendered on top */}
+        {/* Curved text "Stage 1: The Beginning" - rendered on top */}
         <text
           style={{
             fontSize: Math.max(Math.min(radius * 0.08, 24), 16),
@@ -443,7 +443,7 @@ const WheelInward = () => {
             textAnchor="middle"
             dominantBaseline="middle"
           >
-            The Beginning
+            Stage 1: The Beginning
           </textPath>
         </text>
       </svg>
