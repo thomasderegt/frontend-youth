@@ -213,10 +213,10 @@ const WheelInward = () => {
             </>
           )}
           
-          {/* Curved text path for "The Beginning" */}
+          {/* Curved text path for "Stage 1: The Beginning" */}
           <path
             id="curvedTextPath"
-            d={`M ${center - radius * 0.6} ${center - radius * 0.6} A ${radius * 0.6} ${radius * 0.6} 0 0 1 ${center + radius * 0.6} ${center - radius * 0.6}`}
+            d={`M ${center - radius * 0.7} ${center - radius * 0.7} A ${radius * 0.7} ${radius * 0.7} 0 0 1 ${center + radius * 0.7} ${center - radius * 0.7}`}
             fill="none"
           />
         </defs>
@@ -439,7 +439,7 @@ const WheelInward = () => {
         >
           <textPath
             href="#curvedTextPath"
-            startOffset="50%"
+            startOffset="45%"
             textAnchor="middle"
             dominantBaseline="middle"
           >

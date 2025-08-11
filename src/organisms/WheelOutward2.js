@@ -254,10 +254,10 @@ const WheelOutward2 = () => {
         <defs>
           {/* No glow filters */}
           
-          {/* Curved text path for "The Beginning" */}
+          {/* Curved text path for "Stage 1: The Beginning" */}
           <path
             id="curvedTextPathOutward"
-            d={`M ${center - radius * 0.6} ${center - radius * 0.6} A ${radius * 0.6} ${radius * 0.6} 0 0 1 ${center + radius * 0.6} ${center - radius * 0.6}`}
+            d={`M ${center - radius * 0.7} ${center - radius * 0.7} A ${radius * 0.7} ${radius * 0.7} 0 0 1 ${center + radius * 0.7} ${center - radius * 0.7}`}
             fill="none"
           />
         </defs>
@@ -433,7 +433,7 @@ const WheelOutward2 = () => {
         >
           <textPath
             href="#curvedTextPathOutward"
-            startOffset="50%"
+            startOffset="45%"
             textAnchor="middle"
             dominantBaseline="middle"
           >
