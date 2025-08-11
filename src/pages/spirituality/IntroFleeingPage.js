@@ -44,71 +44,12 @@ const IntroFleeingPage = () => {
     color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
   };
 
-  const subtitleStyle = {
-    fontSize: 'clamp(1.2rem, 2.5vw, 1.5rem)',
-    fontWeight: 'normal',
-    marginBottom: '2rem',
-    textAlign: 'center',
-    color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
-    opacity: 0.8,
-  };
-
-  const descriptionStyle = {
-    fontSize: '1.1rem',
-    lineHeight: '1.6',
-    marginBottom: '2rem',
-    color: themeName === 'neon' && nightMode ? '#ffffff' : '#000000',
-  };
-
-  const buttonStyle = {
-    padding: '1rem 2rem',
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    borderRadius: '8px',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    background: themeName === 'neon' ? '#8B5CF6' : '#007bff',
-    color: '#ffffff',
-    margin: '0.5rem',
-  };
-
   return (
     <div style={pageStyle}>
       <Header />
       <main style={mainStyle}>
         <div style={contentStyle}>
-          <h1 style={titleStyle}>Run Away! 🏃</h1>
-          <h2 style={subtitleStyle}>Sometimes You Gotta Get Out of There</h2>
-          
-          <p style={descriptionStyle}>
-            Ever been in a situation where you just need to get away? Like, right now? 
-            Fleeing is about knowing when to run from what's bad and toward what's good.
-          </p>
-
-          <p style={descriptionStyle}>
-            We'll explore how to recognize when something is toxic, how to escape bad situations, 
-            and how to run toward what's actually good for you.
-          </p>
-
-          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-            <button 
-              style={buttonStyle}
-              onClick={() => alert('🚧 Under Construction 🚧\n\nThis learning module is currently being developed. Check back soon!')}
-              onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-              onMouseLeave={(e) => e.target.style.opacity = '1'}
-            >
-              Let's Run! 🏃
-            </button>
-            <button 
-              style={{...buttonStyle, background: 'transparent', border: '2px solid #8B5CF6'}}
-              onClick={() => navigate('/home?wheel=inward')}
-              onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-              onMouseLeave={(e) => e.target.style.opacity = '1'}
-            >
-              Back to Wheel
-            </button>
-          </div>
+          <h1 style={titleStyle}>Fleeing 🏃</h1>
         </div>
       </main>
       <Footer />
