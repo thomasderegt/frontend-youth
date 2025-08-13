@@ -5,54 +5,96 @@ import { useSettings } from '../context/SettingsContext';
 
 // Statische wheel segments - Youth Inward (Spiritual Journey) - Combined Wheel 2 & 3
 const WHEEL_SEGMENTS = [
-  { id: 'Wakefulness', phonetic: 'Yaqzah', position: 1, angle: 0 },
-  { id: 'Self-Reckoning', phonetic: 'Muḥāsabah', position: 2, angle: 30 },
-  { id: 'Returning', phonetic: 'Inābah', position: 3, angle: 60 },
-  { id: 'Reflection', phonetic: 'Tafakkur', position: 4, angle: 90 },
-  { id: 'Taking Shelter', phonetic: 'Iʿtiṣām', position: 5, angle: 120 },
-  { id: 'Fleeing', phonetic: 'Firār', position: 6, angle: 150 },
-  { id: 'Training', phonetic: 'Riyāḍah', position: 7, angle: 180 },
-  { id: 'Hearing', phonetic: 'Samāʿ', position: 8, angle: 210 },
-  { id: 'Remembrance', phonetic: 'Dhikr', position: 9, angle: 240 },
-  { id: 'Repentance', phonetic: 'Tawbah', position: 10, angle: 270 },
+  { id: 'Wakefulness', phonetic: 'Yaqzah', position: 1, angle: 0, number: 1 },
+  { id: 'Returning', phonetic: 'Inābah', position: 2, angle: 36, number: 4 },
+  { id: 'Fleeing', phonetic: 'Firār', position: 3, angle: 72, number: 8 },
+  { id: 'Self Reckoning', phonetic: 'Muḥāsabah', position: 4, angle: 108, number: 3 },
+  { id: 'Reflection', phonetic: 'Tafakkur', position: 5, angle: 144, number: 5 },
+  { id: 'Taking Shelter', phonetic: 'Iʿtiṣām', position: 6, angle: 180, number: 7 },
+  { id: 'Training', phonetic: 'Riyāḍah', position: 7, angle: 216, number: 9 },
+  { id: 'Hearing', phonetic: 'Samāʿ', position: 8, angle: 252, number: 10 },
+  { id: 'Remembrance', phonetic: 'Dhikr', position: 9, angle: 288, number: 6 },
+  { id: 'Repentance', phonetic: 'Tawbah', position: 10, angle: 324, number: 2 },
 ];
 
-// Neon theme styling voor Youth Inward segmenten - Combined Wheel 2 & 3
-const neonSegmentStyles = {
-  'Wakefulness': { color: '#8B5CF6', glow: true, icon: '🌅' }, // Paars - Ontwaken
-  'Self-Reckoning': { color: '#7C3AED', glow: true, icon: '🔍' }, // Violet - Zelfverantwoording
-  'Returning': { color: '#1D4ED8', glow: true, icon: '❤️' }, // Donkerblauw - Terugkeer
-  'Reflection': { color: '#A855F7', glow: true, icon: '💭' }, // Lila - Reflectie
-  'Taking Shelter': { color: '#9333EA', glow: true, icon: '🛡️' }, // Paars - Toevlucht
-  'Fleeing': { color: '#8B5CF6', glow: true, icon: '🏃' }, // Paars - Vluchten
-  'Training': { color: '#3B82F6', glow: true, icon: '💪' }, // Blauw - Training
-  'Hearing': { color: '#7C3AED', glow: true, icon: '👂' }, // Violet - Luisteren
-  'Remembrance': { color: '#3B82F6', glow: true, icon: '🕊️' }, // Blauw - Herinnering
-  'Repentance': { color: '#7C3AED', glow: true, icon: '🔄' }, // Violet - Berouw
+// Rainbow theme styling voor Youth Inward segmenten - rainbow colors
+const rainbowSegmentStyles = {
+  'Wakefulness': { color: '#DC2626', glow: true, icon: '🌅' }, // Dark Red - Ontwaken
+  'Returning': { color: '#EF4444', glow: true, icon: '❤️' }, // Red - Terugkeer
+  'Fleeing': { color: '#EC4899', glow: true, icon: '🏃' }, // Violet - Vluchten
+  'Self Reckoning': { color: '#06B6D4', glow: true, icon: '🔍' }, // Cyan - Zelfverantwoording
+  'Reflection': { color: '#3B82F6', glow: true, icon: '💭' }, // Blue - Reflectie
+  'Taking Shelter': { color: '#8B5CF6', glow: true, icon: '🛡️' }, // Indigo - Toevlucht
+  'Training': { color: '#059669', glow: true, icon: '💪' }, // Dark Green - Training
+  'Hearing': { color: '#10B981', glow: true, icon: '👂' }, // Green - Luisteren
+  'Remembrance': { color: '#EAB308', glow: true, icon: '🕊️' }, // Bright Yellow - Herinnering
+  'Repentance': { color: '#F59E0B', glow: true, icon: '🔄' }, // Yellow - Berouw
 };
 
-const WheelInward = () => {
+// Neon theme styling voor Youth Inward segmenten (fallback)
+const neonSegmentStyles = {
+  'Wakefulness': { color: '#8B5CF6', glow: true, icon: '🌅' }, // Paars - Ontwaken
+  'Returning': { color: '#1D4ED8', glow: true, icon: '❤️' }, // Donkerblauw - Terugkeer
+  'Fleeing': { color: '#6366F1', glow: true, icon: '🏃' }, // Indigo - Vluchten
+  'Self Reckoning': { color: '#A855F7', glow: true, icon: '🔍' }, // Lila - Zelfverantwoording
+  'Reflection': { color: '#9333EA', glow: true, icon: '💭' }, // Paars - Reflectie
+  'Taking Shelter': { color: '#7C3AED', glow: true, icon: '🛡️' }, // Violet - Toevlucht
+  'Training': { color: '#3B82F6', glow: true, icon: '💪' }, // Blauw - Training
+  'Hearing': { color: '#8B5CF6', glow: true, icon: '👂' }, // Paars - Luisteren
+  'Remembrance': { color: '#1E40AF', glow: true, icon: '🕊️' }, // Dark Blue - Herinnering
+  'Repentance': { color: '#5B21B6', glow: true, icon: '🔄' }, // Dark Purple - Berouw
+};
+
+const WheelInward2 = () => {
   const navigate = useNavigate();
   const { theme, themeName } = useTheme();
-  const { nightMode } = useSettings();
+  const { nightMode, wheelGradient } = useSettings();
   const [size, setSize] = useState(400);
+  const [rotation, setRotation] = useState(0); // Rotatie state - start at 0
+  const [targetRotation, setTargetRotation] = useState(0); // Target rotation for smooth animation
+  const offset = 5; // Schuifafstand voor hover animatie
 
-  // Calculate stroke width based on screen size and wheel size
+  // Smooth rotation animation
+  useEffect(() => {
+    if (targetRotation !== rotation) {
+      const animationDuration = 800; // 800ms for smooth animation
+      const startTime = Date.now();
+      const startRotation = rotation;
+      const rotationDifference = targetRotation - startRotation;
 
-  // Calculate stroke width based on screen size and wheel size
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / animationDuration, 1);
+        
+        // Easing function for smooth animation
+        const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+        
+        const currentRotation = startRotation + (rotationDifference * easeOutCubic);
+        setRotation(currentRotation);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    }
+  }, [targetRotation, rotation]);
+
+  // Calculate stroke width based on screen size and wheel size - more depth
   const getStrokeWidth = () => {
     const screenWidth = window.innerWidth;
-    const baseStrokeWidth = size / 400; // Base stroke width relative to wheel size
+    const baseStrokeWidth = size / 400; // Increased base stroke width for more depth
     
     // Scale stroke width based on screen size
     if (screenWidth >= 2560) { // 34 inch and above
-      return Math.max(baseStrokeWidth * 1.2, 1.5);
+      return Math.max(baseStrokeWidth * 1.2, 2.0);
     } else if (screenWidth >= 1920) { // Large screens
-      return Math.max(baseStrokeWidth * 1.1, 1.2);
+      return Math.max(baseStrokeWidth * 1.1, 1.8);
     } else if (screenWidth >= 1366) { // Medium screens
-      return Math.max(baseStrokeWidth, 1);
+      return Math.max(baseStrokeWidth, 1.5);
     } else { // Mobile and small screens
-      return Math.max(baseStrokeWidth * 0.8, 0.8);
+      return Math.max(baseStrokeWidth * 0.9, 1.2);
     }
   };
 
@@ -85,7 +127,6 @@ const WheelInward = () => {
           newSize = Math.min(Math.min(containerWidth, containerHeight) * 0.85, 400);
         }
         
-        console.log('Container width:', containerWidth, 'Container height:', containerHeight, 'Screen width:', screenWidth, 'New size:', newSize);
         setSize(newSize);
       }
     };
@@ -100,32 +141,22 @@ const WheelInward = () => {
   }, []);
 
   const center = size / 2;
-  const radius = center * 0.8; // Increased radius to spread out more
-  const outerRadius = center * 0.18; // Slightly larger circles
-  // const centerRadius = center * 0.28; // Larger center circle - unused
-  
-  // Circle mode only
-  const topicRadius = radius * 0.95; // Spread segments out more
-  // const centerTextRadius = centerRadius; // Unused variable
-  const centerCircleRadius = outerRadius; // Same size as other circles
-
-  const calculatePoint = (angle, distance) => ({
-    x: center + distance * Math.cos(angle),
-    y: center + distance * Math.sin(angle),
-  });
+  const radius = center * 0.8; // Same as original WheelInward
+  const topicRadius = radius * 1.05; // Slightly larger wheel
+  const innerRadius = topicRadius * 0.70; // Inner radius for the donut hole - back to original size
+  const outerRadius = topicRadius * 1.05; // Outer radius for the donut - smaller
+  const centerCircleRadius = innerRadius * 0.8; // Center circle radius to match the segments
 
   const handleClick = (segmentId) => {
-    console.log('=== CLICK DEBUG ===');
-    console.log('Clicked segment:', segmentId);
-    console.log('Segment type:', typeof segmentId);
+    console.log('WheelInward2 - Clicked segment:', segmentId);
     
     // Navigate to intro pages based on segment
     if (segmentId === 'Wakefulness') {
       console.log('Navigating to /intro-wakefulness');
       navigate('/intro-wakefulness');
     } else if (segmentId === 'CENTER') {
-      console.log('Navigating to /god');
-      navigate('/god');
+      console.log('Navigating to /intro-god-inward');
+      navigate('/intro-god-inward');
     } else if (segmentId === 'Self-Reckoning') {
       console.log('Navigating to /intro-self-reckoning');
       navigate('/intro-self-reckoning');
@@ -156,16 +187,25 @@ const WheelInward = () => {
     } else {
       console.log('No navigation found for segment:', segmentId);
     }
-    console.log('=== END DEBUG ===');
   };
 
   const getCenterFontSize = (text) => {
-    const base = outerRadius * 0.4; // Adjusted for smaller circles
+    const base = centerCircleRadius * 0.4;
     if (text.length > 18) return base * 0.7;
     if (text.length > 14) return base * 0.8;
     if (text.length > 10) return base * 0.9;
     return base;
   };
+
+  // Rotatie functie
+  const handleRotate = () => {
+    setTargetRotation(prevRotation => prevRotation + 45);
+  };
+
+  // Arc generator removed - using manual SVG path generation instead
+
+  // Calculate arc angles for each segment
+  const segmentAngle = (2 * Math.PI) / WHEEL_SEGMENTS.length;
 
   return (
     <div className="wheel-container" style={{ 
@@ -173,273 +213,297 @@ const WheelInward = () => {
       height: '100%',
       minHeight: '350px',
       display: 'flex', 
+      flexDirection: 'column',
       justifyContent: 'center', 
       alignItems: 'center',
       padding: '0.5rem 0',
       maxWidth: window.innerWidth >= 2560 ? '1200px' : '100%',
-      margin: '0 auto'
+      margin: '0 auto',
+      position: 'relative'
     }}>
-              <svg
-          width="100%"
-          height="100%"
-          viewBox={`0 0 ${size} ${size}`}
-          preserveAspectRatio="xMidYMid meet"
-          style={{ 
-            width: '100%', 
-            height: '100%',
-            minHeight: '350px',
-            maxWidth: window.innerWidth >= 2560 ? '800px' : '100vw',
-            maxHeight: '100vh'
-          }}
-        >
+
+      
+      <svg
+        width="100%"
+        height="100%"
+        viewBox={`0 0 ${size} ${size}`}
+        preserveAspectRatio="xMidYMid meet"
+        style={{ 
+          width: '100%', 
+          height: '100%',
+          minHeight: '350px',
+          maxWidth: window.innerWidth >= 2560 ? '800px' : '100vw',
+          maxHeight: '100vh'
+        }}
+      >
         <defs>
-          {/* Neon glow filters */}
-          {themeName === 'neon' && (
-            <>
-              <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                <feMerge> 
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <filter id="neonGlowStrong" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                <feMerge> 
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </>
-          )}
+          {/* No glow filters */}
           
 
         </defs>
 
-        {/* Circle mode: Traditionele cirkels */}
-        <>
-          {/* Verbindingslijnen tussen buitenste cirkels - Op de randen */}
+        {/* Roterende groep voor alle segmenten */}
+        <g
+          transform={`rotate(${rotation} ${center} ${center})`}
+        >
+          {/* Donut segments using manual SVG path generation */}
           {WHEEL_SEGMENTS.map((segment, index) => {
-            const currentAngle = (index / WHEEL_SEGMENTS.length) * 2 * Math.PI;
-            const currentPos = calculatePoint(currentAngle, topicRadius);
-            
-            // Verbind met de volgende cirkel
-            const nextIndex = (index + 1) % WHEEL_SEGMENTS.length;
-            const nextAngle = (nextIndex / WHEEL_SEGMENTS.length) * 2 * Math.PI;
-            const nextPos = calculatePoint(nextAngle, topicRadius);
-            
-            // Bereken richting van huidige naar volgende cirkel
-            const dx = nextPos.x - currentPos.x;
-            const dy = nextPos.y - currentPos.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const normalizedX = dx / distance;
-            const normalizedY = dy / distance;
-            
-            // Start punt: rand van huidige cirkel
-            const startX = currentPos.x + normalizedX * outerRadius;
-            const startY = currentPos.y + normalizedY * outerRadius;
-            
-            // Eind punt: rand van volgende cirkel
-            const endX = nextPos.x - normalizedX * outerRadius;
-            const endY = nextPos.y - normalizedY * outerRadius;
-            
-            const lineColor = themeName === 'zwartWit' ? '#000000' : 
-                             themeName === 'neon' ? '#8B5CF6' : '#ffffff';
-            
-            const strokeWidth = getStrokeWidth();
-            console.log('Line strokeWidth:', strokeWidth, 'Window width:', window.innerWidth, 'size:', size);
-            return (
-              <line
-                key={`connection-${segment.id}`}
-                x1={startX}
-                y1={startY}
-                x2={endX}
-                y2={endY}
-                stroke={lineColor}
-                strokeWidth={strokeWidth}
-                style={{}}
-              />
-            );
-          })}
+          const startAngle = index * segmentAngle;
+          const endAngle = (index + 1) * segmentAngle;
+          
+          const segmentStyle = rainbowSegmentStyles[segment.id] || neonSegmentStyles[segment.id];
+          
+          console.log(`Segment ${segment.id}:`, segmentStyle); // Debug log
+          
+          // Generate gradient colors for segments if wheelGradient is enabled
+          let fillColor;
+          if (wheelGradient && themeName !== 'zwartWit') {
+            // Create a gradient from light pastel green to darker pastel green based on segment index
+            const greenValues = [
+              '#E8F5E8', // Very light pastel green
+              '#D4EDDA', // Light pastel green
+              '#C3E6CB', // Soft pastel green
+              '#B8DBC0', // Medium pastel green
+              '#A8D5B3', // Deeper pastel green
+              '#98CFA6', // Rich pastel green
+              '#8BCA99', // Muted pastel green
+              '#7EC58C', // Medium-dark pastel green
+              '#71C07F', // Darker pastel green
+              '#64BB72'  // Deep pastel green
+            ];
+            fillColor = greenValues[index % greenValues.length] + 'E6';
+          } else {
+            fillColor = themeName === 'zwartWit' ? 'rgba(255, 255, 255, 0.85)' : 
+              (segmentStyle?.color ? segmentStyle.color + 'E6' : 'rgba(255, 255, 255, 0.85)');
+          }
+          
+          console.log(`Fill color for ${segment.id}:`, fillColor); // Debug log
+          
+          // Use the same color for stroke as fill when gradient is enabled
+          let strokeColor;
+          if (wheelGradient && themeName !== 'zwartWit') {
+            // Use the same pastel green color as fill but without opacity
+            const greenValues = [
+              '#E8F5E8', // Very light pastel green
+              '#D4EDDA', // Light pastel green
+              '#C3E6CB', // Soft pastel green
+              '#B8DBC0', // Medium pastel green
+              '#A8D5B3', // Deeper pastel green
+              '#98CFA6', // Rich pastel green
+              '#8BCA99', // Muted pastel green
+              '#7EC58C', // Medium-dark pastel green
+              '#71C07F', // Darker pastel green
+              '#64BB72'  // Deep pastel green
+            ];
+            strokeColor = greenValues[index % greenValues.length];
+          } else {
+            strokeColor = themeName === 'zwartWit' ? '#000000' : 
+                         (segmentStyle?.color || theme.border);
+          }
 
-          {/* Radiale lijnen - Verbind centrale cirkel met buitenste cirkels */}
-          {WHEEL_SEGMENTS.map((segment, index) => {
-            const angle = (index / WHEEL_SEGMENTS.length) * 2 * Math.PI;
-            const outerPos = calculatePoint(angle, topicRadius);
-            
-            // Bereken het punt op de rand van de cirkel
-            const distanceFromCenter = Math.sqrt((outerPos.x - center) ** 2 + (outerPos.y - center) ** 2);
-            const normalizedX = (outerPos.x - center) / distanceFromCenter;
-            const normalizedY = (outerPos.y - center) / distanceFromCenter;
-            
-            // Start punt: rand van centrale cirkel
-            const startX = center + normalizedX * centerCircleRadius;
-            const startY = center + normalizedY * centerCircleRadius;
-            
-            // Eind punt: rand van buitenste cirkel
-            const endX = outerPos.x - normalizedX * outerRadius;
-            const endY = outerPos.y - normalizedY * outerRadius;
-            
-            const lineColor = themeName === 'zwartWit' ? '#000000' : 
-                             themeName === 'neon' ? '#3B82F6' : '#ffffff';
-            
-            return (
-              <line
-                key={`radial-${segment.id}`}
-                x1={startX}
-                y1={startY}
-                x2={endX}
-                y2={endY}
-                stroke={lineColor}
+          // Generate arc path manually for testing
+          const startX = center + outerRadius * Math.cos(startAngle);
+          const startY = center + outerRadius * Math.sin(startAngle);
+          const endX = center + outerRadius * Math.cos(endAngle);
+          const endY = center + outerRadius * Math.sin(endAngle);
+          
+          const innerStartX = center + innerRadius * Math.cos(startAngle);
+          const innerStartY = center + innerRadius * Math.sin(startAngle);
+          const innerEndX = center + innerRadius * Math.cos(endAngle);
+          const innerEndY = center + innerRadius * Math.sin(endAngle);
+          
+          // Create a simple donut segment path
+          const largeArcFlag = (endAngle - startAngle) > Math.PI ? 1 : 0;
+          const sweepFlag = 1; // Always sweep in positive direction
+          
+          const arcPath = `
+            M ${startX} ${startY}
+            A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}
+            L ${innerEndX} ${innerEndY}
+            A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerStartX} ${innerStartY}
+            Z
+          `;
+
+          // Calculate center point of the arc for text positioning
+          const arcCenterAngle = startAngle + (endAngle - startAngle) / 2;
+          const textRadius = (innerRadius + outerRadius) / 2; // Center of the donut segment
+          const textX = center + textRadius * Math.cos(arcCenterAngle);
+          const textY = center + textRadius * Math.sin(arcCenterAngle);
+          
+          // Calculate text rotation to align with arc direction
+          const textRotation = (arcCenterAngle * 180 / Math.PI) + 90;
+
+          return (
+            <g
+              key={segment.id}
+              onClick={() => handleClick(segment.id)}
+              style={{ 
+                cursor: 'pointer',
+                transition: 'opacity 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '0.8';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '1';
+              }}
+            >
+              {/* Arc segment */}
+              <path
+                d={arcPath}
+                fill={fillColor}
+                stroke={strokeColor}
                 strokeWidth={getStrokeWidth()}
-                style={{}}
-              />
-            );
-          })}
-
-          {/* Buitenste cirkels met segmenten */}
-          {WHEEL_SEGMENTS.map((segment, index) => {
-            const angle = (index / WHEEL_SEGMENTS.length) * 2 * Math.PI;
-            const pos = calculatePoint(angle, topicRadius);
-            const segmentStyle = themeName === 'neon' ? neonSegmentStyles[segment.id] : null;
-            
-            const fillColor = themeName === 'neon' ? (nightMode ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)') : 'rgba(255, 255, 255, 0.3)'; // Dynamic background for neon
-            const textColor = themeName === 'neon' && nightMode ? '#ffffff' : '#000000'; // White text for neon nightmode
-            const strokeColor = themeName === 'zwartWit' ? '#000000' : 
-                               themeName === 'neon' ? (segmentStyle?.color || '#00f2fa') : theme.border;
-            
-            return (
-              <g
-                key={segment.id}
-                style={{ cursor: 'pointer' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.opacity = '0.8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.opacity = '1';
+                style={{ 
+                  pointerEvents: 'auto'
                 }}
               >
-                {/* Cirkel */}
-                <circle
-                  cx={pos.x}
-                  cy={pos.y}
-                  r={outerRadius}
-                  fill={fillColor}
-                  stroke={strokeColor}
-                  strokeWidth={getStrokeWidth()}
-                  style={{ 
-                    cursor: 'pointer',
-                    filter: themeName === 'neon' && segmentStyle?.glow ? 'url(#neonGlow)' : 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onClick={() => handleClick(segment.id)}
-                />
-                
-                {/* Title in circle - Responsive font size */}
+                <title>{segment.id}</title>
+              </path>
+              
+              {/* Segment text */}
+              {segment.id.split(' ').map((word, index) => (
                 <text
-                  x={pos.x}
-                  y={pos.y - 8}
+                  key={index}
+                  x={textX}
+                  y={textY + (index * 14)}
                   textAnchor="middle"
-                  fill={textColor}
-                  fontSize={Math.max(Math.min(outerRadius * 0.18, 14), 8)} // Responsive font size with max 14px
+                  fill="#ffffff"
+                  fontSize="14"
                   fontWeight="bold"
-                  dy=".3em"
                   style={{ 
-                    textShadow: 'none',
-                    textTransform: 'uppercase',
-                    transition: 'text-shadow 0.3s ease',
-                    pointerEvents: 'none'
-                  }}
-                >
-                  {segment.id.length > 12 ? segment.id.substring(0, 12).toUpperCase() : segment.id.toUpperCase()}
-                </text>
-                
-                {/* Phonetic text - Responsive font size */}
-                <text
-                  x={pos.x}
-                  y={pos.y + 8}
-                  textAnchor="middle"
-                  fill={textColor}
-                  fontSize={Math.max(Math.min(outerRadius * 0.15, 12), 7)} // Responsive font size with max 12px
-                  fontWeight="normal"
-                  dy=".3em"
-                  style={{ 
-                    textShadow: 'none',
-                    textTransform: 'none',
-                    transition: 'text-shadow 0.3s ease',
                     pointerEvents: 'none',
-                    opacity: 0.8
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.7)'
                   }}
+                  transform={`rotate(${textRotation} ${textX} ${textY})`}
                 >
-                  {segment.phonetic.length > 15 ? segment.phonetic.substring(0, 15) : segment.phonetic}
+                  {word}
                 </text>
-                
+              ))}
+              
+              {/* Segment number */}
+              {/* <text
+                x={textX}
+                y={textY + (segment.id.split(' ').length * 14) + 8}
+                textAnchor="middle"
+                fill="#ffffff"
+                fontSize="16"
+                fontWeight="bold"
+                style={{ 
+                  pointerEvents: 'none',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.7)'
+                }}
+                transform={`rotate(${textRotation} ${textX} ${textY})`}
+              >
+                {segment.number}
+              </text> */}
+            </g>
+          );
+        })}
+        </g>
 
-              </g>
-            );
-          })}
+        {/* Center circle */}
+        {(() => {
+          const centerFill = themeName === 'zwartWit' ? 'rgba(255, 255, 255, 0.1)' : 
+            (themeName === 'neon' ? (nightMode ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)') : 'rgba(255, 255, 255, 0.3)'); // Same opacity as guided flows
+          
+          const centerStroke = themeName === 'zwartWit' ? '#000000' : 
+                              themeName === 'neon' ? '#8B5CF6' : centerFill;
+          
+          const centerTextColor = themeName === 'neon' && nightMode ? '#ffffff' : '#000000';
 
-          {/* Centrale cirkel */}
-          {(() => {
-            const fillColor = themeName === 'neon' ? (nightMode ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)') : 'rgba(255, 255, 255, 0.3)'; // Dynamic background for neon
-            const centerStroke = themeName === 'zwartWit' ? '#000000' : 
-                                themeName === 'neon' ? '#8B5CF6' : theme.border;
-            const centerTextColor = themeName === 'neon' && nightMode ? '#ffffff' : '#000000'; // White text for neon nightmode
+          return (
+            <>
+              <circle
+                cx={center}
+                cy={center}
+                r={centerCircleRadius}
+                fill={centerFill}
+                onClick={() => handleClick('CENTER')}
+                style={{ 
+                  cursor: 'pointer'
+                }}
+              />
 
-            return (
-              <>
-                <circle
-                  cx={center}
-                  cy={center}
-                  r={centerCircleRadius}
-                  fill={fillColor}
-                  stroke={centerStroke}
-                  strokeWidth={getStrokeWidth()}
-                  onClick={() => handleClick('CENTER')}
-                  style={{ 
-                    cursor: 'pointer'
-                  }}
-                />
-                <text
-                  x={center}
-                  y={center}
-                  textAnchor="middle"
-                  fill={centerTextColor}
-                  fontSize={getCenterFontSize('GOD')}
-                  fontWeight="bold"
-                  dy=".3em"
-                  pointerEvents="none"
-                  style={{ 
-                    textShadow: 'none',
-                    textTransform: 'uppercase',
-                    transition: 'text-shadow 0.3s ease'
-                  }}
-                >
-                  {'GOD'}
-                </text>
-              </>
-            );
-          })()}
-        </>
+              <text
+                x={center}
+                y={center - 20}
+                textAnchor="middle"
+                fill={centerTextColor}
+                fontSize={Math.max(Math.min(centerCircleRadius * 0.25, 22), 16)}
+                fontWeight="bold"
+                style={{ 
+                  textShadow: 'none',
+                  pointerEvents: 'none'
+                }}
+              >
+                Togetherness
+              </text>
+              <text
+                x={center}
+                y={center}
+                textAnchor="middle"
+                fill="#8B5CF6"
+                fontSize={Math.max(Math.min(centerCircleRadius * 0.2, 18), 14)}
+                fontWeight="bold"
+                style={{ 
+                  textShadow: 'none',
+                  pointerEvents: 'none'
+                }}
+              >
+                Jam'
+              </text>
+              <text
+                x={center}
+                y={center + 20}
+                textAnchor="middle"
+                fill="#8B5CF6"
+                fontSize={Math.max(Math.min(centerCircleRadius * 0.15, 16), 12)}
+                fontWeight="bold"
+                direction="rtl"
+                style={{ 
+                  textShadow: 'none',
+                  pointerEvents: 'none'
+                }}
+              >
+                الجَمْعُ
+              </text>
+            </>
+          );
+        })()}
         
-        {/* Straight text "Stage 1: The Beginning" - rendered on top */}
-        <text
-          x={center}
-          y={center - radius * 0.7}
-          textAnchor="middle"
-          style={{
-            fontSize: Math.max(Math.min(radius * 0.08, 24), 16),
-            fontWeight: 'bold',
-            fill: themeName === 'neon' ? '#8B5CF6' : themeName === 'zwartWit' ? '#000000' : '#ffffff',
-            textShadow: themeName === 'neon' ? '0 0 8px rgba(139, 92, 246, 0.6)' : 'none',
-            pointerEvents: 'none'
-          }}
-        >
-          Stage 1: The Beginning
-        </text>
+
       </svg>
+      
+      {/* Spin knop */}
+      <button
+        onClick={handleRotate}
+        style={{
+          marginTop: '20px',
+          padding: '15px 30px',
+          backgroundColor: themeName === 'neon' ? '#8B5CF6' : '#DC2626',
+          color: 'white',
+          border: 'none',
+          borderRadius: '12px',
+          cursor: 'pointer',
+          fontSize: '18px',
+          fontWeight: 'bold',
+          transition: 'all 0.3s ease',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+          minWidth: '200px',
+          minHeight: '50px'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'scale(1.05)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'scale(1)';
+        }}
+      >
+        SPIN
+      </button>
     </div>
   );
 };
 
-export default WheelInward; 
+export default WheelInward2;

@@ -21,6 +21,7 @@ export const SettingsProvider = ({ children }) => {
   const [jurisprudence, setJurisprudence] = useState(localStorage.getItem('userJurisprudence') || 'all');
   const [wheelShape, setWheelShape] = useState(localStorage.getItem('wheelShape') || 'circle');
   const [nightMode, setNightMode] = useState(localStorage.getItem('nightMode') === 'true');
+  const [wheelGradient, setWheelGradient] = useState(localStorage.getItem('wheelGradient') === 'true');
   
   console.log('SettingsContext Debug:', {
     wheelShapeFromStorage: localStorage.getItem('wheelShape'),
@@ -65,6 +66,10 @@ export const SettingsProvider = ({ children }) => {
     localStorage.setItem('nightMode', nightMode.toString());
   }, [nightMode]);
 
+  useEffect(() => {
+    localStorage.setItem('wheelGradient', wheelGradient.toString());
+  }, [wheelGradient]);
+
   const openSettings = () => setIsSettingsOpen(true);
   const closeSettings = () => setIsSettingsOpen(false);
 
@@ -75,6 +80,7 @@ export const SettingsProvider = ({ children }) => {
     localStorage.removeItem('userCreed');
     localStorage.removeItem('userJurisprudence');
     localStorage.removeItem('nightMode');
+    localStorage.removeItem('wheelGradient');
     // Note: theme is not reset - user keeps their theme preference
     setUserGoal(null);
     setUserLevel(1);
@@ -82,6 +88,7 @@ export const SettingsProvider = ({ children }) => {
     setCreed('1');
     setJurisprudence('all');
     setNightMode(false);
+    setWheelGradient(false);
     // setThemeName('neon'); // Removed - theme stays independent
     window.location.reload();
   };
@@ -107,6 +114,8 @@ export const SettingsProvider = ({ children }) => {
     setWheelShape,
     nightMode,
     setNightMode,
+    wheelGradient,
+    setWheelGradient,
     
     // Theme and language
     themeName,

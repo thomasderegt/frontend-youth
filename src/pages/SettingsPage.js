@@ -19,7 +19,9 @@ const SettingsPage = () => {
     language,
     setLanguage,
     nightMode,
-    setNightMode
+    setNightMode,
+    wheelGradient,
+    setWheelGradient
   } = useSettings();
 
   // Local state for form values
@@ -29,6 +31,7 @@ const SettingsPage = () => {
   const [localLanguage, setLocalLanguage] = React.useState(language || 'en');
   const [localThemeName, setLocalThemeName] = React.useState(themeName || 'neon');
   const [localNightMode, setLocalNightMode] = React.useState(nightMode || false);
+  const [localWheelGradient, setLocalWheelGradient] = React.useState(wheelGradient || false);
 
   // Sync local state with context values when component mounts or values change
   React.useEffect(() => {
@@ -38,7 +41,8 @@ const SettingsPage = () => {
     setLocalLanguage(language || 'en');
     setLocalThemeName(themeName || 'neon');
     setLocalNightMode(nightMode || false);
-  }, [userLevel, creed, jurisprudence, language, themeName, nightMode]);
+    setLocalWheelGradient(wheelGradient || false);
+  }, [userLevel, creed, jurisprudence, language, themeName, nightMode, wheelGradient]);
 
   const handleSave = () => {
     // Update all settings
@@ -49,6 +53,7 @@ const SettingsPage = () => {
     setThemeName(localThemeName);
     setThemeContext(localThemeName);
     setNightMode(localNightMode);
+    setWheelGradient(localWheelGradient);
     
     // Navigate back to previous page
     window.history.back();
@@ -301,6 +306,21 @@ const SettingsPage = () => {
                 }}
               />
               Night Mode
+            </label>
+          </div>
+
+          <div style={sectionStyle}>
+            <label style={labelStyle}>
+              <input
+                type="checkbox"
+                checked={localWheelGradient}
+                onChange={(e) => setLocalWheelGradient(e.target.checked)}
+                style={{
+                  marginRight: '0.5rem',
+                  transform: 'scale(1.2)'
+                }}
+              />
+              Wheel Gradient (Light to Dark Green)
             </label>
           </div>
 

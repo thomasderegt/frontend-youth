@@ -5,8 +5,8 @@ import { useSettings } from '../context/SettingsContext';
 // Progress tracking will be handled by backend
 import Header from '../organisms/Header';
 import Footer from '../organisms/Footer';
-import WheelOutward from '../organisms/WheelOutward2';
-import WheelInward from '../organisms/WheelInward2';
+import WheelOutward from '../organisms/WheelOutward';
+import WheelInward from '../organisms/WheelInward';
 import { getBackgroundStyle } from '../utils/backgrounds';
 
 const HomePage = () => {
@@ -15,7 +15,7 @@ const HomePage = () => {
   const { themeName } = useTheme();
   const { nightMode } = useSettings();
   const [expandedCard, setExpandedCard] = useState(null);
-  const [currentWheel, setCurrentWheel] = useState('outward'); // 'outward', 'inward', of 'inward2'
+  const [currentWheel, setCurrentWheel] = useState('inward'); // 'outward', 'inward', of 'inward2'
   const [showInstructionsModal, setShowInstructionsModal] = useState(false);
 
   // Check URL parameters for wheel selection
@@ -380,7 +380,7 @@ const HomePage = () => {
           {/* Instructions Button */}
           <section style={sectionStyle}>
             <div style={{
-              textAlign: 'center',
+              textAlign: 'right',
               marginBottom: '2rem',
               padding: '0 1rem'
             }}>
@@ -390,14 +390,19 @@ const HomePage = () => {
                   background: 'rgba(139, 92, 246, 0.9)',
                   color: 'white',
                   border: 'none',
-                  borderRadius: '12px',
-                  padding: '1rem 2rem',
-                  fontSize: '1rem',
-                  fontWeight: '600',
+                  borderRadius: '50%',
+                  padding: '0.8rem',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
-                  backdropFilter: 'blur(10px)'
+                  backdropFilter: 'blur(10px)',
+                  width: '45px',
+                  height: '45px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.background = 'rgba(139, 92, 246, 1)';
@@ -409,11 +414,9 @@ const HomePage = () => {
                   e.target.style.transform = 'translateY(0)';
                   e.target.style.boxShadow = '0 4px 15px rgba(139, 92, 246, 0.3)';
                 }}
+                title="How to Use This App"
               >
-                {(() => {
-                  const hasProgress = false; // Progress tracking will be handled by backend
-                  return hasProgress ? '📖 Show Instructions' : '! How to Use This App';
-                })()}
+                i
               </button>
             </div>
           </section>

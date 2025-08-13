@@ -25,6 +25,7 @@ import IntroFleeingPage from './pages/spirituality/IntroFleeingPage';
 import IntroTrainingPage from './pages/spirituality/IntroTrainingPage';
 import IntroHearingPage from './pages/spirituality/IntroHearingPage';
 import IntroRemembrancePage from './pages/spirituality/IntroRemembrancePage';
+import IntroGodInward from './pages/spirituality/IntroGodInward';
 import IntroBeliefPage from './pages/insights/IntroBeliefPage';
 import IntroJurisprudencePage from './pages/insights/IntroJurisprudencePage';
 import IntroQuranPage from './pages/insights/IntroQuranPage';
@@ -68,6 +69,7 @@ function App() {
                 <Route path="/intro-training" element={<IntroTrainingPage />} />
                 <Route path="/intro-hearing" element={<IntroHearingPage />} />
                 <Route path="/intro-remembrance" element={<IntroRemembrancePage />} />
+                <Route path="/intro-god-inward" element={<IntroGodInward />} />
                 <Route path="/intro-belief" element={<IntroBeliefPage />} />
                 <Route path="/intro-jurisprudence" element={<IntroJurisprudencePage />} />
                 <Route path="/intro-quran" element={<IntroQuranPage />} />
